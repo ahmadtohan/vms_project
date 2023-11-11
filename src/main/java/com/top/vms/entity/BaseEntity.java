@@ -1,6 +1,9 @@
 package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.top.vms.annotations.AfterInsert;
+import com.top.vms.annotations.AfterUpdate;
+import com.top.vms.annotations.BeforeDelete;
 import com.top.vms.configuration.Setup;
 import com.top.vms.repository.AttachmentRepository;
 import java.util.Date;
@@ -45,6 +48,27 @@ public abstract class BaseEntity extends BaseEntityParent {
 
     @Transient
     private List<Attachment> attachments;
+
+    @AfterUpdate
+    @AfterInsert
+    public void updateAttachmentsAfterSave(){
+        if (!this.getAttachments().isEmpty()) {
+            for (Attachment attachment : this.getAttachments()) {
+                attachment.setEntityId(this.getId());
+                attachment.setEntityType(this.getClass().getSimpleName());
+            }
+
+            this.setAttachments(Setup.getApplicationContext().getBean(AttachmentRepository.class).saveAll(this.getAttachments()));
+        }
+    }
+
+    @BeforeDelete
+    public void removeAttachmentsBeforeDelete(){
+        List<Attachment> attachments=Setup.getApplicationContext().getBean(AttachmentRepository.class).findByEntityIdAndEntityType(this.getId(),this.getClass().getSimpleName());
+        if (!attachments.isEmpty()) {
+            Setup.getApplicationContext().getBean(AttachmentRepository.class).deleteAll(attachments);
+        }
+    }
 
     public Long getId() {
         return id;

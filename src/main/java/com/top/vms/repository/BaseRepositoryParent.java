@@ -8,7 +8,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 /**
  *
- * 
+ *
  */
 @NoRepositoryBean
 public abstract interface BaseRepositoryParent<T>
@@ -19,12 +19,18 @@ public abstract interface BaseRepositoryParent<T>
                 .orElse(null);
     }
 
-
     public default <S extends T> List<S> save(Iterable<S> entities) {
         return saveAll(entities);
     }
-    
-  
+
+    public default T silentSave(T entity) {
+        return save(entity);
+    }
+
+    public default <S extends T> S saveWithFlush(S entity) {
+        return saveAndFlush(entity);
+    }
+
     public default <S extends T> List<S> saveAndIgnoreDuplication(Iterable<S> entities) {
         List<S> saved = new ArrayList<>();
         entities.forEach(entity -> {
@@ -36,8 +42,6 @@ public abstract interface BaseRepositoryParent<T>
         });
         return saved;
     }
-        
-  
 
     public default void delete(Iterable<? extends T> entities) {
         deleteAll(entities);

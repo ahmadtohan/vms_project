@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.top.vms.configuration.Setup;
-import com.top.vms.entity.Attachment;
 import com.top.vms.entity.BaseEntity;
-import com.top.vms.repository.AttachmentRepository;
 import com.top.vms.repository.BaseRepositoryParent;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -96,13 +94,6 @@ public abstract class BaseVmsRepositoryController<T extends BaseEntity> {
     private T createEntity(T entity) {
         entity = getRepository()
                 .save(entity);
-        if (!entity.getAttachments().isEmpty()) {
-            for (Attachment attachment : entity.getAttachments()) {
-                attachment.setEntityId(entity.getId());
-                attachment.setEntityType(entity.getClass().getSimpleName());
-            }
-            entity.setAttachments(Setup.getApplicationContext().getBean(AttachmentRepository.class).saveAll(entity.getAttachments()));
-        }
 
         return entity;
     }

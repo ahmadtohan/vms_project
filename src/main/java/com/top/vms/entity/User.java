@@ -3,6 +3,7 @@ package com.top.vms.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.top.vms.annotations.AfterInsert;
 import com.top.vms.annotations.EntityJsonSerializer;
 import com.top.vms.helper.EnumEntity;
 import java.util.Date;
@@ -107,6 +108,7 @@ public class User extends BaseEntity {
     @JsonSerialize(using = GenericSerializer.class)
     @EntityJsonSerializer(keys = { "id", "name"})
     private Department department;
+
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Role> roles;

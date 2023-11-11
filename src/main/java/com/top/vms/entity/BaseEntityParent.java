@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author khalil.sharkawi
+ * @author 
  */
 public abstract class BaseEntityParent implements Serializable {
     public abstract Long getId();
