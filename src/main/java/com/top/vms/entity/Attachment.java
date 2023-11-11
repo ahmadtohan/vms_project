@@ -17,6 +17,9 @@ import javax.persistence.Entity;
 public class Attachment extends BaseEntity {
 
     @Column
+    private String type;
+
+    @Column
     private String name;
 
     @Column
@@ -29,6 +32,14 @@ public class Attachment extends BaseEntity {
     @JsonIgnore
     @Column
     private String entityType;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;

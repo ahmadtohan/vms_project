@@ -4,13 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.top.vms.helper.EnumEntity;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
+import javax.persistence.*;
+
 import org.hibernate.validator.constraints.Email;
 
 /**
@@ -89,20 +85,26 @@ public class User extends BaseEntity {
     @Column
     private Date birthDate;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private Type type=Type.NORMAL;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column
     private Date lastLogin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Role> roles;
 
     public String getUsername() {
         return username;
@@ -188,4 +190,19 @@ public class User extends BaseEntity {
         this.lastLogin = lastLogin;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }
