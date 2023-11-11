@@ -91,7 +91,7 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status=Status.ACTIVE;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
