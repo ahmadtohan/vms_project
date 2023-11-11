@@ -1,5 +1,7 @@
 package com.top.vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Role extends BaseEntity{
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<User> users;
 
     public String getName() {
