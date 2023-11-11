@@ -2,11 +2,14 @@ package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.top.vms.annotations.EntityJsonSerializer;
 import com.top.vms.helper.EnumEntity;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import com.top.vms.helper.GenericSerializer;
 import org.hibernate.validator.constraints.Email;
 
 /**
@@ -101,6 +104,8 @@ public class User extends BaseEntity {
     private Date lastLogin;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonSerialize(using = GenericSerializer.class)
+    @EntityJsonSerializer(keys = { "id", "name"})
     private Department department;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
