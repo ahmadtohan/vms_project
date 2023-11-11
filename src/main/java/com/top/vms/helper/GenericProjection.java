@@ -19,8 +19,6 @@ import com.top.vms.configuration.Setup;
 
 /**
  * 
- * @author Khaldoon Al-Habash
- * Created on 2019-12-10
  *
  */
 public class GenericProjection {
