@@ -1,6 +1,7 @@
 package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.top.vms.annotations.AfterDelete;
 import com.top.vms.annotations.AfterInsert;
 import com.top.vms.annotations.AfterUpdate;
 import com.top.vms.annotations.BeforeDelete;
@@ -62,8 +63,8 @@ public abstract class BaseEntity extends BaseEntityParent {
         }
     }
 
-    @BeforeDelete
-    public void removeAttachmentsBeforeDelete(){
+    @AfterDelete
+    public void removeAttachmentsAfterDelete(){
         List<Attachment> attachments=Setup.getApplicationContext().getBean(AttachmentRepository.class).findByEntityIdAndEntityType(this.getId(),this.getClass().getSimpleName());
         if (!attachments.isEmpty()) {
             Setup.getApplicationContext().getBean(AttachmentRepository.class).deleteAll(attachments);
