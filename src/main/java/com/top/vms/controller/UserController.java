@@ -22,14 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +35,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author Ahmad
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseVmsRepositoryController<User> {
@@ -70,7 +64,8 @@ public class UserController extends BaseVmsRepositoryController<User> {
 
         //generate and return jwt token
         // Reload password post-security so we can generate the token
-        final UserDetails userDetails = userRepository.findByUsername(user.getUsername());
+        final User loggedUser = userRepository.findByUsername(user.getUsername());
+        final UserDetails userDetails=loggedUser;
         if (userDetails == null) {
             throw new BadCredentialsException("Bad credentials");
         }
@@ -79,10 +74,10 @@ public class UserController extends BaseVmsRepositoryController<User> {
             throw new DisabledException("User is disabled!");
         }
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        loggedUser.setToken(jwtTokenUtil.generateToken(userDetails));
 
         // Return the token
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+        return ResponseEntity.ok(loggedUser);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)

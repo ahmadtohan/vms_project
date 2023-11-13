@@ -116,6 +116,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column
     private Date lastLogin;
 
+    @Transient
+    private String token;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(using = GenericSerializer.class)
     @EntityJsonSerializer(keys = {"id", "name"})
@@ -237,6 +240,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Department getDepartment() {
