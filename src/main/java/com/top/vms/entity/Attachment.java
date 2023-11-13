@@ -19,10 +19,9 @@ public class Attachment extends BaseEntity {
     @Column
     private String type;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
-    @Column
     private String path;
 
     @JsonIgnore

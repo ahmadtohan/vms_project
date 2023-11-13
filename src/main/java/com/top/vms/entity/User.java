@@ -1,24 +1,36 @@
 package com.top.vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.top.vms.annotations.AfterInsert;
+import com.top.vms.annotations.BeforeInsert;
 import com.top.vms.annotations.EntityJsonSerializer;
+import com.top.vms.configuration.Setup;
 import com.top.vms.helper.EnumEntity;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
 import com.top.vms.helper.GenericSerializer;
+import com.top.vms.repository.RoleRepository;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author Ahmad
  */
 @Entity
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
     public enum Status implements EnumEntity {
         ACTIVE("Active"), INACTIVE("Inactive");
@@ -65,7 +77,7 @@ public class User extends BaseEntity {
         }
     }
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
     //password is only passed when deseralization is happening - input request
@@ -91,11 +103,11 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type type=Type.NORMAL;
+    private Type type = Type.NORMAL;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status=Status.ACTIVE;
+    private Status status = Status.ACTIVE;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -106,12 +118,37 @@ public class User extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(using = GenericSerializer.class)
-    @EntityJsonSerializer(keys = { "id", "name"})
+    @EntityJsonSerializer(keys = {"id", "name"})
     private Department department;
 
-
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @BeforeInsert
+    void addRole() {
+
+        String RoleName = type.equals(Type.ADMIN) ? Setup.ROLE_ADMIN : Setup.ROLE_USER;
+        Role role = Setup.getApplicationContext().getBean(RoleRepository.class).findByName(RoleName);
+        if (role == null) {
+            role = new Role();
+            role.setName(RoleName);
+            role = Setup.getApplicationContext().getBean(RoleRepository.class).save(role);
+
+        }
+        final User user = this;
+        role.setUsers(new ArrayList<User>() {
+            {
+                add(user);
+            }
+        });
+        final Role userRole = role;
+        this.setRoles(new ArrayList<Role>() {
+            {
+                add(userRole);
+            }
+        });
+
+    }
 
     public String getUsername() {
         return username;
@@ -122,7 +159,12 @@ public class User extends BaseEntity {
     }
 
     public void setPassword(String password) {
+        password = Setup.getApplicationContext().getBean(PasswordEncoder.class).encode(password);
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getFullName() {
@@ -212,4 +254,50 @@ public class User extends BaseEntity {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        for (Role r : roles) {
+            authorities.add(new GrantedAuthority() {
+                @Override
+                public String getAuthority() {
+                    return r.getName();
+                }
+
+                @Override
+                public String toString() {
+                    return r.getName();
+                }
+
+            });
+
+        }
+
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return status.equals(Status.ACTIVE);
+    }
+
 }

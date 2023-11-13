@@ -11,13 +11,14 @@ import java.util.List;
 
 @Entity
 public class Role extends BaseEntity{
-    @Column(nullable = false)
+    
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Column
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JsonIgnore
     private List<User> users;
 

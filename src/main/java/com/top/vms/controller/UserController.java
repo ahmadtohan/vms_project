@@ -5,14 +5,18 @@
  */
 package com.top.vms.controller;
 
+import com.top.vms.configuration.Setup;
 import com.top.vms.entity.User;
 import com.top.vms.helper.GenericProjection;
 import com.top.vms.helper.SelectQuery;
 import com.top.vms.repository.BaseRepository;
 import com.top.vms.repository.BaseRepositoryParent;
 import com.top.vms.repository.UserRepository;
+import com.top.vms.utils.JwtTokenUtils;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +30,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -35,6 +46,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserController extends BaseVmsRepositoryController<User> {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    JwtTokenUtils jwtTokenUtil;
+
     @Autowired
     UserRepository userRepository;
 
@@ -43,10 +59,37 @@ public class UserController extends BaseVmsRepositoryController<User> {
         return userRepository;
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> login(@RequestBody User user) {
+
+        logger.info("sigin...: ");
+
+        Objects.requireNonNull(user.getUsername());
+        Objects.requireNonNull(user.getPassword());
+
+        //generate and return jwt token
+        // Reload password post-security so we can generate the token
+        final UserDetails userDetails = userRepository.findByUsername(user.getUsername());
+        if (userDetails == null) {
+            throw new BadCredentialsException("Bad credentials");
+        }
+
+        if (!userDetails.isEnabled()) {
+            throw new DisabledException("User is disabled!");
+        }
+
+        final String token = jwtTokenUtil.generateToken(userDetails);
+
+        // Return the token
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> search(@RequestParam(required = false) String username,
-            Pageable pageable) {
+            Pageable pageable) throws Exception {
+        logger.info("===========" + Setup.getCurrentUser().getEmail());
         SelectQuery<User> query = new SelectQuery(User.class);
         query.filterBy("username", "LIKE", "%" + username + "%");
 

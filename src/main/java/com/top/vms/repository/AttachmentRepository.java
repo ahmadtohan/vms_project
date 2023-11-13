@@ -19,4 +19,7 @@ import org.springframework.stereotype.Repository;
 public interface AttachmentRepository extends BaseRepository<Attachment> {
 
  public List<Attachment> findByEntityIdAndEntityType(Long EntityId, String EntityType);
+ 
+  public Attachment findByName(String name);
+
 }

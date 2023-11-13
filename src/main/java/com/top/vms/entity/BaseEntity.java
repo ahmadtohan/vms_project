@@ -52,8 +52,8 @@ public abstract class BaseEntity extends BaseEntityParent {
 
     @AfterUpdate
     @AfterInsert
-    public void updateAttachmentsAfterSave(){
-        if (!this.getAttachments().isEmpty()) {
+    public void updateAttachmentsAfterSave() {
+        if (this.getAttachments() != null && !this.getAttachments().isEmpty()) {
             for (Attachment attachment : this.getAttachments()) {
                 attachment.setEntityId(this.getId());
                 attachment.setEntityType(this.getClass().getSimpleName());
@@ -64,9 +64,9 @@ public abstract class BaseEntity extends BaseEntityParent {
     }
 
     @AfterDelete
-    public void removeAttachmentsAfterDelete(){
-        List<Attachment> attachments=Setup.getApplicationContext().getBean(AttachmentRepository.class).findByEntityIdAndEntityType(this.getId(),this.getClass().getSimpleName());
-        if (!attachments.isEmpty()) {
+    public void removeAttachmentsAfterDelete() {
+        List<Attachment> attachments = Setup.getApplicationContext().getBean(AttachmentRepository.class).findByEntityIdAndEntityType(this.getId(), this.getClass().getSimpleName());
+        if (attachments!=null && !attachments.isEmpty()) {
             Setup.getApplicationContext().getBean(AttachmentRepository.class).deleteAll(attachments);
         }
     }
