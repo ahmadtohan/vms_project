@@ -35,7 +35,6 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author Ahmad
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseVmsRepositoryController<User> {

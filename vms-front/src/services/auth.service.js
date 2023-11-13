@@ -3,7 +3,7 @@ import config from "./Config";
 
 const conf = config.urls();
 const API_URL = conf.authUrl;
-axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(localStorage.getItem("user")).token;
+//axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(localStorage.getItem("user")).token;
 
 const register = (username, email, password) => {
   return axios.post(API_URL + "create", {
