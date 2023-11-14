@@ -89,12 +89,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //example without annotations - remember to include token in protected request on client side! 
                 //.antMatchers("/api/duty/**").hasAnyRole("ADMIN")
                 .antMatchers("/",
-                        "/user/login/**",
-                        "/user/create/**"
+                        "/user/login/**"
+                       /*, "/user/create/**"*/
                 )
                 .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated().and().logout().logoutUrl("/logout");
 
         // Custom JWT based security filter
         http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -5,6 +5,7 @@
  */
 package com.top.vms.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.top.vms.configuration.Setup;
 import com.top.vms.entity.User;
 import com.top.vms.helper.GenericProjection;
@@ -44,6 +45,10 @@ public class UserController extends BaseVmsRepositoryController<User> {
     @Autowired
     JwtTokenUtils jwtTokenUtil;
 
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Autowired
     UserRepository userRepository;
 
@@ -54,26 +59,26 @@ public class UserController extends BaseVmsRepositoryController<User> {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody JsonNode user) {
 
-        logger.info("sigin...: ");
-
-        Objects.requireNonNull(user.getUsername());
-        Objects.requireNonNull(user.getPassword());
+        String username = user.get("username").textValue();
+        String password = user.get("password").textValue();
+        Objects.requireNonNull(username);
+        Objects.requireNonNull(password);
 
         //generate and return jwt token
         // Reload password post-security so we can generate the token
-        final User loggedUser = userRepository.findByUsername(user.getUsername());
-        final UserDetails userDetails=loggedUser;
-        if (userDetails == null) {
-            throw new BadCredentialsException("Bad credentials");
-        }
 
-        if (!userDetails.isEnabled()) {
-            throw new DisabledException("User is disabled!");
+        try {
+            logger.info("login...: "+username+"  "+ password);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new DisabledException("User is disabled!", e);
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Bad credentials!", e);
         }
-
-        loggedUser.setToken(jwtTokenUtil.generateToken(userDetails));
+        User loggedUser = userRepository.findByUsername(username);
+        loggedUser.setToken(jwtTokenUtil.generateToken(loggedUser));
 
         // Return the token
         return ResponseEntity.ok(loggedUser);
