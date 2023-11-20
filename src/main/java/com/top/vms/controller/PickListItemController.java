@@ -5,9 +5,11 @@
  */
 package com.top.vms.controller;
 
-import com.top.vms.entity.Config;
+import com.top.vms.entity.PickList;
+import com.top.vms.entity.PickListItem;
 import com.top.vms.repository.BaseRepository;
-import com.top.vms.repository.ConfigRepository;
+import com.top.vms.repository.PickListItemRepository;
+import com.top.vms.repository.PickListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Ahmad
  */
 @RestController
-@RequestMapping("/config")
-public class ConfigController extends BaseVmsRepositoryController<Config> {
+@RequestMapping("/picklistitem")
+public class PickListItemController extends BaseVmsRepositoryController<PickListItem> {
 
     @Autowired
-    ConfigRepository configRepository;
+    PickListItemRepository pickListItemRepository;
 
     @Override
-    public BaseRepository<Config> getRepository() {
-        return configRepository;
+    public BaseRepository<PickListItem> getRepository() {
+        return pickListItemRepository;
     }
 
 

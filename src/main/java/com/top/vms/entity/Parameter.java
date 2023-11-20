@@ -8,7 +8,7 @@ import javax.persistence.Entity;
  */
 
 @Entity
-public class Config extends BaseEntity{
+public class Parameter extends BaseEntity{
 
     @Column(nullable = false)
     private String code;
@@ -18,6 +18,15 @@ public class Config extends BaseEntity{
 
     @Column(nullable = false)
     private String value;
+
+    public Parameter() {
+    }
+
+    public Parameter(String code, String name, String value) {
+        this.code = code;
+        this.name = name;
+        this.value = value;
+    }
 
     public String getCode() {
         return code;

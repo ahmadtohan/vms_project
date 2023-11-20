@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  *
@@ -47,6 +48,11 @@ public abstract class BaseEntity extends BaseEntityParent {
     @CreatedDate
     private Date creationDate = new Date();
 
+    @Column(name = "LAST_MODIFICATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    private Date lastModificationDate;
+        
     @Transient
     private List<Attachment> attachments;
 
@@ -94,6 +100,16 @@ public abstract class BaseEntity extends BaseEntityParent {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    public Date getLastModificationDate() {
+        return lastModificationDate;
+    }
+
+    public void setLastModificationDate(Date lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+    
+    
 
     public List<Attachment> getAttachments() {
         return attachments;

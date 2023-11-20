@@ -71,7 +71,7 @@ public class Visitor extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    @Column
+    @Column(unique = true)
     private String accessKey;
 
     public String getFullName() {

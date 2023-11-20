@@ -5,7 +5,7 @@
  */
 package com.top.vms.repository;
 
-import com.top.vms.entity.Config;
+import com.top.vms.entity.Parameter;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface ConfigRepository extends BaseRepository<Config> {
+public interface ParameterRepository extends BaseRepository<Parameter> {
 
+public Parameter findByCode(String code);
 
 }
