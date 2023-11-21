@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -52,6 +53,9 @@ public class Setup implements ApplicationRunner {
 
     @Autowired
     ParameterRepository parameterRepository;
+
+    @Value("${upload.path}")
+    public static String uploadPath;
 
 
     @Override
@@ -97,6 +101,10 @@ public class Setup implements ApplicationRunner {
 
     public static SimpleDateFormat getDefaultDateTimeFormat() {
         return defaultDateTimeFormat;
+    }
+
+    public static String getUploadPath() {
+        return uploadPath;
     }
 
     public static User getCurrentUser() throws Exception {
