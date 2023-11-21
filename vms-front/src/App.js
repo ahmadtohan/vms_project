@@ -5,6 +5,7 @@ import "./App.css";
 
 
 import Visitor from "./components/Visitor";
+import AddVisitor from "./components/AddVisitor";
 
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -51,6 +52,7 @@ const App = () => {
         <Routes>
           <Route exact path={"/"} element={<Visitor />} />
           <Route exact path={"/visitor"} element={<Visitor />} />
+         <Route exact path={"/addVisitor"} element={<AddVisitor />} />
         </Routes>
       </div>
 

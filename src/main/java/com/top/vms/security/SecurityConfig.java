@@ -87,10 +87,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/api/duty/**").hasAnyRole("ADMIN")
                 .antMatchers("/",
                         "/user/login/**",
+
+                        "/visitor/update/**",
                         "/visitor/create/**",
                         "/visitor/verify/**",
                         "/visitor/list/**"
-                       /*, "/user/create/**"*/
+
                 )
                 .permitAll()
                 .anyRequest()

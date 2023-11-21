@@ -260,8 +260,7 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
     }
 
     protected ResponseEntity<?> notFoundResponse() {
-        return new ResponseEntity<>(new Response("Not Found"),
-                HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new Response("Not Found"), HttpStatus.NOT_FOUND);
     }
 
     protected static class Response {

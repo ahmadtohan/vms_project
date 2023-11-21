@@ -20,6 +20,7 @@ import com.top.vms.repository.ParameterRepository;
 import com.top.vms.repository.VisitorRepository;
 import javafx.beans.property.SetProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,7 +74,7 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
         String url = visitorParameterUrl.getValue() + "verify/" + accessKey;
         try {
             Attachment attachment = QRGenerator.createQRAsAttachment(url, entity.getId(), entity.getClass().getSimpleName());
-            emailService.sendMailWithInlineResources(entity.getEmail(),"VMS QR","Hello dear<br><br> you can access by this QR: <br>",attachment.getPath());
+            emailService.sendMailWithInlineResources(entity.getEmail(), "VMS QR", "Hello dear<br><br> you can access by this QR: <br>", attachment.getPath());
         } catch (WriterException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -86,12 +87,17 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
     public ResponseEntity<?> download(HttpServletRequest request, HttpServletResponse response,
                                       @PathVariable("accessKey") String accessKey) throws IOException, NotFoundException {
         Visitor visitor = visitorRepository.findByAccessKey(accessKey);
+
         if (visitor != null) {
+            if (!visitor.getStatus().equals(Visitor.Status.APPROVED)) {
+                return new ResponseEntity<>(new Response("Not Approved"), HttpStatus.FORBIDDEN);
+
+            }
             Attachment attachment = attachmentRepository.findByEntityIdAndEntityTypeAndType(visitor.getId(), visitor.getClass().getSimpleName(), "QR");
             if (attachment != null) {
 
                 String url = QRGenerator.readQR(attachment.getPath());
-                if (url != null && url.endsWith(accessKey)){
+                if (url != null && url.endsWith(accessKey)) {
                     return ResponseEntity.ok(visitor);
                 }
             }

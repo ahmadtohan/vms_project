@@ -66,6 +66,7 @@ public class Visitor extends BaseEntity {
     private Date approvalDate;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Status status=Status.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY)
