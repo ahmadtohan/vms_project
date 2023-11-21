@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/parameter")
-public class ParameterController extends BaseVmsRepositoryController<Parameter> {
+public class ParameterController extends BaseRepositoryController<Parameter> {
 
     @Autowired
     ParameterRepository parameterRepository;

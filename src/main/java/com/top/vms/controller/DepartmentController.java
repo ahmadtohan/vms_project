@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/department")
-public class DepartmentController extends BaseVmsRepositoryController<Department> {
+public class DepartmentController extends BaseRepositoryController<Department> {
 
     @Autowired
     DepartmentRepository departmentRepository;

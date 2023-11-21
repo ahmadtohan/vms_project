@@ -11,11 +11,9 @@ import com.top.vms.entity.User;
 import com.top.vms.helper.GenericProjection;
 import com.top.vms.helper.SelectQuery;
 import com.top.vms.repository.BaseRepository;
-import com.top.vms.repository.BaseRepositoryParent;
 import com.top.vms.repository.UserRepository;
 import com.top.vms.utils.JwtTokenUtils;
-import java.util.Collections;
-import java.util.Date;
+
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -38,7 +35,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseVmsRepositoryController<User> {
+public class UserController extends BaseRepositoryController<User> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 

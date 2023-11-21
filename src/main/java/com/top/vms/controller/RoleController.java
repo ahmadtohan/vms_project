@@ -9,10 +9,7 @@ import com.top.vms.entity.Role;
 import com.top.vms.repository.RoleRepository;
 import com.top.vms.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/role")
-public class RoleController extends BaseVmsRepositoryController<Role> {
+public class RoleController extends BaseRepositoryController<Role> {
 
     @Autowired
     RoleRepository roleRepository;

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/visitor")
-public class VisitorController extends BaseVmsRepositoryController<Visitor> {
+public class VisitorController extends BaseRepositoryController<Visitor> {
 
     @Autowired
     VisitorRepository visitorRepository;

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/picklist")
-public class PickListController extends BaseVmsRepositoryController<PickList> {
+public class PickListController extends BaseRepositoryController<PickList> {
 
     @Autowired
     PickListRepository pickListRepository;

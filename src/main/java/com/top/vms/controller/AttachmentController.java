@@ -6,34 +6,23 @@
 package com.top.vms.controller;
 
 import com.top.vms.entity.Attachment;
-import com.top.vms.helper.SelectQuery;
 import com.top.vms.repository.BaseRepository;
-import com.top.vms.repository.BaseRepositoryParent;
 import com.top.vms.repository.AttachmentRepository;
-import java.io.BufferedInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/attachment")
-public class AttachmentController extends BaseVmsRepositoryController<Attachment> {
+public class AttachmentController extends BaseRepositoryController<Attachment> {
 
     @Autowired
     AttachmentRepository attachmentRepository;
