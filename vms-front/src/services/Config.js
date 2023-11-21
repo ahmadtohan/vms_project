@@ -1,9 +1,18 @@
+import axios from "axios";
+
 const urls = () => {
-    return {authUrl: "http://localhost:8088/vms/user/", testUrl: "http://localhost:8088/vms/user/"}
+    return {baseUrl: "http://localhost:8088/vms/"}
+};
+
+const visitors = () => {
+  return axios.get(urls().baseUrl + "visitor/list");
 };
 
 const config = {
-  urls
+  urls,
+  visitors
 }
+
+
 
 export default config;
