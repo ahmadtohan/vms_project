@@ -1,7 +1,7 @@
 package com.top.vms.security;
 
 import com.top.vms.configuration.Setup;
-import com.top.vms.utils.JwtTokenUtils;
+
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

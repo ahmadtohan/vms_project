@@ -69,8 +69,7 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
     @ResponseBody
     @Transactional
     public ResponseEntity<?> create(@RequestBody T entity) {
-        entity = createEntity(entity);
-        return new ResponseEntity<>(entity, HttpStatus.OK);
+        return createEntity(entity);
     }
 
     @RequestMapping(value = "/createAll",
@@ -89,10 +88,9 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
 
     }
 
-    protected T createEntity(T entity) {
-        entity = getRepository().save(entity);
-
-        return entity;
+    protected ResponseEntity<?> createEntity(T entity) {
+        entity = getRepository() .save(entity);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/update",

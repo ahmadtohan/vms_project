@@ -19,9 +19,11 @@ import java.util.Map;
 
 public class QRGenerator {
 
-  private static String charset = "UTF-8";
+    private static String charset = "UTF-8";
+    private static int height = 200;
+    private static int width = 200;
 
-    public static BufferedImage createQR(String data, int height, int width) throws WriterException, IOException {
+    public static BufferedImage createQR(String data) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(
                 new String(data.getBytes(charset), charset),
                 BarcodeFormat.QR_CODE, width, height);
@@ -29,20 +31,19 @@ public class QRGenerator {
         return MatrixToImageWriter.toBufferedImage(matrix);
     }
 
-    public static Attachment createQRAsAttachment(String data, String fileName, Long entityId,String  entityType,
-                                         int height, int width) throws WriterException, IOException {
+    public static Attachment createQRAsAttachment(String data, Long entityId, String entityType) throws WriterException, IOException {
 
         BitMatrix matrix = new MultiFormatWriter().encode(
                 new String(data.getBytes(charset), charset),
                 BarcodeFormat.QR_CODE, width, height);
-
+        String fileName = "QR_" + System.currentTimeMillis() + ".png";
         MatrixToImageWriter.writeToFile(
                 matrix,
                 fileName.substring(fileName.lastIndexOf('.') + 1),
-                new File(Setup.getUploadPath()+"/"+fileName));
+                new File(Setup.getUploadPath() + fileName));
         Attachment attachment = new Attachment();
         attachment.setName(fileName);
-        attachment.setPath(Setup.getUploadPath()+"/"+fileName);
+        attachment.setPath(Setup.getUploadPath() + fileName);
         attachment.setType("QR");
         attachment.setEntityId(entityId);
         attachment.setEntityType(entityType);
@@ -50,13 +51,12 @@ public class QRGenerator {
         return attachment;
     }
 
-    public static String readQR(String fileName) throws FileNotFoundException, IOException, NotFoundException
-       {
+    public static String readQR(String filePath) throws FileNotFoundException, IOException, NotFoundException {
         BinaryBitmap binaryBitmap
                 = new BinaryBitmap(new HybridBinarizer(
                 new BufferedImageLuminanceSource(
                         ImageIO.read(
-                                new FileInputStream(Setup.getUploadPath()+"/"+fileName)))));
+                                new FileInputStream(filePath)))));
 
         Result result
                 = new MultiFormatReader().decode(binaryBitmap);

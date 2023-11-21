@@ -9,24 +9,18 @@ import com.top.vms.entity.Parameter;
 import com.top.vms.entity.User;
 import com.top.vms.repository.ParameterRepository;
 import com.top.vms.repository.UserRepository;
-import com.top.vms.utils.JwtTokenUtils;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.top.vms.security.JwtTokenUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -36,6 +30,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 @Component
 public class Setup implements ApplicationRunner {
+
+    private static ParameterRepository parameterRepository;
 
     private static EntityManagerFactory entityManagerFactory;
 
@@ -51,18 +47,22 @@ public class Setup implements ApplicationRunner {
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-    @Autowired
-    ParameterRepository parameterRepository;
 
-    @Value("${upload.path}")
-    public static String uploadPath;
+
+   ///////////////////////////////PARAMETERS/////////////////////////////////////
+    public static final String UPLOAD_PATH_PARAMETER_CODE="upload_path";
+    public static final String BASE_HOST_PARAMETER_CODE="base_host";
+    public static final String BASE_VMS_HOST_PARAMETER_CODE="base_vms_host";
+    public static final String BASE_VISITOR_URL_PARAMETER_CODE="base_visitor_url";
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
-        Parameter[] parameters = new Parameter[]{new Parameter("num_of_users", "Number of Users", "10"),
-                new Parameter("num_of_employees", "Number of Employees", "20")};
+        Parameter[] parameters = new Parameter[]{
+                new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
+                new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
+                new Parameter(BASE_VMS_HOST_PARAMETER_CODE, "Base VMS Host", "http://localhost:8088/vms/"),
+                new Parameter(BASE_VISITOR_URL_PARAMETER_CODE, "Base Visitor Url", "http://localhost:8088/vms/visitor/")};
 
         Arrays.stream(parameters).forEach(p -> {
             Parameter oldParameter = parameterRepository.findByCode(p.getCode());
@@ -76,13 +76,16 @@ public class Setup implements ApplicationRunner {
         });
     }
 
+    ///////////////////////////////////////////////////////////////////////
     @Autowired
     public Setup(EntityManagerFactory entityManagerFactory,
                  ApplicationContext applicationContext,
+                 ParameterRepository parameterRepository,
                  JwtTokenUtils jwtTokenUtil
     ) {
         Setup.entityManagerFactory = entityManagerFactory;
         Setup.applicationContext = applicationContext;
+        Setup.parameterRepository = parameterRepository;
         Setup.jwtTokenUtil = jwtTokenUtil;
 
     }
@@ -104,7 +107,7 @@ public class Setup implements ApplicationRunner {
     }
 
     public static String getUploadPath() {
-        return uploadPath;
+        return parameterRepository.findByCode(UPLOAD_PATH_PARAMETER_CODE).getValue();
     }
 
     public static User getCurrentUser() throws Exception {

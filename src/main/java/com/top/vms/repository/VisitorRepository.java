@@ -17,5 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitorRepository extends BaseRepository<Visitor> {
 
+    public Visitor findByAccessKey(String accessKey);
 
 }

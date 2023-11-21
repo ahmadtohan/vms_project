@@ -12,7 +12,7 @@ import com.top.vms.helper.GenericProjection;
 import com.top.vms.helper.SelectQuery;
 import com.top.vms.repository.BaseRepository;
 import com.top.vms.repository.UserRepository;
-import com.top.vms.utils.JwtTokenUtils;
+import com.top.vms.security.JwtTokenUtils;
 
 import java.util.Map;
 import java.util.Objects;

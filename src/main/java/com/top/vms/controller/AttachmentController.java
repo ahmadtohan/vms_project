@@ -5,6 +5,7 @@
  */
 package com.top.vms.controller;
 
+import com.top.vms.configuration.Setup;
 import com.top.vms.entity.Attachment;
 import com.top.vms.repository.BaseRepository;
 import com.top.vms.repository.AttachmentRepository;
@@ -41,9 +42,6 @@ public class AttachmentController extends BaseRepositoryController<Attachment> {
     @Autowired
     AttachmentRepository attachmentRepository;
 
-    @Value("${upload.path}")
-    public String uploadPath;
-
     @Override
     public BaseRepository<Attachment> getRepository() {
         return attachmentRepository;
@@ -57,10 +55,10 @@ public class AttachmentController extends BaseRepositoryController<Attachment> {
         if (attachmentRepository.findByName(fileName) != null) {
             fileName = System.currentTimeMillis() + "_" + fileName;
         }
-        Files.copy(file.getInputStream(), Paths.get(uploadPath).resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(file.getInputStream(), Paths.get(Setup.getUploadPath()).resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
         Attachment attachment = new Attachment();
         attachment.setName(file.getOriginalFilename());
-        attachment.setPath(uploadPath + "/" + fileName);
+        attachment.setPath(Setup.getUploadPath()+ fileName);
         attachment.setType(type);
         attachment = attachmentRepository.save(attachment);
 

@@ -5,7 +5,6 @@
  */
 package com.top.vms.security;
 
-import com.top.vms.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  *
@@ -89,7 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //example without annotations - remember to include token in protected request on client side! 
                 //.antMatchers("/api/duty/**").hasAnyRole("ADMIN")
                 .antMatchers("/",
-                        "/user/login/**"
+                        "/user/login/**",
+                        "/visitor/create/**",
+                        "/visitor/verify/**",
+                        "/visitor/list/**"
                        /*, "/user/create/**"*/
                 )
                 .permitAll()

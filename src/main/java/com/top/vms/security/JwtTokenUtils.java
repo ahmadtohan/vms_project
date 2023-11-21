@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.top.vms.utils;
+package com.top.vms.security;
 
 import com.top.vms.entity.User;
 import java.io.Serializable;
