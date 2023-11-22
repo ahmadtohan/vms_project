@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import java.io.InputStream;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +37,13 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        String path = request.getServletPath();
+        
+        boolean isFront = path.startsWith("/app");
+        if (isFront){
+           request.getRequestDispatcher("/").forward(request, response);
+            return;
+    }
         LOG.info("processing authentication for '{}'", request.getRequestURL());
         final String requestHeader = request.getHeader(Setup.TOKEN_HEADER);
         String username = null;
@@ -65,5 +75,17 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
             }
         }
         chain.doFilter(request, response);
+    }
+    
+     private void resourceToResponse(String resourcePath, HttpServletResponse response) throws IOException {
+        InputStream inputStream = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(resourcePath);
+        
+        if (inputStream == null) {
+            response.sendError(NOT_FOUND.value(), NOT_FOUND.getReasonPhrase());
+            return;
+        }
+         IOUtils.copy(inputStream, response.getOutputStream());
     }
 }

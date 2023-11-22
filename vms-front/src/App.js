@@ -4,8 +4,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 
 
-import Visitor from "./components/Visitor";
-import AddVisitor from "./components/AddVisitor";
+import Visitors from "./components/vms/Visitors";
+import AddVisitor from "./components/vms/AddVisitor";
 
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -28,7 +28,7 @@ const App = () => {
 
     const startContent = (
         <React.Fragment>
-            <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/visitor')} text />
+            <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />
          
        
            
@@ -50,9 +50,8 @@ const App = () => {
       <Toolbar start={startContent} end={endContent}  />
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/"} element={<Visitor />} />
-          <Route exact path={"/visitor"} element={<Visitor />} />
-         <Route exact path={"/addVisitor"} element={<AddVisitor />} />
+          <Route exact path={"/vms/app/visitors"} element={<Visitors />} />
+          <Route exact path={"/vms/app/addVisitor"} element={<AddVisitor />} />
         </Routes>
       </div>
 

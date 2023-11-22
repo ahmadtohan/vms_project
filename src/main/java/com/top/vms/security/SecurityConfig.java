@@ -86,6 +86,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //example without annotations - remember to include token in protected request on client side! 
                 //.antMatchers("/api/duty/**").hasAnyRole("ADMIN")
                 .antMatchers("/",
+                        "/content/**",
+                        "/static/**",
+                        "/vmsApp/**",
                         "/user/login/**",
 
                         "/visitor/update/**",
