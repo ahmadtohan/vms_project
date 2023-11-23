@@ -63,8 +63,6 @@ setCurrentUser(null);
         <React.Fragment>
           { (currentUser!==null && currentUser !== undefined) && <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />}
 
-
-
         </React.Fragment>
     );
 
