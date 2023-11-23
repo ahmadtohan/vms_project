@@ -2,15 +2,16 @@ import React, { useState, useEffect ,useRef } from "react";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-import userServices from "./../../services/userServices";
+import endPoint from "./../../services/endPoint";
+import config from "./../../services/config";
+
 import { useFormik } from 'formik';
 import { classNames } from 'primereact/utils';
  import { useNavigate } from "react-router-dom";
- import { Toast } from 'primereact/toast';
+ import EventBus from "./../../common/eventBus";
 
  
 const Login = () => {
-      const toast = useRef(null);
    const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -41,29 +42,18 @@ const Login = () => {
         onSubmit: (data) => {
 
            setMessage("");
-       
-            userServices.login(data).then(
-                    (response) => {
-                        console.log(response);
-                     localStorage.setItem("user", JSON.stringify(response));    
-                    navigate("/vms/app/visitors");
-
-               
-            },
-                    (error) => {
-                const resMessage =
-                        (error.response &&
-                                error.response.data &&
-                                error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-
-                setLoading(false);
-                setMessage(resMessage);
-                  toast.current.show({severity: 'warn', summary: 'Rejected', detail: resMessage , life: 6000});
+       console.log(config);
+            endPoint(config.userAPIs.login ,"POST",data).then(
+            (res)=>{
+            console.log("--------",res);
+                        if(res.status=="SUCCESS"){
+                          console.log(res);
+                           EventBus.dispatch("handelUserLogged",res.data);
+                                            navigate("/vms/app/visitors");
+                        }
             }
             );
-       
+
             
         }
     });  
@@ -78,7 +68,7 @@ const Login = () => {
     
   return (
           <div className="card" style={{width: '25%', marginTop:'10%'}}>
-           <Toast ref={toast} />
+
     <div className="flex flex-wrap gap-q  justify-content-center"  >
        
         <form onSubmit={formik.handleSubmit} >

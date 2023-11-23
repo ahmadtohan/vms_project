@@ -26,7 +26,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
- *
  * @author klemen
  */
 @Configuration
@@ -38,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(4);
     }
-    
+
     @Bean
     public JwtAuthorizationTokenFilter getJwtFilter() {
         return new JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtils);
@@ -57,13 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
-    
+
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
     private UserAuthService userService;
-    
+
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
@@ -90,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/static/**",
                         "/vmsApp/**",
                         "/user/login/**",
+                        "/user/logout/**",
 
                         "/visitor/verify/**"
 
@@ -97,7 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .anyRequest()
-                .authenticated().and().logout().logoutUrl("/logout");
+                .authenticated().and().logout().logoutUrl("/user/logout");
 
         // Custom JWT based security filter
         http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -107,21 +107,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // AuthenticationTokenFilter will ignore the below paths - allow anonymous (static )resource requests, H2 ...
         web.ignoring().antMatchers(
-                HttpMethod.GET,
-                "/",
-                "/*.html",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js",
-                "/**/*.ttf",
-                "/**/*.png",
-                "/**/*.json",
-                "/**/*.gif",
-                "/**/*.woff2",
-                "/swagger-ui.html/**",
-                "/swagger-resources/**",
-                "/v2/api-docs/**")
+                        HttpMethod.GET,
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/**/*.ttf",
+                        "/**/*.png",
+                        "/**/*.json",
+                        "/**/*.gif",
+                        "/**/*.woff2",
+                        "/swagger-ui.html/**",
+                        "/swagger-resources/**",
+                        "/v2/api-docs/**")
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**");

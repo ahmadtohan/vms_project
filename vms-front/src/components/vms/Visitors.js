@@ -11,7 +11,8 @@ import { Dropdown } from 'primereact/dropdown';
 
  import { useNavigate } from "react-router-dom";
 
-import visitorServices from "./../../services/visitorServices";
+import endPoint from "./../../services/endPoint";
+import config from "./../../services/config";
 
 const Visitors = () => {
   const [visitors,setVisitors] = useState([]);
@@ -25,18 +26,15 @@ const Visitors = () => {
 
   useEffect(() => {
       initFilters();
-    visitorServices.visitors().then(
-      (response) => {
-        setVisitors(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-        setVisitors(_content);
-      }
-    );
+      endPoint(config.visitorAPIs.list ,"GET" ,null).then((res)=>{
+
+        if(res.status=="SUCCESS"){
+                    console.log(res);
+                      setVisitors(res.data);
+                  }
+      });
+
+
   }, []);
   
     const onApprove = (r) => {
@@ -44,7 +42,8 @@ const Visitors = () => {
          id:r.id,
           status:'APPROVED'
      }
-    visitorServices.editVisitor(entity);
+
+    endPoint(config.visitorAPIs.update ,"POST" ,entity).then((res)=>{});
     console.log("Edit clicked" , r);
       window.location.reload();
   }
@@ -55,7 +54,7 @@ const Visitors = () => {
          id:r.id,
           status:'CANCELLED'
      }
-    visitorServices.editVisitor(entity);
+        endPoint(config.visitorAPIs.update ,"POST" ,entity).then((res)=>{});
     console.log("Edit clicked" , r);
       window.location.reload();
   }

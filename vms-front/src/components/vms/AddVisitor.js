@@ -6,7 +6,9 @@ import { Calendar } from 'primereact/calendar';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
 
-import visitorServices from "./../../services/visitorServices";
+import endPoint from "./../../services/endPoint";
+import config from "./../../services/config";
+
 import { useFormik } from 'formik';
 import { classNames } from 'primereact/utils';
  import { useNavigate } from "react-router-dom";
@@ -60,28 +62,17 @@ const AddVisitor = () => {
            setMessage("");
            data.fromDate=formatDate(data.fromDate);
             data.toDate=formatDate(data.toDate);
-            visitorServices.createVisitor(data).then(
-                    () => {
-                          toast.current.show({severity: 'info', summary: 'Confirmed', detail: 'Visitor has been created', life: 3000});
-                  setTimeout(() => {
-   navigate("/vms/app/visitor");
-}, "500");
-               
-            },
-                    (error) => {
-                const resMessage =
-                        (error.response &&
-                                error.response.data &&
-                                error.response.data.message) ||
-                        error.message ||
-                        error.toString();
+           endPoint(config.visitorAPIs.create ,"POST" ,data).then((res)=>{
 
-                setLoading(false);
-                setMessage(resMessage);
-                  toast.current.show({severity: 'warn', summary: 'Rejected', detail: resMessage , life: 6000});
-            }
-            );
-       
+             if(res.status=="SUCCESS"){
+                          console.log(res);
+                                      toast.current.show({severity: 'info', summary: 'Confirmed', detail: 'Visitor has been created', life: 3000});
+                                              setTimeout(() => {
+                               navigate("/vms/app/visitors");
+                            }, "500");
+                        }
+           });
+
             
         }
     });  
