@@ -91,10 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/vmsApp/**",
                         "/user/login/**",
 
-                        "/visitor/update/**",
-                        "/visitor/create/**",
-                        "/visitor/verify/**",
-                        "/visitor/list/**"
+                        "/visitor/verify/**"
+
 
                 )
                 .permitAll()

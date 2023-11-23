@@ -6,6 +6,7 @@ import "./App.css";
 
 import Visitors from "./components/vms/Visitors";
 import AddVisitor from "./components/vms/AddVisitor";
+import Login from "./components/user/Login";
 
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -50,6 +51,10 @@ const App = () => {
       <Toolbar start={startContent} end={endContent}  />
       <div className="container mt-3">
         <Routes>
+          <Route exact path={"/vms/"} element={<Visitors />} />
+          <Route exact path={"/vms/app/"} element={<Visitors />} />
+          <Route exact path={"/vms/app/login"} element={<Login />} />
+          
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />
           <Route exact path={"/vms/app/addVisitor"} element={<AddVisitor />} />
         </Routes>
