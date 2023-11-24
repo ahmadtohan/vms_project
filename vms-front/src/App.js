@@ -52,6 +52,11 @@ if(error.response.status==401 || error.response.status==403 ){
   }, []);
 
 
+const isLogged = () => {
+ return currentUser!==null && currentUser !== undefined;
+
+}
+
 
 const logOut = () => {
 setCurrentUser(null);
@@ -61,14 +66,14 @@ setCurrentUser(null);
 
     const startContent = (
         <React.Fragment>
-          { (currentUser!==null && currentUser !== undefined) && <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />}
+          <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />
 
         </React.Fragment>
     );
 
     const endContent = (
         <React.Fragment>
-                 <Button label="Logout" severity="danger" className="mr-2" onClick={(e) => logOut()} text />
+         <Button label="Logout" severity="danger" className="mr-2" onClick={(e) => logOut()} text />
 
         </React.Fragment>
     );
@@ -83,11 +88,11 @@ setCurrentUser(null);
   return (
     <div>
      <Toast ref={toast} />
-      <Toolbar start={startContent} end={endContent}  />
+      { isLogged() && <Toolbar start={startContent} end={endContent}  />}
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/vms/"} element={<Visitors />} />
-          <Route exact path={"/vms/app/"} element={<Visitors />} />
+          <Route exact path={"/vms/"} element={<Login />} />
+          <Route exact path={"/vms/app/"} element={<Login />} />
           <Route exact path={"/vms/app/login"} element={<Login />} />
           
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />

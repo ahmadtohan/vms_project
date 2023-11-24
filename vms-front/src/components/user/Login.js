@@ -67,6 +67,7 @@ const Login = () => {
     };
     
   return (
+           <div className="background" style={{backgroundImage: 'url("/vms/wood.jpg")'}}>
           <div className="card" style={{width: '25%', marginTop:'10%'}}>
 
     <div className="flex flex-wrap gap-q  justify-content-center"  >
@@ -102,6 +103,7 @@ const Login = () => {
     </form>
 
      </div>
+       </div>
        </div>
   );
 };

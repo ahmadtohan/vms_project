@@ -2,11 +2,14 @@ package com.top.vms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+
 /**
  * 
  * Ahmad to
  **/
 
+@EnableAsync
 @SpringBootApplication
 public class Application {
 
