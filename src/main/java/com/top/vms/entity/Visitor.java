@@ -2,7 +2,12 @@ package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.top.vms.annotations.BeforeUpdate;
+import com.top.vms.annotations.EntityJsonSerializer;
+import com.top.vms.configuration.Setup;
 import com.top.vms.helper.EnumEntity;
+import com.top.vms.helper.GenericSerializer;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -70,6 +75,8 @@ public class Visitor extends BaseEntity {
     private Status status=Status.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonSerialize(using = GenericSerializer.class)
+    @EntityJsonSerializer(keys = {"id", "fullName"})
     private User approvalUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -77,6 +84,16 @@ public class Visitor extends BaseEntity {
 
     @Column(unique = true)
     private String accessKey;
+
+
+    @BeforeUpdate
+    void beforeUpdate() throws Exception {
+        if(this.getStatus().equals(Status.APPROVED)){
+        this.setApprovalDate(new Date());
+        this.setApprovalUser(Setup.getCurrentUser());
+        }
+
+    }
 
     public String getFullName() {
         return fullName;

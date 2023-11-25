@@ -7,6 +7,7 @@ import "./App.css";
 
 import Visitors from "./components/vms/Visitors";
 import AddVisitor from "./components/vms/AddVisitor";
+import VerifyVisitor from "./components/vms/VerifyVisitor";
 import Login from "./components/user/Login";
 
 import { Toolbar } from 'primereact/toolbar';
@@ -39,7 +40,7 @@ setCurrentUser(data);
                              error.response.data &&
                              error.response.data.message) ||
                              error.message || error.toString();
-                toast.current.show({severity: 'warn', summary: 'Rejected', detail: resMessage , life: 6000});
+                toast.current.show({severity: 'warn', summary: 'Error', detail: resMessage , life: 6000});
 
 if(error.response.status==401 || error.response.status==403 ){
       setTimeout(() => {
@@ -66,35 +67,34 @@ setCurrentUser(null);
 
     const startContent = (
         <React.Fragment>
-          <Button label="Visitors" icon="pi pi-home" severity="help" className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />
+          <Button label="Visitors" icon="pi pi-home" style={{color:'white'}} className="mr-2" onClick={(e) => load('/vms/app/visitors')} text />
 
         </React.Fragment>
     );
 
     const endContent = (
         <React.Fragment>
-         <Button label="Logout" severity="danger" className="mr-2" onClick={(e) => logOut()} text />
+         <Button label="Logout" style={{color:'white'}} className="mr-2" onClick={(e) => logOut()} text />
 
         </React.Fragment>
     );
     
      const load = (url) => {
-                 if(currentUser==null || currentUser === undefined){
-                    return;
-                 }
-
+                if(isLogged){
                  navigate(url);
+                 }
      }
   return (
     <div>
      <Toast ref={toast} />
-      { isLogged() && <Toolbar start={startContent} end={endContent}  />}
+      { isLogged() && <Toolbar  style={{background: '#A855F7'}} start={startContent} end={endContent}  />}
       <div className="container mt-3">
         <Routes>
           <Route exact path={"/vms/"} element={<Login />} />
           <Route exact path={"/vms/app/"} element={<Login />} />
           <Route exact path={"/vms/app/login"} element={<Login />} />
-          
+           <Route exact path={"/vms/app/VerifyVisitor"} element={<VerifyVisitor />} />
+
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />
           <Route exact path={"/vms/app/addVisitor"} element={<AddVisitor />} />
         </Routes>

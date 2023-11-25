@@ -30,8 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import org.joda.time.DateTime;
 
 /**
  * @author Ahmad
@@ -70,8 +73,8 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
         entity.setStatus(Visitor.Status.PENDING);
         entity.setAccessKey(accessKey);
         entity = visitorRepository.save(entity);
-        Parameter visitorParameterUrl = parameterRepository.findByCode(Setup.BASE_VISITOR_URL_PARAMETER_CODE);
-        String url = visitorParameterUrl.getValue() + "verify/" + accessKey;
+        Parameter visitorParameterUrl = parameterRepository.findByCode(Setup.BASE_VERIFY_VISITOR_URL_PARAMETER_CODE);
+        String url = visitorParameterUrl.getValue() + "?accessKey=" + accessKey;
         try {
             Attachment attachment = QRGenerator.createQRAsAttachment(url, entity.getId(), entity.getClass().getSimpleName());
             emailService.sendMailWithInlineResources(entity.getEmail(), "VMS QR", "Hello dear<br><br> you can access by this QR: <br>", attachment.getPath());
@@ -90,16 +93,22 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
 
         if (visitor != null) {
             if (!visitor.getStatus().equals(Visitor.Status.APPROVED)) {
-                return new ResponseEntity<>(new Response("Not Approved"), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new Response("Not Approved"), HttpStatus.BAD_REQUEST);
 
             }
-            Attachment attachment = attachmentRepository.findByEntityIdAndEntityTypeAndType(visitor.getId(), visitor.getClass().getSimpleName(), "QR");
-            if (attachment != null) {
+            if(new DateTime(visitor.getFromDate()).minusHours(3).isBeforeNow() && new DateTime(visitor.getToDate()).plusHours(3).isAfterNow()) {
+                Attachment attachment = attachmentRepository.findByEntityIdAndEntityTypeAndType(visitor.getId(), visitor.getClass().getSimpleName(), "QR");
+                if (attachment != null) {
 
-                String url = QRGenerator.readQR(attachment.getPath());
-                if (url != null && url.endsWith(accessKey)) {
-                    return ResponseEntity.ok(visitor);
+                    String url = QRGenerator.readQR(attachment.getPath());
+                    if (url != null && url.endsWith(accessKey)) {
+                        //visitor.setAttachments(new ArrayList<Attachment>(){{add(attachment);}});
+                        return ResponseEntity.ok(visitor);
+                    }
                 }
+            }else{
+                return new ResponseEntity<>(new Response("Date and Time Expired "), HttpStatus.BAD_REQUEST);
+
             }
         }
         return notFoundResponse();

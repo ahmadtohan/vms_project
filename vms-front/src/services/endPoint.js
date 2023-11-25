@@ -16,12 +16,12 @@ export default function endPoint(api,method,body) {
    if(method==='GET'){
    return  axios.get(config.baseUrl + api)
           .then((response) => {
-         return {status:"SUCCESS", data:response.data};
+         return response.data;
        }).catch((error) => {
                   console.log({...error})
                   EventBus.dispatch("handelHttpError",{...error});
 
-                   return {status:"ERROR", error:error};
+                    throw {...error};
                   });
 
    }
@@ -29,12 +29,12 @@ export default function endPoint(api,method,body) {
           return   axios.post(config.baseUrl + api, body)
                   .then((response) => {
                   console.log("ok: ",response);
-                return {status:"SUCCESS", data:response.data};
+                return  response.data;
                        }).catch((error) => {
                                             console.log({...error})
                                             EventBus.dispatch("handelHttpError",{...error});
 
-                                             return {status:"ERROR", error:error};
+                                              throw {...error};
                                             });
 
            }

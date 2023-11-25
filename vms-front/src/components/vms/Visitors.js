@@ -28,10 +28,9 @@ const Visitors = () => {
       initFilters();
       endPoint(config.visitorAPIs.list ,"GET" ,null).then((res)=>{
 
-        if(res.status=="SUCCESS"){
                     console.log(res);
-                      setVisitors(res.data);
-                  }
+                      setVisitors(res);
+
       });
 
 

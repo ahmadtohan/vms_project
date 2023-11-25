@@ -89,9 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/static/**",
                         "/vmsApp/**",
                         "/user/login/**",
-                        "/user/logout/**",
-
-                        "/visitor/verify/**"
+                        "/user/logout/**"
 
 
                 )

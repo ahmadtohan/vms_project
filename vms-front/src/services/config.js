@@ -20,7 +20,7 @@ list:'visitor/list',
 create:'visitor/create',
 update:'visitor/update',
 delete:'visitor/delete',
-login:'visitor/login'
+verify:'visitor/verify'
 },
 
 
