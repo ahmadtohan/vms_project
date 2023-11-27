@@ -30,17 +30,26 @@ const App = () => {
 
 EventBus.on("handelUserLogged", (data) => {
   localStorage.setItem("user", JSON.stringify(data));
-setCurrentUser(data);
+   setCurrentUser(data);
+
 });
 
  EventBus.on("handelHttpError", (error) => {
 
       console.log("------------------------0000000 ",error);
+      if(error.response ===undefined){
+      error ={
+      message:'Refused Connection',
+      response: {
+      status:500
+             }
+           }
+      }
            const resMessage =(error.response &&
                              error.response.data &&
                              error.response.data.message) ||
                              error.message || error.toString();
-                toast.current.show({severity: 'warn', summary: 'Error', detail: resMessage , life: 6000});
+                toast.current.show({severity: 'error', summary: 'Error', detail: resMessage , life: 6000});
 
 if(error.response.status==401 || error.response.status==403 ){
       setTimeout(() => {
@@ -61,7 +70,7 @@ const isLogged = () => {
 
 const logOut = () => {
 setCurrentUser(null);
-     localStorage.removeItem("user");
+    localStorage.removeItem("user");
     load('/vms/app/login');
   };
 

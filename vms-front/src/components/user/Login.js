@@ -46,11 +46,10 @@ const Login = () => {
             endPoint(config.userAPIs.login ,"POST",data).then(
             (res)=>{
             console.log("--------",res);
-                        if(res.status=="SUCCESS"){
                           console.log(res);
-                           EventBus.dispatch("handelUserLogged",res.data);
-                                            navigate("/vms/app/visitors");
-                        }
+                           EventBus.dispatch("handelUserLogged",res);
+                           navigate("/vms/app/visitors");
+
             }
             );
 

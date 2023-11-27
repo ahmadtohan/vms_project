@@ -75,7 +75,8 @@ public class UserController extends BaseRepositoryController<User> {
             throw new BadCredentialsException("Bad credentials!", e);
         }
         User loggedUser = userRepository.findByUsername(username);
-        loggedUser.setToken(jwtTokenUtil.generateToken(loggedUser));
+        String token=jwtTokenUtil.generateToken(loggedUser);
+        loggedUser.setToken(token);
 
         // Return the token
         return ResponseEntity.ok(loggedUser);
