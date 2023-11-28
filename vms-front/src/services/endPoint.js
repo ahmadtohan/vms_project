@@ -4,8 +4,8 @@ import config from "./config"
 
 
 export default function endPoint(api,method,body) {
-
-    if(api!==config.userAPIs.login){
+console.log("----endPoint-------",api,method,body);
+    if(api!==config.userAPIs.login && api!==config.visitorAPIs.create){
         var sessionUser=JSON.parse(localStorage.getItem("user"));
             if(sessionUser==null || sessionUser === undefined){
                sessionUser={};
@@ -13,8 +13,9 @@ export default function endPoint(api,method,body) {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+sessionUser.token;
     }
 
-   if(method==='GET'){
-   return  axios.get(config.baseUrl + api)
+   if(method.toUpperCase()==='GET'){
+
+   return  axios.get(config.baseUrl + api, body)
           .then((response) => {
          return response.data;
        }).catch((error) => {
@@ -25,7 +26,7 @@ export default function endPoint(api,method,body) {
                   });
 
    }
-   else if(method==='POST'){
+   else if(method.toUpperCase()==='POST'){
           return   axios.post(config.baseUrl + api, body)
                   .then((response) => {
                   console.log("ok: ",response);

@@ -447,7 +447,7 @@ public class SelectFilter implements Serializable {
         return and;
     }
 
-    void setAnd(boolean and) {
+    public void setAnd(boolean and) {
         this.and = and;
     }
 

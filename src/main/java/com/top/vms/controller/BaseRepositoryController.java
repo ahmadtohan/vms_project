@@ -1,37 +1,40 @@
 package com.top.vms.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.top.vms.configuration.Setup;
 import com.top.vms.entity.BaseEntity;
+import com.top.vms.entity.User;
+import com.top.vms.helper.SelectQuery;
 import com.top.vms.repository.BaseRepositoryParent;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 /**
  * @param <T>
  * @author Ahmad Tohan Created 2022
  */
 public abstract class BaseRepositoryController<T extends BaseEntity> {
+
+    private static final Logger logger = LoggerFactory.getLogger(BaseRepositoryController.class);
 
     public abstract BaseRepositoryParent<T> getRepository();
 
@@ -44,12 +47,27 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/page",
-            method = RequestMethod.GET)
-    public ResponseEntity<?> list(Pageable pageable) {
-        return new ResponseEntity<>(getRepository()
-                .findAll(pageable),
-                HttpStatus.OK);
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public ResponseEntity<?> list(Pageable pageable, @RequestBody(required = false) List<JsonNode> jsonNode) throws NoSuchFieldException {
+
+        SelectQuery<Object> query = new SelectQuery(getEntityClass());
+        if (jsonNode != null) {
+            List<Object> list = getObjectMapper().convertValue(jsonNode, new TypeReference<List<Object>>() {
+            });
+            for (Object object : list) {
+                Map<String, Object> map = getObjectMapper().convertValue(object, new TypeReference<Map<String, Object>>() {
+                });
+                Field field = getEntityClass().getDeclaredField(map.get("field").toString());
+                Class fieldType = field.getType();
+                Object value = map.get("value");
+                if (fieldType.isEnum()) {
+                    value = Enum.valueOf(fieldType, value.toString());
+                }
+                query.filterBy(map.get("field").toString(), map.get("operation").toString(), value).setAnd(false);
+            }
+        }
+
+        return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}",
@@ -89,7 +107,7 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
     }
 
     protected ResponseEntity<?> createEntity(T entity) {
-        entity = getRepository() .save(entity);
+        entity = getRepository().save(entity);
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
@@ -118,7 +136,7 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
             for (T updatedOne : updated) {
                 T origin = getRepository()
                         .findOne(updatedOne.getId());
-                update(origin, updatedOne,  arrayNode);
+                update(origin, updatedOne, arrayNode);
                 updateEntity(origin);
             }
             return new ResponseEntity<>(new Response("Updated"),

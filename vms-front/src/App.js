@@ -8,6 +8,7 @@ import "./App.css";
 import Visitors from "./components/vms/Visitors";
 import AddVisitor from "./components/vms/AddVisitor";
 import VerifyVisitor from "./components/vms/VerifyVisitor";
+import ViewVisitor from "./components/vms/ViewVisitor";
 import Login from "./components/user/Login";
 
 import { Toolbar } from 'primereact/toolbar';
@@ -102,10 +103,11 @@ setCurrentUser(null);
           <Route exact path={"/vms/"} element={<Login />} />
           <Route exact path={"/vms/app/"} element={<Login />} />
           <Route exact path={"/vms/app/login"} element={<Login />} />
-           <Route exact path={"/vms/app/VerifyVisitor"} element={<VerifyVisitor />} />
+           <Route exact path={"/vms/app/verifyVisitor"} element={<VerifyVisitor />} />
 
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />
           <Route exact path={"/vms/app/addVisitor"} element={<AddVisitor />} />
+           <Route exact path={"/vms/app/viewVisitor"} element={<ViewVisitor />} />
         </Routes>
       </div>
 

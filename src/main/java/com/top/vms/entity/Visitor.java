@@ -74,7 +74,7 @@ public class Visitor extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status=Status.PENDING;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonSerialize(using = GenericSerializer.class)
     @EntityJsonSerializer(keys = {"id", "fullName"})
     private User approvalUser;

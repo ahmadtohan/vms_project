@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
+import { SpeedDial } from "primereact/speeddial";
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -16,17 +17,39 @@ import { useNavigate } from "react-router-dom";
 
 const ViewVisitor = () => {
   const navigate = useNavigate();
-  const accessKey = new URLSearchParams(window.location.search).get("accessKey");
+  const id = new URLSearchParams(window.location.search).get("id");
   const [visitor, setVisitor] = useState({ status: {} });
 
   useEffect(() => {
-    endPoint(config.visitorAPIs.verify + "/" + accessKey, "GET", null).then(
+    endPoint(config.visitorAPIs.view + "/" + id, "GET", null).then(
       (res) => {
         setVisitor(res);
       },
       (error) => {}
     );
   }, []);
+
+const redirectItems = [
+    {
+      label: "Add",
+      icon: "pi pi-pencil",
+      command: () => {
+        navigate("/vms/app/addVisitor");
+      },
+    },
+         {
+           label: "Delete",
+           icon: "pi pi-trash",
+           command: () => {},
+         },
+    {
+      label: "Update",
+      icon: "pi pi-refresh",
+      command: () => {
+        window.location.reload();
+      },
+    }
+  ];
 
   const getSeverityByStatus = (statusVal) => {
     switch (statusVal) {
@@ -81,7 +104,7 @@ const rows = {
 
   return (
     <div className="card">
-    { visitor.id!=null?Object.keys(rows).map((row) => (
+    {Object.keys(rows).map((row) => (
       <div key={row}  className="flex align-items-center gap-3">
         {Object.keys(rows[row]).map((key) => (
           <div key={key} style={{ margin: "20px" }}>
@@ -114,8 +137,13 @@ const rows = {
           </div>
         ))}
       </div>
-      ))
-      :<Tag severity="danger" value="Error"></Tag>}
+      ))}
+          <SpeedDial
+                 model={redirectItems}
+                 direction="up" transitionDelay={80} showIcon="pi pi-bars" hideIcon="pi pi-times" buttonClassName="p-button-outlined"
+                 style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+                 buttonClassName="p-button-help"
+               />
     </div>
   );
 };

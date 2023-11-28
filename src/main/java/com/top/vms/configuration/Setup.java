@@ -62,7 +62,7 @@ public class Setup implements ApplicationRunner {
                 new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
                 new Parameter(BASE_VMS_HOST_PARAMETER_CODE, "Base VMS Host", "http://localhost:8088/vms/"),
-                new Parameter(BASE_VERIFY_VISITOR_URL_PARAMETER_CODE, "Base Verify Visitor Url", "http://localhost:3000/vms/app/VerifyVisitor")};
+                new Parameter(BASE_VERIFY_VISITOR_URL_PARAMETER_CODE, "Base Verify Visitor Url", "http://localhost:3000/vms/app/verifyVisitor")};
 
         Arrays.stream(parameters).forEach(p -> {
             Parameter oldParameter = parameterRepository.findByCode(p.getCode());

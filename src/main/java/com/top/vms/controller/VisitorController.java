@@ -87,7 +87,7 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
     }
 
     @RequestMapping(value = "/verify/{accessKey}", method = RequestMethod.GET)
-    public ResponseEntity<?> download(HttpServletRequest request, HttpServletResponse response,
+    public ResponseEntity<?> verify(HttpServletRequest request, HttpServletResponse response,
                                       @PathVariable("accessKey") String accessKey) throws IOException, NotFoundException {
         Visitor visitor = visitorRepository.findByAccessKey(accessKey);
 
