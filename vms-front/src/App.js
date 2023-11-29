@@ -5,10 +5,10 @@ import "./App.css";
  import { Toast } from 'primereact/toast';
 
 
-import Visitors from "./components/vms/Visitors";
-import AddVisitor from "./components/vms/AddVisitor";
-import VerifyVisitor from "./components/vms/VerifyVisitor";
-import ViewVisitor from "./components/vms/ViewVisitor";
+import Visitors from "./components/visitor/Visitors";
+import AddVisitor from "./components/visitor/AddVisitor";
+import VerifyVisitor from "./components/visitor/VerifyVisitor";
+import ViewVisitor from "./components/visitor/ViewVisitor";
 import Login from "./components/user/Login";
 
 import { Toolbar } from 'primereact/toolbar';

@@ -178,16 +178,18 @@ const Visitors = () => {
   };
 
 
-  const statusFilterCallback = (e, options) => {
-    var cond = [];
+const onFilter= (event) => {
+      console.log("-----event------", event.filters['status.label'].constraints);
+          var cond = [];
+            for(var key in event.filters['status.label'].constraints){
+                  var value =event.filters['status.label'].constraints[key].value;
+          if (value !== null && value !== undefined) {
+            cond.push({ field: "status", operation: "=", value: statusesMap[value] });
+          }}
+          list(0, numOfRows, null, cond);
 
-    if (e.value !== undefined) {
-      console.log("-----------", e);
-      cond = [{ field: "status", operation: "=", value: statusesMap[e.value] }];
-    }
-    options.filterCallback(e.value, options.index);
-    list(0, numOfRows, null, cond);
-  };
+}
+
 
   const statusItemTemplate = (option) => {
     return <Tag value={option} severity={getSeverityByStatus(option)} />;
@@ -197,7 +199,7 @@ const Visitors = () => {
       <Dropdown
         value={options.value}
         options={statuses}
-        onChange={(e) => statusFilterCallback(e, options)}
+        onChange={(e) =>  options.filterCallback(e.value, options.index)}
         itemTemplate={statusItemTemplate}
         placeholder="Select One"
         className="p-column-filter"
@@ -270,7 +272,7 @@ const Visitors = () => {
   const redirectItems = [
     {
       label: "Add",
-      icon: "pi pi-pencil",
+      icon: "pi pi-plus",
       command: () => {
         navigate("/vms/app/addVisitor");
       },
@@ -292,12 +294,13 @@ const Visitors = () => {
 
   return (
     <div className="card">
-      <DataTable
+      <DataTable resizableColumns
         value={visitors}
         dataKey="id"
         header={header}
         filterDisplay="menu"
         filters={filters}
+         onFilter={onFilter}
         sortField={sortField}
         sortOrder={sortOrder}
         onSort={(event) => {

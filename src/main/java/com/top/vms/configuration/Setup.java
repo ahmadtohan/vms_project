@@ -5,31 +5,46 @@
  */
 package com.top.vms.configuration;
 
+import com.top.vms.controller.UserController;
+import com.top.vms.entity.Endpoint;
 import com.top.vms.entity.Parameter;
 import com.top.vms.entity.User;
+import com.top.vms.repository.EndpointRepository;
 import com.top.vms.repository.ParameterRepository;
 import com.top.vms.repository.UserRepository;
 import com.top.vms.security.JwtTokenUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
 
 /**
  * @author Ahmad Tohan <ahmad.tohan92@gmail.com>
  */
 @Component
-public class Setup implements ApplicationRunner {
+public class Setup implements ApplicationRunner, ApplicationListener<ContextRefreshedEvent> {
+    private static final Logger logger = LoggerFactory.getLogger(Setup.class);
 
     private static ParameterRepository parameterRepository;
 
@@ -44,16 +59,13 @@ public class Setup implements ApplicationRunner {
     private static SimpleDateFormat defaultDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static final String TOKEN_HEADER = "Authorization";
-    public static final String ROLE_USER = "ROLE_USER";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 
-
-   ///////////////////////////////PARAMETERS/////////////////////////////////////
-    public static final String UPLOAD_PATH_PARAMETER_CODE="upload_path";
-    public static final String BASE_HOST_PARAMETER_CODE="base_host";
-    public static final String BASE_VMS_HOST_PARAMETER_CODE="base_vms_host";
-    public static final String BASE_VERIFY_VISITOR_URL_PARAMETER_CODE="base_verify_visitor_url";
+    ///////////////////////////////PARAMETERS/////////////////////////////////////
+    public static final String UPLOAD_PATH_PARAMETER_CODE = "upload_path";
+    public static final String BASE_HOST_PARAMETER_CODE = "base_host";
+    public static final String BASE_VMS_HOST_PARAMETER_CODE = "base_vms_host";
+    public static final String BASE_VERIFY_VISITOR_URL_PARAMETER_CODE = "base_verify_visitor_url";
 
 
     @Override
@@ -110,15 +122,37 @@ public class Setup implements ApplicationRunner {
         return parameterRepository.findByCode(UPLOAD_PATH_PARAMETER_CODE).getValue();
     }
 
-    public static User getCurrentUser() throws Exception {
+    public static User getCurrentUser()  {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         final String requestHeader = request.getHeader(Setup.TOKEN_HEADER);
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
-            return applicationContext.getBean(UserRepository.class).findByUsername(jwtTokenUtil.getUsernameFromToken(requestHeader.substring(7)));
+                return applicationContext.getBean(UserRepository.class).findByUsername(jwtTokenUtil.getUsernameFromToken(requestHeader.substring(7)));
 
         }
-        throw new Exception("User not found");
+        return null;
     }
 
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
+                .getBean(RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
+                .getHandlerMethods();
+        map.forEach((key, value) -> {
+            Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
+            EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
+            while (namesIterator.hasNext()) {
+                String api = namesIterator.next();
+                if (endpointRepository.findByApi(api) == null) {
+                    Endpoint endpoint = new Endpoint();
+                    endpoint.setApi(api);
+                    endpointRepository.save(endpoint);
+                }
+
+
+            }
+        });
+        logger.info("========================Endpoint-done====");
+    }
 }

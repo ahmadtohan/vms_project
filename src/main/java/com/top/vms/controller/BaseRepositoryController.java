@@ -70,7 +70,7 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
         return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/get/{id}",
             method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> get(@PathVariable("id") Long id) {

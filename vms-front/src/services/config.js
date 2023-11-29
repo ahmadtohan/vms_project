@@ -9,7 +9,7 @@ const config = {
 
 listPage:'visitor/page',
 list:'user/list',
-view:'user',
+view:'user/get',
 create:'user/create',
 update:'user/update',
 delete:'user/delete',
@@ -20,7 +20,7 @@ login:'user/login'
 
 listPage:'visitor/page',
 list:'visitor/list',
-view:'visitor',
+view:'visitor/get',
 create:'visitor/create',
 update:'visitor/update',
 delete:'visitor/delete',

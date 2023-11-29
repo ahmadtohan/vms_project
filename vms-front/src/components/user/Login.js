@@ -84,7 +84,7 @@ const Login = () => {
     
 
  <span className="p-float-label" style={{ margin: "5%" }}>
-      <InputText id="email" name="password" type="password" value={formik.values.value}
+      <InputText id="password" name="password" type="password" value={formik.values.value}
                             onChange={(e) => {
                                     formik.setFieldValue('password', e.target.value);
                                 }}

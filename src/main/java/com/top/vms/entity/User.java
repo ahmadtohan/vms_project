@@ -9,16 +9,19 @@ import com.top.vms.annotations.BeforeInsert;
 import com.top.vms.annotations.EntityJsonSerializer;
 import com.top.vms.configuration.Setup;
 import com.top.vms.helper.EnumEntity;
+
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
 import com.top.vms.helper.GenericSerializer;
 import com.top.vms.repository.RoleRepository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +29,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- *
  * @author Ahmad
  */
 @Entity
@@ -45,7 +47,9 @@ public class User extends BaseEntity implements UserDetails {
         public String getLabel() {
             return label;
         }
-    };
+    }
+
+    ;
 
     public enum Gender implements EnumEntity {
         MALE("Male"), FEMALE("Female");
@@ -130,26 +134,17 @@ public class User extends BaseEntity implements UserDetails {
     @BeforeInsert
     void addRole() {
 
-        String RoleName = type.equals(Type.ADMIN) ? Setup.ROLE_ADMIN : Setup.ROLE_USER;
-        Role role = Setup.getApplicationContext().getBean(RoleRepository.class).findByName(RoleName);
-        if (role == null) {
-            role = new Role();
-            role.setName(RoleName);
-            role = Setup.getApplicationContext().getBean(RoleRepository.class).save(role);
-
+        if (this.roles == null || this.roles.size() == 0) {
+            throw new RuntimeException("at least one role should be added");
         }
         final User user = this;
-        role.setUsers(new ArrayList<User>() {
-            {
-                add(user);
-            }
-        });
-        final Role userRole = role;
-        this.setRoles(new ArrayList<Role>() {
-            {
-                add(userRole);
-            }
-        });
+        for (Role roleObj : this.roles) {
+            roleObj.setUsers(new ArrayList<User>() {
+                {
+                    add(user);
+                }
+            });
+        }
 
     }
 
@@ -259,6 +254,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public List<Role> getRoles() {
+        if (roles == null)
+            roles = new ArrayList<>();
         return roles;
     }
 

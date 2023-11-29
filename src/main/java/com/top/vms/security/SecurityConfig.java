@@ -25,6 +25,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author klemen
  */
@@ -66,6 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
+    public static String[] permitMatchers = new String[]{"/content",
+            "/static", "/vmsApp","/user/login", "/user/logout"};
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -84,13 +90,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //example without annotations - remember to include token in protected request on client side! 
                 //.antMatchers("/api/duty/**").hasAnyRole("ADMIN")
-                .antMatchers("/",
-                        "/content/**",
+                .antMatchers("/**"
+                       /* ,"/content/**",
                         "/static/**",
                         "/vmsApp/**",
                         "/user/login/**",
                         "/user/logout/**",
-                        "/visitor/create/**"
+                        "/visitor/create/**"*/
 
 
                 )
