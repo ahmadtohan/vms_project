@@ -74,13 +74,18 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
             method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> get(@PathVariable("id") Long id) {
+        return getEntity(id);
+
+    }
+
+    protected ResponseEntity<?> getEntity(Long id) {
         T entity = getRepository().findOne(id);
         if (entity != null) {
             entity.loadAttachments();
         }
         return new ResponseEntity<>(entity, HttpStatus.OK);
-
     }
+
 
     @RequestMapping(value = "/create",
             method = RequestMethod.POST)

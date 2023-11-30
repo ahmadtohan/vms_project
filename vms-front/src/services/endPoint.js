@@ -11,6 +11,8 @@ console.log("----endPoint-------",api,method,body);
                sessionUser={};
             }
         axios.defaults.headers.common['Authorization'] = 'Bearer '+sessionUser.token;
+    }else{
+      axios.defaults.headers.common['Authorization'] = "";
     }
 
    if(method.toUpperCase()==='GET'){

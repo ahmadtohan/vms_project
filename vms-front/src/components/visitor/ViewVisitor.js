@@ -34,7 +34,7 @@ const redirectItems = [
       label: "Add",
       icon: "pi pi-pencil",
       command: () => {
-        navigate("/vms/app/addVisitor");
+        navigate("/vms/app/editVisitor");
       },
     },
          {
@@ -130,7 +130,7 @@ const rows = {
                   visitor[key]
                 )}
 
-                {}
+
               </span>
             </span>
             <small>{rows[row][key].label}</small>

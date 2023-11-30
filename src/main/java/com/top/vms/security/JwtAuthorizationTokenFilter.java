@@ -1,5 +1,6 @@
 package com.top.vms.security;
 
+import com.top.vms.annotations.FrontApi;
 import com.top.vms.configuration.Setup;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import com.top.vms.entity.Endpoint;
 import com.top.vms.entity.Permission;
 import com.top.vms.entity.Role;
 import com.top.vms.entity.User;
+import com.top.vms.helper.LoggedUserInfo;
 import com.top.vms.helper.Utils;
 import com.top.vms.repository.EndpointRepository;
 import com.top.vms.repository.PermissionRepository;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.juli.logging.Log;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,9 +101,10 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         }
         request.setAttribute("SHOULD_NOT_FILTER", true);
 
-        boolean hasPermission = checkCurrentApiHasPermission(request);
-        if (!hasPermission) {
-            response.sendError(403, "Access Denied");
+
+        int accessCode = checkCurrentApiHasPermission(request);
+        if (accessCode!=200) {
+            response.sendError(accessCode, "Access Denied");
             return;
         }
         chain.doFilter(request, response);
@@ -111,16 +115,23 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         return Boolean.TRUE.equals(request.getAttribute("SHOULD_NOT_FILTER"));
     }
 
-    private boolean checkCurrentApiHasPermission(HttpServletRequest request) {
+    private int checkCurrentApiHasPermission(HttpServletRequest request) {
+        int okCode=200;
         String path = request.getServletPath();
+
         if (Arrays.stream(SecurityConfig.permitMatchers).anyMatch(s -> path.startsWith(s))) {
             logger.info("-------------permitMatchers: ok");
-            return true;
+            return okCode;
         }
-        User user = Setup.getCurrentUser();
-        if(user.getType().equals(User.Type.ADMIN)){
+
+        LoggedUserInfo loggedUserInfo = Setup.getCurrentUserInfo();
+        if (loggedUserInfo == null || loggedUserInfo.getUser() ==null) {
+            logger.info("-------------user is null");
+            return 401;
+        }
+        if (loggedUserInfo.getUser().getType().equals(User.Type.ADMIN)) {
             logger.info("-------------admin: ok");
-            return true;
+           return okCode;
         }
         String api = null;
         String[] controllerMappings = new String[]{};
@@ -134,6 +145,9 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                     Object handler = handlerExecutionChain.getHandler();
                     if (handler != null && handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handlerExecutionChain.getHandler();
+                        if(handlerMethod.getMethod().isAnnotationPresent(FrontApi.class)){
+                            return okCode;
+                        }
                         methodMappings = handlerMethod.getMethod().getAnnotation(RequestMapping.class).value();
                         logger.info("---------handlerMethod-----{} {}", handlerMethod);
                         if (handlerMethod.getMethod().getDeclaringClass().isAnnotationPresent(RequestMapping.class)) {
@@ -142,7 +156,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
                             for (String methodMap : methodMappings) {
                                 String firstSeg = "/" + Arrays.asList(methodMap.split("/")).get(1);
-                                logger.info("---------------firstSeg: " + firstSeg );
+                                logger.info("---------------firstSeg: " + firstSeg);
                                 if (path.contains(firstSeg)) {
                                     String controller = path.substring(0, path.indexOf(firstSeg));
                                     controllerMappings = new String[]{controller};
@@ -167,21 +181,14 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 String matchApi = controllerMap + methodMap;
                 String match = Utils.replaceBetween(matchApi, "{", "}", true, true, "");
                 logger.info("-------------api: " + matchApi + "   ===>   " + match);
-                if (path.startsWith(match)) {
-                    if (user != null) {
-                        Endpoint endpoint = Setup.getApplicationContext().getBean(EndpointRepository.class).findByApi(matchApi);
-                        Permission permission = Setup.getApplicationContext().getBean(PermissionRepository.class).findOneByEndpointAndRoleIn(endpoint, user.getRoles());
-                        logger.info("-------------permission {}", permission);
-                        if (permission != null) {
-                            return true;
-                        }
-
-                    }
+                logger.info("-------------endpointApis {}", loggedUserInfo.getEndpointApis());
+                if (path.startsWith(match) && loggedUserInfo.getEndpointApis().contains(matchApi)) {
+                        return okCode;
                 }
 
 
             }
         }
-        return false;
+        return 403;
     }
 }

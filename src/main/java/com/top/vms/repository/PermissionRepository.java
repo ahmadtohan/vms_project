@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface PermissionRepository extends BaseRepository<Permission> {
 
-    public Permission findOneByRole(Role role);
+    public List<Permission> findByRoleIn(List<Role> roles);
 
     public Permission findOneByEndpointAndRoleIn(Endpoint endpoint, List<Role> roles);
 

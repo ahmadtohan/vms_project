@@ -16,6 +16,7 @@ import com.top.vms.security.JwtTokenUtils;
 
 import java.util.Map;
 import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +30,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- *
  * @author Ahmad
  */
 @RestController
@@ -56,7 +60,7 @@ public class UserController extends BaseRepositoryController<User> {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody JsonNode user) {
+    public ResponseEntity<?> login(@RequestBody JsonNode user, HttpServletRequest request, HttpServletResponse response) {
 
         String username = user.get("username").textValue();
         String password = user.get("password").textValue();
@@ -67,7 +71,7 @@ public class UserController extends BaseRepositoryController<User> {
         // Reload password post-security so we can generate the token
 
         try {
-            logger.info("login...: "+username+"  "+ password);
+            logger.info("login...: " + username + "  " + password);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new DisabledException("User is disabled!", e);
@@ -75,23 +79,26 @@ public class UserController extends BaseRepositoryController<User> {
             throw new BadCredentialsException("Bad credentials!", e);
         }
         User loggedUser = userRepository.findByUsername(username);
-        String token=jwtTokenUtil.generateToken(loggedUser);
+        String token = jwtTokenUtil.generateToken(loggedUser);
         loggedUser.setToken(token);
 
-        // Return the token
-        return ResponseEntity.ok(loggedUser);
+        Setup.setCurrentUserInMemory(loggedUser);
+
+        GenericProjection projection = new GenericProjection(new String[]{
+                "id", "username", "fullName", "email", "username","token" ,"{name : 'roles', keys : {'id', 'name' ,{name:'permissions', keys : {'id', {name:'endpoint',keys:{'id','api'}}}}}}"});
+        return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> search(@RequestParam(required = false) String username,
-            Pageable pageable) throws Exception {
-        logger.info("===========" + Setup.getCurrentUser().getEmail());
+                                    Pageable pageable) throws Exception {
+        logger.info("===========" + Setup.getCurrentUserInfo());
         SelectQuery<User> query = new SelectQuery(User.class);
         query.filterBy("username", "LIKE", "%" + username + "%");
 
         GenericProjection projection = new GenericProjection(new String[]{
-            "id", "fullName", "mobileNumber", "email", "username"});
+                "id", "fullName", "mobileNumber", "email", "username"});
         Page<Map<String, Object>> projectionPage = projection.projectPage(query.execute(pageable), pageable);
         return new ResponseEntity<>(projectionPage, HttpStatus.OK);
     }

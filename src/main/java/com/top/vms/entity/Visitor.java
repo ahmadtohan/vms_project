@@ -90,7 +90,7 @@ public class Visitor extends BaseEntity {
     void beforeUpdate() throws Exception {
         if(this.getStatus().equals(Status.APPROVED)){
         this.setApprovalDate(new Date());
-        this.setApprovalUser(Setup.getCurrentUser());
+        this.setApprovalUser(Setup.getCurrentUserInfo().getUser());
         }
 
     }

@@ -7,13 +7,24 @@ const config = {
 
  userAPIs: {
 
-listPage:'visitor/page',
+listPage:'user/page',
 list:'user/list',
 view:'user/get',
 create:'user/create',
 update:'user/update',
 delete:'user/delete',
 login:'user/login'
+},
+
+ roleAPIs: {
+
+listPage:'role/page',
+list:'role/list',
+view:'role/get',
+create:'role/create',
+update:'role/update',
+delete:'role/delete',
+activeRoles:'role/activeroles'
 },
 
  visitorAPIs: {

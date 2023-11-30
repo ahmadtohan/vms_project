@@ -5,20 +5,22 @@
  */
 package com.top.vms.configuration;
 
+import com.top.vms.annotations.FrontApi;
 import com.top.vms.controller.UserController;
 import com.top.vms.entity.Endpoint;
 import com.top.vms.entity.Parameter;
+import com.top.vms.entity.Role;
 import com.top.vms.entity.User;
+import com.top.vms.helper.LoggedUserInfo;
 import com.top.vms.repository.EndpointRepository;
 import com.top.vms.repository.ParameterRepository;
+import com.top.vms.repository.PermissionRepository;
 import com.top.vms.repository.UserRepository;
 import com.top.vms.security.JwtTokenUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +50,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
     private static ParameterRepository parameterRepository;
 
+    private static PermissionRepository permissionRepository;
+
     private static EntityManagerFactory entityManagerFactory;
 
     private static ApplicationContext applicationContext;
@@ -57,6 +61,9 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     private static SimpleDateFormat defaultDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private static SimpleDateFormat defaultDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+    private static Map<String, Object> memoryMap = new HashMap<>();
 
     public static final String TOKEN_HEADER = "Authorization";
 
@@ -93,11 +100,13 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     public Setup(EntityManagerFactory entityManagerFactory,
                  ApplicationContext applicationContext,
                  ParameterRepository parameterRepository,
+                 PermissionRepository permissionRepository,
                  JwtTokenUtils jwtTokenUtil
     ) {
         Setup.entityManagerFactory = entityManagerFactory;
         Setup.applicationContext = applicationContext;
         Setup.parameterRepository = parameterRepository;
+        Setup.permissionRepository = permissionRepository;
         Setup.jwtTokenUtil = jwtTokenUtil;
 
     }
@@ -122,16 +131,21 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         return parameterRepository.findByCode(UPLOAD_PATH_PARAMETER_CODE).getValue();
     }
 
-    public static User getCurrentUser()  {
+    public static LoggedUserInfo getCurrentUserInfo() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         final String requestHeader = request.getHeader(Setup.TOKEN_HEADER);
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
-                return applicationContext.getBean(UserRepository.class).findByUsername(jwtTokenUtil.getUsernameFromToken(requestHeader.substring(7)));
-
+            String username = jwtTokenUtil.getUsernameFromToken(requestHeader.substring(7));
+            return (LoggedUserInfo) memoryMap.get(username);
         }
         return null;
     }
 
+    public static void setCurrentUserInMemory(User user) {
+        Set<String> endpointApis= permissionRepository.findByRoleIn(user.getRoles()).stream().filter(p->p.getRole().getStatus().equals(Role.Status.ACTIVE)).map(p->p.getEndpoint().getApi()).collect(Collectors.toSet());
+        LoggedUserInfo loggedUserInfo= new LoggedUserInfo(user, endpointApis);
+        memoryMap.put(user.getUsername(), loggedUserInfo);
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -140,6 +154,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
                 .getHandlerMethods();
         map.forEach((key, value) -> {
+            if(!value.getMethod().isAnnotationPresent(FrontApi.class)){
             Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
             EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
             while (namesIterator.hasNext()) {
@@ -152,7 +167,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
 
             }
-        });
+        }});
         logger.info("========================Endpoint-done====");
     }
 }

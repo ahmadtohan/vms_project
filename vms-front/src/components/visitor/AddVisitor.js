@@ -54,10 +54,7 @@ const AddVisitor = () => {
       return errors;
     },
     onSubmit: (data) => {
-      console.log(
-        "=====================222222222222========",
-        formatDate(data.fromDate)
-      );
+
 
       setMessage("");
       data.fromDate = formatDate(data.fromDate);

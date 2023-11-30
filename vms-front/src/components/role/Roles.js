@@ -27,16 +27,16 @@ const reducer = (state, { type, payload }) => {
   }
 };
 
-const Visitors = () => {
+const Roles = () => {
   const numOfRows = 7;
   const [start, setStart] = useState(false);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(numOfRows);
   const [totalRecords, setTotalRecords] = useState(numOfRows);
-  const [visitors, setVisitors] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({});
-  const [selectedVisitors, setSelectedVisitors] = useState(null);
+  const [selectedRoles, setSelectedRoles] = useState(null);
 
   const initialState = {
     results: [],
@@ -48,11 +48,10 @@ const Visitors = () => {
   const [state, dispatch] = useReducer(reducer, initialState, init);
   const { results, loading, sortField, sortOrder } = state;
 
-  const [statuses] = useState(["Pending", "Approved", "Cancelled"]);
+  const [statuses] = useState(["Active", "Inactive"]);
   const statusesMap = {
-    Pending: "PENDING",
-    Approved: "APPROVED",
-    Cancelled: "CANCELLED",
+    Active: "ACTIVE",
+    Inactive: "INACTIVE"
   };
 
   const toast = useRef(null);
@@ -71,7 +70,7 @@ const Visitors = () => {
         } else {
           initFilters();
         }
-        dispatch({ type: "dataLoaded", payload: visitors });
+        dispatch({ type: "dataLoaded", payload: roles });
       }, 50);
     }
   }, [loading, sortField, sortOrder]);
@@ -79,7 +78,7 @@ const Visitors = () => {
   const list = (page, size, sort, cond) => {
     sort = sort == null ? "id" : sort;
     endPoint(
-      config.visitorAPIs.listPage +
+      config.roleAPIs.listPage +
         "?page=" +
         page +
         "&size=" +
@@ -94,7 +93,7 @@ const Visitors = () => {
       setFirst(size * page);
       setRows(size);
       setTotalRecords(res.totalElements);
-      setVisitors(res.content);
+      setRoles(res.content);
       console.log(
         "=======first, size, cond====",
         size * page,
@@ -106,61 +105,13 @@ const Visitors = () => {
   };
 
   ////////////////////////////////////
-  ///////////////
-
-  const onApprove = (r) => {
-    var entity = {
-      id: r.id,
-      status: "APPROVED",
-    };
-
-    endPoint(config.visitorAPIs.update, "POST", entity).then((res) => {});
-    window.location.reload();
-  };
-
-  const onCancel = (r) => {
-    var entity = {
-      id: r.id,
-      status: "CANCELLED",
-    };
-    endPoint(config.visitorAPIs.update, "POST", entity).then((res) => {});
-    window.location.reload();
-  };
-
-  const handleApproveAndCancel = (r) => {
-    return (
-      <div style={{ display: "flex" }}>
-        {r.status.value == "PENDING" && (
-          <Button
-            type="button"
-            icon="pi pi-check"
-            className="p-button p-component p-button-success"
-            style={{ marginRight: ".3em" }}
-            onClick={() => onApprove(r)}
-          ></Button>
-        )}
-        {r.status.value == "PENDING" && (
-          <Button
-            type="button"
-            icon="pi pi-times"
-            className="p-button p-component p-button-warning"
-            style={{ marginRight: ".3em" }}
-            onClick={() => onCancel(r)}
-          ></Button>
-        )}
-      </div>
-    );
-  };
 
   const getSeverityByStatus = (statusVal) => {
     switch (statusVal) {
-      case "Approved":
+      case "Active":
         return "success";
 
-      case "Pending":
-        return "warning";
-
-      case "Cancelled":
+      case "Inactive":
         return "danger";
 
       default:
@@ -213,9 +164,8 @@ const onFilter= (event) => {
     const value = e.target.value;
     setSearch(value);
     list(0, numOfRows, null, [
-      { field: "fullName", operation: "like", value: "%" + value + "%" },
-      { field: "email", operation: "like", value: "%" + value + "%" },
-      { field: "eid", operation: "like", value: "%" + value + "%" },
+      { field: "name", operation: "like", value: "%" + value + "%" },
+      { field: "description", operation: "like", value: "%" + value + "%" },
     ]);
   };
 
@@ -262,7 +212,7 @@ const onFilter= (event) => {
 
     const onRowSelect = (event) => {
     console.log(event);
-    navigate("/vms/app/viewVisitor?id="+event.data.id);
+    navigate("/vms/app/viewRole?id="+event.data.id);
     };
 
     const onRowUnselect = (event) => {
@@ -274,7 +224,7 @@ const onFilter= (event) => {
       label: "Add",
       icon: "pi pi-plus",
       command: () => {
-        navigate("/vms/app/addVisitor");
+        navigate("/vms/app/addRole");
       },
     }
     ,
@@ -295,7 +245,7 @@ const onFilter= (event) => {
   return (
     <div className="card">
       <DataTable resizableColumns
-        value={visitors}
+        value={roles}
         dataKey="id"
         header={header}
         filterDisplay="menu"
@@ -306,14 +256,12 @@ const onFilter= (event) => {
         onSort={(event) => {
           dispatch({ type: "onSortingChanged", payload: event });
         }}
-        emptyMessage="No visitors found."
+        emptyMessage="No roles found."
         tableStyle={{ minWidth: "100rem" }}
-        selectionMode="single" selection={selectedVisitors} onSelectionChange={(e) => setSelectedVisitors(e.value)}
+        selectionMode="single" selection={selectedRoles} onSelectionChange={(e) => setSelectedRoles(e.value)}
         onRowSelect={onRowSelect} onRowUnselect={onRowUnselect} metaKeySelection={false}
       >
-        <Column field="fullName" header="Full Name"></Column>
-        <Column field="email" header="Email"></Column>
-        <Column field="eid" header="E-ID"></Column>
+        <Column field="name" header="Name" sortable></Column>
 
         <Column
           filterMenuStyle={{ width: "14rem" }}
@@ -324,13 +272,7 @@ const onFilter= (event) => {
           header="Status"
           body={statusBodyTemplate}
         ></Column>
-        <Column field="fromDate" header="from Date" sortable></Column>
-        <Column field="toDate" header="to Date" sortable></Column>
-        <Column
-          header="Approve / Cancel"
-          body={handleApproveAndCancel}
-          style={{ textAlign: "center", width: "4em",padding: "0px" }}
-        />
+        <Column field="description" header="Description" ></Column>
 
       </DataTable>
 
@@ -358,4 +300,4 @@ const onFilter= (event) => {
   );
 };
 
-export default Visitors;
+export default Roles;

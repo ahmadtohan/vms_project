@@ -123,6 +123,7 @@ public class User extends BaseEntity implements UserDetails {
     @Transient
     private String token;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(using = GenericSerializer.class)
     @EntityJsonSerializer(keys = {"id", "name"})
@@ -133,19 +134,18 @@ public class User extends BaseEntity implements UserDetails {
 
     @BeforeInsert
     void addRole() {
-
-        if (this.roles == null || this.roles.size() == 0) {
-            throw new RuntimeException("at least one role should be added");
-        }
         final User user = this;
+        List<Role> newRoles = new ArrayList<>();
         for (Role roleObj : this.roles) {
-            roleObj.setUsers(new ArrayList<User>() {
+            Role role = Setup.getApplicationContext().getBean(RoleRepository.class).findOne(roleObj.getId());
+            role.setUsers(new ArrayList<User>() {
                 {
                     add(user);
                 }
             });
+            newRoles.add(role);
         }
-
+        this.setRoles(newRoles);
     }
 
     public String getUsername() {
@@ -254,8 +254,6 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public List<Role> getRoles() {
-        if (roles == null)
-            roles = new ArrayList<>();
         return roles;
     }
 

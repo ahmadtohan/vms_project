@@ -1,8 +1,10 @@
 package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.top.vms.helper.EnumEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +13,26 @@ import java.util.List;
 
 @Entity
 public class Role extends BaseEntity{
-    
+
+    public enum Status implements EnumEntity {
+        ACTIVE("Active"), INACTIVE("Inactive");
+
+        private final String label;
+
+        Status(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+    };
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role.Status status = Role.Status.ACTIVE;
+
     @Column(unique = true, nullable = false)
     private String name;
 
@@ -23,7 +44,16 @@ public class Role extends BaseEntity{
     private List<User> users;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Permission> permissions;
+
+    public Role.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Role.Status status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;

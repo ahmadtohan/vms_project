@@ -14,7 +14,7 @@ import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 
-const ViewVisitor = () => {
+const VerifyVisitor = () => {
   const navigate = useNavigate();
   const accessKey = new URLSearchParams(window.location.search).get("accessKey");
   const [visitor, setVisitor] = useState({ status: {} });
@@ -107,7 +107,7 @@ const rows = {
                   visitor[key]
                 )}
 
-                {}
+
               </span>
             </span>
             <small>{rows[row][key].label}</small>
@@ -120,4 +120,4 @@ const rows = {
   );
 };
 
-export default ViewVisitor;
+export default VerifyVisitor;
