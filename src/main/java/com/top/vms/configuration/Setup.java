@@ -5,8 +5,7 @@
  */
 package com.top.vms.configuration;
 
-import com.top.vms.annotations.FrontApi;
-import com.top.vms.controller.UserController;
+import com.top.vms.annotations.NoPermissionApi;
 import com.top.vms.entity.Endpoint;
 import com.top.vms.entity.Parameter;
 import com.top.vms.entity.Role;
@@ -15,7 +14,6 @@ import com.top.vms.helper.LoggedUserInfo;
 import com.top.vms.repository.EndpointRepository;
 import com.top.vms.repository.ParameterRepository;
 import com.top.vms.repository.PermissionRepository;
-import com.top.vms.repository.UserRepository;
 import com.top.vms.security.JwtTokenUtils;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -154,7 +151,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
                 .getHandlerMethods();
         map.forEach((key, value) -> {
-            if(!value.getMethod().isAnnotationPresent(FrontApi.class)){
+            if(!value.getMethod().isAnnotationPresent(NoPermissionApi.class)){
             Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
             EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
             while (namesIterator.hasNext()) {

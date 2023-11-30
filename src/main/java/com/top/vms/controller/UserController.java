@@ -7,6 +7,7 @@ package com.top.vms.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.top.vms.configuration.Setup;
+import com.top.vms.entity.Role;
 import com.top.vms.entity.User;
 import com.top.vms.helper.GenericProjection;
 import com.top.vms.helper.SelectQuery;
@@ -14,6 +15,7 @@ import com.top.vms.repository.BaseRepository;
 import com.top.vms.repository.UserRepository;
 import com.top.vms.security.JwtTokenUtils;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -78,14 +80,16 @@ public class UserController extends BaseRepositoryController<User> {
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Bad credentials!", e);
         }
+        logger.info("login...2: ");
         User loggedUser = userRepository.findByUsername(username);
+
         String token = jwtTokenUtil.generateToken(loggedUser);
         loggedUser.setToken(token);
 
         Setup.setCurrentUserInMemory(loggedUser);
 
         GenericProjection projection = new GenericProjection(new String[]{
-                "id", "username", "fullName", "email", "username","token" ,"{name : 'roles', keys : {'id', 'name' ,{name:'permissions', keys : {'id', {name:'endpoint',keys:{'id','api'}}}}}}"});
+                "id", "username", "fullName", "email", "username", "token", "{name : 'roles', keys : {'id', 'name' ,{name:'permissions', keys : {'id', {name:'endpoint',keys:{'id','api'}}}}}}"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
@@ -103,4 +107,13 @@ public class UserController extends BaseRepositoryController<User> {
         return new ResponseEntity<>(projectionPage, HttpStatus.OK);
     }
 
+    @Override
+    protected ResponseEntity<?> getEntity(Long id) {
+        User user = userRepository.findOne(id);
+
+        GenericProjection projection = new GenericProjection(new String[]{
+                "id", "fullName", "status", "username", "gender", "type","email","mobileNumber","birthDate","eid",
+                "{name:'roles', keys : {'id', 'name'}}"});
+        return new ResponseEntity<>(projection.project(user), HttpStatus.OK);
+    }
 }

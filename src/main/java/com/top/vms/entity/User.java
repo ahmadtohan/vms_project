@@ -130,6 +130,7 @@ public class User extends BaseEntity implements UserDetails {
     private Department department;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private List<Role> roles;
 
     @BeforeInsert

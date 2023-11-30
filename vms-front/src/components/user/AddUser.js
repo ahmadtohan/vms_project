@@ -54,7 +54,7 @@ const AddUser = () => {
             }
             else {
                 _filteredRoles = roles.filter((role) => {
-                    return role.name.toLowerCase().startsWith(event.query.toLowerCase());
+                    return role.name.toLowerCase().includes(event.query.toLowerCase());
                 });
             }
 
@@ -160,7 +160,7 @@ const AddUser = () => {
       <Tag severity="success" value="Add User: "></Tag>
 
       <form onSubmit={formik.handleSubmit}>
-        <Splitter style={{ height: "300px" }}>
+        <Splitter style={{ height: "400px" }}>
           <SplitterPanel className="flex align-items-center justify-content-center">
             <div className="gap-q justify-content-center">
               <span className="p-float-label" style={{ margin: "5%" }}>
@@ -231,6 +231,7 @@ const AddUser = () => {
                 <label htmlFor="birthDate">birth Date</label>
                 <div>{getFormErrorMessage("birthDate")}</div>
               </span>
+
                 <span className="p-float-label" style={{ margin: "5%" }}>
                                             <Dropdown
                                               id="gender"

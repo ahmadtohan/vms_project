@@ -1,6 +1,6 @@
 package com.top.vms.security;
 
-import com.top.vms.annotations.FrontApi;
+import com.top.vms.annotations.NoPermissionApi;
 import com.top.vms.configuration.Setup;
 
 import java.io.IOException;
@@ -9,27 +9,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.top.vms.entity.Endpoint;
-import com.top.vms.entity.Permission;
-import com.top.vms.entity.Role;
 import com.top.vms.entity.User;
 import com.top.vms.helper.LoggedUserInfo;
 import com.top.vms.helper.Utils;
-import com.top.vms.repository.EndpointRepository;
-import com.top.vms.repository.PermissionRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.apache.juli.logging.Log;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -145,7 +133,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                     Object handler = handlerExecutionChain.getHandler();
                     if (handler != null && handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handlerExecutionChain.getHandler();
-                        if(handlerMethod.getMethod().isAnnotationPresent(FrontApi.class)){
+                        if(handlerMethod.getMethod().isAnnotationPresent(NoPermissionApi.class)){
                             return okCode;
                         }
                         methodMappings = handlerMethod.getMethod().getAnnotation(RequestMapping.class).value();
