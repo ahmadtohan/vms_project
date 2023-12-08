@@ -38,6 +38,43 @@ delete:'visitor/delete',
 verify:'visitor/verify'
 },
 
+ endpointAPIs: {
+
+listPage:'endpoint/page',
+list:'endpoint/list',
+view:'endpoint/get',
+create:'endpoint/create',
+update:'endpoint/update',
+delete:'endpoint/delete',
+endpoints :'endpoint/endpoints'
+},
+
+permissionAPIs :{
+
+                listPage:'permission/page',
+                list:'permission/list',
+                view:'permission/get',
+                create:'permission/create',
+                update:'permission/update',
+                delete:'permission/delete',
+                permissionmap :'permission/permissionmap'
+                },
+ parameterAPIs:{
+ listPage:'parameter/page',
+ list:'parameter/list',
+ view:'parameter/get',
+ create:'parameter/create',
+ update:'parameter/update',
+ delete:'parameter/delete'
+  },
+ picklistAPIs: {
+  listPage:'picklist/page',
+  list:'picklist/list',
+  view:'picklist/get',
+  create:'picklist/create',
+  update:'picklist/update',
+  delete:'picklist/delete'
+ }
 
 }
 

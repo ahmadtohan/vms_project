@@ -17,6 +17,13 @@ import AddUser from "./components/user/AddUser";
 
 import Roles from "./components/role/Roles";
 import ViewRole from "./components/role/ViewRole";
+import AddRole from "./components/role/AddRole";
+
+import Permissions from "./components/permission/Permissions";
+
+
+import Parameters from "./components/core/parameter/Parameters";
+import Picklists from "./components/core/picklist/Picklists";
 
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -133,49 +140,45 @@ setCurrentUser(null);
                     },
                     {
                         label: 'Permission',
-                        icon: 'pi pi-fw pi-lock'
-
+                        icon: 'pi pi-fw pi-lock',
+                      command: () => {
+                                         navigate("/vms/app/permissions");
+                                  }
                     }
                 ]
             },
             {
-                label: 'Events',
-                icon: 'pi pi-fw pi-calendar',
+                label: 'System',
+                icon: 'pi pi-fw pi-chevron-circle-down',
                 items: [
                     {
-                        label: 'Edit',
-                        icon: 'pi pi-fw pi-pencil',
-                        items: [
-                            {
-                                label: 'Save',
-                                icon: 'pi pi-fw pi-calendar-plus'
-                            },
-                            {
-                                label: 'Delete',
-                                icon: 'pi pi-fw pi-calendar-minus'
-                            }
-                        ]
+                        label: 'Parameters',
+                        icon: 'pi pi-fw pi-circle-fill',
+                         command: () => {
+                           navigate("/vms/app/Parameters");
+                                    }
                     },
                     {
-                        label: 'Archive',
-                        icon: 'pi pi-fw pi-calendar-times',
-                        items: [
-                            {
-                                label: 'Remove',
-                                icon: 'pi pi-fw pi-calendar-minus'
-                            }
-                        ]
-                    }
+                                            label: 'Picklist',
+                                            icon: 'pi pi-fw pi-circle-fill',
+                                             command: () => {
+                            navigate("/vms/app/Picklists");
+                                                        }
+                                        },
                 ]
             },
-            {
-                label: 'Logout',
-                icon: 'pi pi-fw pi-power-off',
-                 command: () => {
-                               logOut();
-                           }
-            }
+
         ];
+
+ const lastItems = [
+  {
+                 label: 'Logout',
+                 icon: 'pi pi-fw pi-power-off',
+                  command: () => {
+                                logOut();
+                      }
+        }
+ ]
 
   const startContent = (
         <React.Fragment>
@@ -185,7 +188,7 @@ setCurrentUser(null);
 
     const endContent = (
         <React.Fragment>
-
+          <Menubar model={lastItems} />
 
         </React.Fragment>
     );
@@ -211,6 +214,12 @@ setCurrentUser(null);
 
               <Route exact path={"/vms/app/roles"} element={<Roles />} />
              <Route exact path={"/vms/app/viewRole"} element={<ViewRole />} />
+             <Route exact path={"/vms/app/addRole"} element={<AddRole />} />
+
+                <Route exact path={"/vms/app/permissions"} element={<Permissions />} />
+
+            <Route exact path={"/vms/app/Parameters"} element={<Parameters />} />
+ <Route exact path={"/vms/app/Picklists"} element={<Picklists />} />
 
            <Route exact path={"/vms/app/verifyVisitor"} element={<VerifyVisitor />} />
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />

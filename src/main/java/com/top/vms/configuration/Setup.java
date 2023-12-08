@@ -6,14 +6,9 @@
 package com.top.vms.configuration;
 
 import com.top.vms.annotations.NoPermissionApi;
-import com.top.vms.entity.Endpoint;
-import com.top.vms.entity.Parameter;
-import com.top.vms.entity.Role;
-import com.top.vms.entity.User;
+import com.top.vms.entity.*;
 import com.top.vms.helper.LoggedUserInfo;
-import com.top.vms.repository.EndpointRepository;
-import com.top.vms.repository.ParameterRepository;
-import com.top.vms.repository.PermissionRepository;
+import com.top.vms.repository.*;
 import com.top.vms.security.JwtTokenUtils;
 
 import java.text.SimpleDateFormat;
@@ -47,6 +42,10 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
     private static ParameterRepository parameterRepository;
 
+    private static PickListRepository pickListRepository;
+
+    private static PickListItemRepository pickListItemRepository;
+
     private static PermissionRepository permissionRepository;
 
     private static EntityManagerFactory entityManagerFactory;
@@ -71,7 +70,10 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     public static final String BASE_VMS_HOST_PARAMETER_CODE = "base_vms_host";
     public static final String BASE_VERIFY_VISITOR_URL_PARAMETER_CODE = "base_verify_visitor_url";
 
+    /////////////////////////////////Picklists/////////////////////////////////////////////////////
+    public static final String NATIONALITIES_PICKLIST_CODE = "nationalities";
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Parameter[] parameters = new Parameter[]{
@@ -90,13 +92,51 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 parameterRepository.save(oldParameter);
             }
         });
+        ////////////////////////////////////Picklist///////////////////////////////////
+
+        PickList[] pickLists = new PickList[]{
+                new PickList(NATIONALITIES_PICKLIST_CODE, "Nationalities", "nationalities", new ArrayList<PickListItem>() {{
+                    add(new PickListItem("uae_nationality", "uae nation", "UAE", null));
+                    add(new PickListItem("syria_nationality", "syria nation", "Syria", null));
+                    add(new PickListItem("oman_nationality", "oman nation", "Oman", null));
+                    add(new PickListItem("qatar_nationality", "qatar nation", "Qatar", null));
+                }})
+        };
+        Arrays.stream(pickLists).forEach(p -> {
+            PickList oldPickList = pickListRepository.findByCode(p.getCode());
+            if (oldPickList == null) {
+                oldPickList = pickListRepository.save(p);
+            } else {
+                oldPickList.setName(p.getName());
+                oldPickList.setDescription(p.getDescription());
+                oldPickList = pickListRepository.save(oldPickList);
+            }
+
+            PickList finalOldPickList = oldPickList;
+            p.getPickListItems().forEach(item -> {
+                PickListItem oldPickListItem = pickListItemRepository.findByCode(item.getCode());
+                if (oldPickListItem == null) {
+                    item.setPickList(finalOldPickList);
+                    pickListItemRepository.save(item);
+                } else {
+                    oldPickListItem.setName(item.getName());
+                    oldPickListItem.setValue(item.getValue());
+                    oldPickListItem.setDescription(item.getDescription());
+                    pickListItemRepository.save(oldPickListItem);
+                }
+            });
+        });
+
     }
 
-    ///////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////
     @Autowired
     public Setup(EntityManagerFactory entityManagerFactory,
                  ApplicationContext applicationContext,
                  ParameterRepository parameterRepository,
+                 PickListRepository pickListRepository,
+                 PickListItemRepository pickListItemRepository,
                  PermissionRepository permissionRepository,
                  JwtTokenUtils jwtTokenUtil
     ) {
@@ -104,6 +144,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Setup.applicationContext = applicationContext;
         Setup.parameterRepository = parameterRepository;
         Setup.permissionRepository = permissionRepository;
+        Setup.pickListRepository = pickListRepository;
+        Setup.pickListItemRepository = pickListItemRepository;
         Setup.jwtTokenUtil = jwtTokenUtil;
 
     }
@@ -139,8 +181,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     }
 
     public static void setCurrentUserInMemory(User user) {
-        Set<String> endpointApis= permissionRepository.findByRoleIn(user.getRoles()).stream().filter(p->p.getRole().getStatus().equals(Role.Status.ACTIVE)).map(p->p.getEndpoint().getApi()).collect(Collectors.toSet());
-        LoggedUserInfo loggedUserInfo= new LoggedUserInfo(user, endpointApis);
+        Set<String> endpointApis = permissionRepository.findByRoleIn(user.getRoles()).stream().filter(p -> p.getRole().getStatus().equals(Role.Status.ACTIVE)).map(p -> p.getEndpoint().getApi()).collect(Collectors.toSet());
+        LoggedUserInfo loggedUserInfo = new LoggedUserInfo(user, endpointApis);
         memoryMap.put(user.getUsername(), loggedUserInfo);
     }
 
@@ -151,20 +193,21 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
                 .getHandlerMethods();
         map.forEach((key, value) -> {
-            if(!value.getMethod().isAnnotationPresent(NoPermissionApi.class)){
-            Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
-            EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
-            while (namesIterator.hasNext()) {
-                String api = namesIterator.next();
-                if (endpointRepository.findByApi(api) == null) {
-                    Endpoint endpoint = new Endpoint();
-                    endpoint.setApi(api);
-                    endpointRepository.save(endpoint);
+            if (!value.getMethod().isAnnotationPresent(NoPermissionApi.class)) {
+                Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
+                EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
+                while (namesIterator.hasNext()) {
+                    String api = namesIterator.next();
+                    if (endpointRepository.findByApi(api) == null) {
+                        Endpoint endpoint = new Endpoint();
+                        endpoint.setApi(api);
+                        endpointRepository.save(endpoint);
+                    }
+
+
                 }
-
-
             }
-        }});
+        });
         logger.info("========================Endpoint-done====");
     }
 }

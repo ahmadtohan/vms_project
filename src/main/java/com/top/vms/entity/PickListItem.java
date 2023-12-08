@@ -15,14 +15,25 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class PickListItem extends BaseEntity{
-    
+
+    public PickListItem() {
+
+    }
+
+    public PickListItem(String code, String name, String value, String description) {
+        this.code = code;
+        this.name = name;
+        this.value = value;
+        this.description = description;
+    }
+
     @Column(unique = true, nullable = false)
     private String code;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String value;
 
     @Column

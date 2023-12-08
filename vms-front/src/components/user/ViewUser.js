@@ -107,7 +107,7 @@ const ViewUser = () => {
       },
       type: {
         subKey: "label",
-        label: "Status",
+        label: "Type",
         icon: "pi pi-bookmark",
       },
       birthDate: {

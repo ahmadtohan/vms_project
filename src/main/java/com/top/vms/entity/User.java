@@ -136,6 +136,16 @@ public class User extends BaseEntity implements UserDetails {
     @BeforeInsert
     void addRole() {
         final User user = this;
+
+        if(user.type.equals(Type.ADMIN)){
+
+            this.roles=new ArrayList<>();
+            return;
+        }
+        if (this.roles==null || this.roles.isEmpty()){
+
+            throw  new RuntimeException("roles are empty");
+        }
         List<Role> newRoles = new ArrayList<>();
         for (Role roleObj : this.roles) {
             Role role = Setup.getApplicationContext().getBean(RoleRepository.class).findOne(roleObj.getId());

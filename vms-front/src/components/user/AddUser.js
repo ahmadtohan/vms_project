@@ -23,7 +23,7 @@ const AddUser = () => {
   const [fdate, setFdate] = useState(null);
   const [tdate, setTdate] = useState(null);
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [roles, setRoles] = useState([]);
@@ -103,8 +103,9 @@ const AddUser = () => {
                                 errors.gender = "gender is required.";
                               }
                               data.roles=selectedRoles;
-                               if (!data.roles || !data.roles.length) {
-                                                              errors.roles = "roles is required.";
+                              console.log("isAdmin",isAdmin);
+                               if (!isAdmin && (!data.roles || !data.roles.length)) {
+                                                              errors.roles = "roles are required.";
                                   }
 
       console.log("data , err: ",data, errors);
@@ -160,7 +161,7 @@ const AddUser = () => {
       <Tag severity="success" value="Add User: "></Tag>
 
       <form onSubmit={formik.handleSubmit}>
-        <Splitter style={{ height: "400px" }}>
+        <Splitter style={{ height: "400px" , width:"800px" }}>
           <SplitterPanel className="flex align-items-center justify-content-center">
             <div className="gap-q justify-content-center">
               <span className="p-float-label" style={{ margin: "5%" }}>
@@ -300,6 +301,7 @@ const AddUser = () => {
                   onChange={(e) => {
                     setSelectedType(e.value);
                     formik.setFieldValue("type", e.value);
+                    setIsAdmin(e.value=="ADMIN"?true:false);
                   }}
                   options={types}
                   optionLabel="label"
@@ -316,7 +318,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("type")}</div>
               </span>
 
-  <span className="p-float-label" style={{ margin: "5%" }}>
+  {!isAdmin && <span className="p-float-label" style={{ margin: "5%" }}>
                                <AutoComplete  id="roles"
                                       name="roles"
                                          field="name" multiple value={selectedRoles}
@@ -334,7 +336,7 @@ const AddUser = () => {
 
                               <label htmlFor="roles">Roles</label>
                               <div>{getFormErrorMessage("roles")}</div>
-                            </span>
+                            </span>}
 
 
             </div>

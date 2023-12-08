@@ -1,6 +1,9 @@
 package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.top.vms.annotations.EntityJsonSerializer;
+import com.top.vms.helper.GenericSerializer;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,20 +14,30 @@ import java.util.List;
 
 @Entity
 public class PickList extends BaseEntity{
-    
+
+    public PickList(String code, String name,String description, List<PickListItem> pickListItems) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.pickListItems = pickListItems;
+    }
+
+    public PickList() {
+
+    }
+
     @Column(unique = true, nullable = false)
     private String code;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String value;
-
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "pickList", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pickList", fetch = FetchType.EAGER)
+    @JsonSerialize(using = GenericSerializer.class)
+    @EntityJsonSerializer(keys = {"id","value"})
     private List<PickListItem> pickListItems;
 
     public String getCode() {
@@ -41,14 +54,6 @@ public class PickList extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public String getDescription() {

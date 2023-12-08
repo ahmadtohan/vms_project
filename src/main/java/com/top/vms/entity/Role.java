@@ -1,7 +1,11 @@
 package com.top.vms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.top.vms.annotations.AfterInsert;
+import com.top.vms.configuration.Setup;
 import com.top.vms.helper.EnumEntity;
+import com.top.vms.repository.PermissionRepository;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -44,8 +48,17 @@ public class Role extends BaseEntity{
     private List<User> users;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Permission> permissions;
+
+    @AfterInsert
+    void insertPermissions(){
+        for (Permission permission: permissions) {
+            permission.setRole(this);
+            Setup.getApplicationContext().getBean(PermissionRepository.class).save(permission);
+        }
+
+    }
 
     public Role.Status getStatus() {
         return status;
