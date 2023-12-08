@@ -269,28 +269,7 @@ const onFilter= (event) => {
     console.log(event);
     };
 
-  const redirectItems = [
-    {
-      label: "Add",
-      icon: "pi pi-plus",
-      command: () => {
-        navigate("/vms/app/addVisitor");
-      },
-    }
-    ,
-        {
-          label: "Delete",
-          icon: "pi pi-trash",
-          command: () => {},
-        },
-    {
-      label: "Update",
-      icon: "pi pi-refresh",
-      command: () => {
-        window.location.reload();
-      },
-    }
-  ];
+
 
   return (
     <div className="card">
@@ -307,7 +286,7 @@ const onFilter= (event) => {
           dispatch({ type: "onSortingChanged", payload: event });
         }}
         emptyMessage="No visitors found."
-        tableStyle={{ minWidth: "100rem" }}
+
         selectionMode="single" selection={selectedVisitors} onSelectionChange={(e) => setSelectedVisitors(e.value)}
         onRowSelect={onRowSelect} onRowUnselect={onRowUnselect} metaKeySelection={false}
       >
@@ -348,8 +327,11 @@ const onFilter= (event) => {
       >
 
         <SpeedDial
-          model={redirectItems}
-          direction="up" transitionDelay={80} showIcon="pi pi-bars" hideIcon="pi pi-times" buttonClassName="p-button-outlined"
+
+           onClick={(e) => {
+              navigate("/vms/app/addVisitor");
+                                  }}
+          direction="up" transitionDelay={80} showIcon="pi pi-plus" hideIcon="pi pi-plus" buttonClassName="p-button-outlined"
           style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
           buttonClassName="p-button-help"
         />

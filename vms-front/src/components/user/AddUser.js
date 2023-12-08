@@ -9,6 +9,7 @@ import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Dropdown } from "primereact/dropdown";
 import { AutoComplete } from "primereact/autocomplete";
+import { SpeedDial } from 'primereact/speeddial';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -158,13 +159,12 @@ const AddUser = () => {
   return (
     <div className="card">
       <Toast ref={toast} />
-      <Tag severity="success" value="Add User: "></Tag>
+      <Tag severity="success" style={{marginBottom:'40px'}} value="Add User: "></Tag>
 
       <form onSubmit={formik.handleSubmit}>
-        <Splitter style={{ height: "400px" , width:"800px" }}>
-          <SplitterPanel className="flex align-items-center justify-content-center">
-            <div className="gap-q justify-content-center">
-              <span className="p-float-label" style={{ margin: "5%" }}>
+
+            <div className="flex align-items-center">
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="fullName"
                   name="fullName"
@@ -180,7 +180,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("fullName")}</div>
               </span>
 
-              <span className="p-float-label" style={{ margin: "5%" }}>
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="email"
                   name="email"
@@ -196,7 +196,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("email")}</div>
               </span>
 
-              <span className="p-float-label" style={{ margin: "5%" }}>
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputMask
                   id="eid"
                   name="eid"
@@ -214,8 +214,7 @@ const AddUser = () => {
               </span>
 
               <span
-                className="p-float-label"
-                style={{ margin: "5%", width: "100%" }}
+                className="p-float-label  align-items-center gap-2 input-margin"
               >
                 <Calendar
                   id="birthDate"
@@ -233,7 +232,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("birthDate")}</div>
               </span>
 
-                <span className="p-float-label" style={{ margin: "5%" }}>
+                <span className="p-float-label  align-items-center gap-2 input-margin">
                                             <Dropdown
                                               id="gender"
                                               name="gender"
@@ -257,10 +256,11 @@ const AddUser = () => {
                                             <div>{getFormErrorMessage("gender")}</div>
                                           </span>
             </div>
-          </SplitterPanel>
-          <SplitterPanel className="flex align-items-center justify-content-center">
-            <div className="gap-q justify-content-center">
-              <span className="p-float-label" style={{ margin: "5%" }}>
+
+
+
+            <div className="flex align-items-center">
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="username"
                   name="username"
@@ -276,7 +276,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("username")}</div>
               </span>
 
-              <span className="p-float-label" style={{ margin: "5%" }}>
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="password"
                   name="password"
@@ -293,7 +293,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("password")}</div>
               </span>
 
-              <span className="p-float-label" style={{ margin: "5%" }}>
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <Dropdown
                   id="type"
                   name="type"
@@ -318,7 +318,7 @@ const AddUser = () => {
                 <div>{getFormErrorMessage("type")}</div>
               </span>
 
-  {!isAdmin && <span className="p-float-label" style={{ margin: "5%" }}>
+  {!isAdmin && <span className="p-float-label  align-items-center gap-2 input-margin">
                                <AutoComplete  id="roles"
                                       name="roles"
                                          field="name" multiple value={selectedRoles}
@@ -340,10 +340,15 @@ const AddUser = () => {
 
 
             </div>
-          </SplitterPanel>
-        </Splitter>
 
-        <Button type="submit" label="Submit" />
+
+          <SpeedDial type="submit"
+                  onClick={(e) => {
+                                  formik.submitForm();
+                                }}
+                  direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
+                                               style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+                                               buttonClassName="p-button-help" />
       </form>
     </div>
   );

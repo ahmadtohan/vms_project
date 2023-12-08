@@ -211,7 +211,7 @@ const onFilter= (event) => {
           dispatch({ type: "onSortingChanged", payload: event });
         }}
         emptyMessage="No picklists found."
-        tableStyle={{ minWidth: "100rem" }}
+
         selectionMode="single" selection={selectedPicklists} onSelectionChange={(e) => setSelectedPicklists(e.value)}
         onRowSelect={onRowSelect} onRowUnselect={onRowUnselect} metaKeySelection={false}
       >

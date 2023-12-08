@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
+import { SpeedDial } from 'primereact/speeddial';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -92,42 +93,43 @@ const AddVisitor = () => {
   return (
     <div className="card">
       <Toast ref={toast} />
-      <Tag severity="success" value="Add Visitor: "></Tag>
-      <div className="flex flex-wrap gap-q  justify-content-center">
-        <form onSubmit={formik.handleSubmit}>
-          <span className="p-float-label" style={{ margin: "5%" }}>
-            <InputText
-              id="fullName"
-              name="fullName"
-              value={formik.values.value}
-              onChange={(e) => {
-                formik.setFieldValue("fullName", e.target.value);
-              }}
-              className={classNames({
-                "p-invalid": isFormFieldInvalid("fullName"),
-              })}
-            />
-            <label htmlFor="fullName">Full Name</label>
-            <div>{getFormErrorMessage("fullName")}</div>
-          </span>
+      <Tag severity="success" style={{marginBottom:'40px'}} value="Add Visitor: "></Tag>
+        <form onSubmit={formik.handleSubmit} >
 
-          <span className="p-float-label" style={{ margin: "5%" }}>
-            <InputText
-              id="email"
-              name="email"
-              value={formik.values.value}
-              onChange={(e) => {
-                formik.setFieldValue("email", e.target.value);
-              }}
-              className={classNames({
-                "p-invalid": isFormFieldInvalid("email"),
-              })}
-            />
-            <label htmlFor="email">Email</label>
-            <div>{getFormErrorMessage("email")}</div>
-          </span>
+         <div className="flex align-items-center" >
+                   <span className="p-float-label  align-items-center gap-2 input-margin" >
+                              <InputText
+                                id="fullName"
+                                name="fullName"
+                                value={formik.values.value}
+                                onChange={(e) => {
+                                  formik.setFieldValue("fullName", e.target.value);
+                                }}
+                                className={classNames({
+                                  "p-invalid": isFormFieldInvalid("fullName"),
+                                })}
+                              />
+                              <label htmlFor="fullName">Full Name</label>
+                              <div>{getFormErrorMessage("fullName")}</div>
+                            </span>
 
-          <span className="p-float-label" style={{ margin: "5%" }}>
+                             <span className="p-float-label  align-items-center gap-2 input-margin" >
+                                        <InputText
+                                          id="email"
+                                          name="email"
+                                          value={formik.values.value}
+                                          onChange={(e) => {
+                                            formik.setFieldValue("email", e.target.value);
+                                          }}
+                                          className={classNames({
+                                            "p-invalid": isFormFieldInvalid("email"),
+                                          })}
+                                        />
+                                        <label htmlFor="email">Email</label>
+                                        <div>{getFormErrorMessage("email")}</div>
+                                      </span>
+
+          <span className="p-float-label  align-items-center gap-2 input-margin" >
             <InputMask
               id="eid"
               name="eid"
@@ -142,9 +144,14 @@ const AddVisitor = () => {
             <div>{getFormErrorMessage("eid")}</div>
           </span>
 
+
+              </div>
+
+
+<div className="flex align-items-center">
           <span
-            className="p-float-label"
-            style={{ margin: "5%", width: "100%" }}
+            className="p-float-label  align-items-center gap-2 input-margin"
+
           >
             <Calendar
               id="fromDate"
@@ -165,8 +172,8 @@ const AddVisitor = () => {
           </span>
 
           <span
-            className="p-float-label"
-            style={{ margin: "5%", width: "100%" }}
+            className="p-float-label align-items-center gap-2 input-margin"
+
           >
             <Calendar
               id="toDate"
@@ -186,9 +193,18 @@ const AddVisitor = () => {
             <div>{getFormErrorMessage("toDate")}</div>
           </span>
 
-          <Button type="submit" label="Submit" />
+</div>
+          <SpeedDial type="submit"
+          onClick={(e) => {
+                          formik.submitForm();
+                        }}
+          direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
+                                       style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+                                       buttonClassName="p-button-help" />
+
         </form>
-      </div>
+
+
     </div>
   );
 };

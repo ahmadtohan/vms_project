@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenUtils jwtTokenUtils;
 
     public static String[] permitMatchers = new String[]{"/content",
-            "/static", "/vmsApp","/user/login", "/user/logout"};
+            "/static", "/vmsApp","/user/login", "/user/logout", "/visitor/create"};
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

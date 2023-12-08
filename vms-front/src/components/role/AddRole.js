@@ -9,6 +9,7 @@ import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Dropdown } from "primereact/dropdown";
 import { AutoComplete } from "primereact/autocomplete";
+import { SpeedDial } from 'primereact/speeddial';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -69,7 +70,7 @@ const AddRole = () => {
       let errors = {};
 
       if (!data.name) {
-        errors.fullName = "name is required.";
+        errors.name = "name is required.";
       }
           data.endpoints=selectedEndpoints;
             if (!data.endpoints || !data.endpoints.length){
@@ -122,12 +123,12 @@ const AddRole = () => {
   return (
     <div className="card">
       <Toast ref={toast} />
-      <Tag severity="success" value="Add Role: "></Tag>
+      <Tag severity="success" style={{marginBottom:'40px'}} value="Add Role: "></Tag>
 
       <form onSubmit={formik.handleSubmit}>
 
-            <div className="gap-q justify-content-center">
-              <span className="p-float-label" style={{ margin: "3%" }}>
+            <div className="flex align-items-center">
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="name"
                   name="name"
@@ -143,7 +144,7 @@ const AddRole = () => {
                 <div>{getFormErrorMessage("name")}</div>
               </span>
 
-              <span className="p-float-label" style={{ margin: "3%" }}>
+              <span className="p-float-label  align-items-center gap-2 input-margin">
                 <InputText
                   id="description"
                   name="description"
@@ -159,11 +160,11 @@ const AddRole = () => {
                 <div>{getFormErrorMessage("description")}</div>
               </span>
 
+  </div>
 
 
-
-
-  <span className="p-float-label" style={{ margin: "3%" }}>
+<div className="flex align-items-center">
+  <span className="p-float-label  align-items-center gap-2 input-margin">
 
                                <AutoComplete  id="endpoints"
                                       name="endpoints"
@@ -184,11 +185,17 @@ const AddRole = () => {
                               <div>{getFormErrorMessage("endpoints")}</div>
                             </span>
 
+</div>
 
-               </div>
 
 
-        <Button type="submit" label="Submit" />
+                 <SpeedDial type="submit"
+                         onClick={(e) => {
+                                         formik.submitForm();
+                                       }}
+                         direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
+                                                      style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+                                                      buttonClassName="p-button-help" />
       </form>
     </div>
   );
