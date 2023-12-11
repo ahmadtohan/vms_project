@@ -50,7 +50,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String path = request.getServletPath();
-        System.out.println("path:" + path);
+        System.out.println("path:" + path+ " session: "+request.getSession().getId());
         boolean isFront = path.startsWith("/app");
         if (isFront) {
             request.getRequestDispatcher("/").forward(request, response);

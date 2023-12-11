@@ -4,6 +4,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
  import { Toast } from 'primereact/toast';
 
+import endPoint from "./services/endPoint";
+import config from "./services/config";
 
 import Visitors from "./components/visitor/Visitors";
 import AddVisitor from "./components/visitor/AddVisitor";
@@ -85,6 +87,8 @@ const isLogged = () => {
 
 
 const logOut = () => {
+ endPoint(config.userAPIs.logout, "GET",null).then((res) => {});
+  document.cookie="";
 setCurrentUser(null);
     localStorage.removeItem("user");
     load('/vms/app/login');

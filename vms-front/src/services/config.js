@@ -13,7 +13,8 @@ view:'user/get',
 create:'user/create',
 update:'user/update',
 delete:'user/delete',
-login:'user/login'
+login:'user/login',
+logout:'user/logout'
 },
 
  roleAPIs: {

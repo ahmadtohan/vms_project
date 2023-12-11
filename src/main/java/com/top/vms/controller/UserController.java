@@ -93,6 +93,14 @@ public class UserController extends BaseRepositoryController<User> {
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> logout(HttpServletRequest request){
+        Setup.removeCurrentUserfromMemory();
+        request.getSession(true).invalidate();
+        return okResponse();
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> search(@RequestParam(required = false) String username,
@@ -106,6 +114,8 @@ public class UserController extends BaseRepositoryController<User> {
         Page<Map<String, Object>> projectionPage = projection.projectPage(query.execute(pageable), pageable);
         return new ResponseEntity<>(projectionPage, HttpStatus.OK);
     }
+
+
 
     @Override
     protected ResponseEntity<?> getEntity(Long id) {

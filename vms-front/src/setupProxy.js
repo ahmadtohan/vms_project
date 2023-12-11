@@ -6,6 +6,10 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: "http://localhost:8080",
       changeOrigin: true,
+	  headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+    }
     })
   );
 };
+

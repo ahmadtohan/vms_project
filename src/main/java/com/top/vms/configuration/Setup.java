@@ -173,6 +173,16 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         memoryMap.put(user.getUsername(), loggedUserInfo);
     }
 
+    public static void removeCurrentUserfromMemory() {
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        final String requestHeader = request.getHeader(Setup.TOKEN_HEADER);
+        if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
+            String username = jwtTokenUtil.getUsernameFromToken(requestHeader.substring(7));
+            memoryMap.remove(username);
+        }
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
