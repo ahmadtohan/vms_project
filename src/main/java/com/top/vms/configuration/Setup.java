@@ -86,10 +86,6 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
             Parameter oldParameter = parameterRepository.findByCode(p.getCode());
             if (oldParameter == null) {
                 parameterRepository.save(p);
-            } else {
-                oldParameter.setName(p.getName());
-                oldParameter.setValue(p.getValue());
-                parameterRepository.save(oldParameter);
             }
         });
         ////////////////////////////////////Picklist///////////////////////////////////
@@ -106,10 +102,6 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
             PickList oldPickList = pickListRepository.findByCode(p.getCode());
             if (oldPickList == null) {
                 oldPickList = pickListRepository.save(p);
-            } else {
-                oldPickList.setName(p.getName());
-                oldPickList.setDescription(p.getDescription());
-                oldPickList = pickListRepository.save(oldPickList);
             }
 
             PickList finalOldPickList = oldPickList;
@@ -118,11 +110,6 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 if (oldPickListItem == null) {
                     item.setPickList(finalOldPickList);
                     pickListItemRepository.save(item);
-                } else {
-                    oldPickListItem.setName(item.getName());
-                    oldPickListItem.setValue(item.getValue());
-                    oldPickListItem.setDescription(item.getDescription());
-                    pickListItemRepository.save(oldPickListItem);
                 }
             });
         });
