@@ -96,7 +96,7 @@ public class UserController extends BaseRepositoryController<User> {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> logout(HttpServletRequest request){
-        Setup.removeCurrentUserfromMemory();
+        Setup.removeCurrentUserFromMemory();
         request.getSession(true).invalidate();
         return okResponse();
     }

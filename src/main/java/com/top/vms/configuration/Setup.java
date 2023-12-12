@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 
+import com.top.vms.security.SecurityConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,7 +174,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         memoryMap.put(user.getUsername(), loggedUserInfo);
     }
 
-    public static void removeCurrentUserfromMemory() {
+    public static void removeCurrentUserFromMemory() {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         final String requestHeader = request.getHeader(Setup.TOKEN_HEADER);
@@ -195,7 +196,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
                 while (namesIterator.hasNext()) {
                     String api = namesIterator.next();
-                    if (endpointRepository.findByApi(api) == null) {
+                    if (!Arrays.stream(SecurityConfig.permitMatchers).anyMatch(s -> api.startsWith(s)) && endpointRepository.findByApi(api) == null) {
                         Endpoint endpoint = new Endpoint();
                         endpoint.setApi(api);
                         endpointRepository.save(endpoint);
