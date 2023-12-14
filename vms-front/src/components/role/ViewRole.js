@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { SpeedDial } from "primereact/speeddial";
 import { Chip } from "primereact/chip";
+import { Show } from "./../../custom/Show";
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -90,38 +87,7 @@ const ViewRole = () => {
 
   return (
     <div className="card">
-      {Object.keys(rows).map((row) => (
-        <div key={row} className="flex align-items-center gap-3">
-          {Object.keys(rows[row]).map((key) => (
-            <div key={key} style={{ margin: "20px" }}>
-              <span className="flex align-items-center gap-2">
-                <i className={rows[row][key].icon}></i>
-
-                <span className="font-semibold">
-                  {rows[row][key]["isTag"] === true ? (
-                    <Tag
-                      severity={getSeverityByStatus(
-                        rows[row][key]["subKey"] !== undefined
-                          ? role[key][rows[row][key]["subKey"]]
-                          : role[key]
-                      )}
-                    >
-                      {rows[row][key]["subKey"] !== undefined
-                        ? role[key][rows[row][key]["subKey"]]
-                        : role[key]}
-                    </Tag>
-                  ) : rows[row][key]["subKey"] !== undefined ? (
-                    role[key][rows[row][key]["subKey"]]
-                  ) : (
-                    role[key]
-                  )}
-                </span>
-              </span>
-              <small>{rows[row][key].label}</small>
-            </div>
-          ))}
-        </div>
-      ))}
+       <Show rows={rows} object={role} severityByStatus={getSeverityByStatus} />
 
       <div className="flex align-items-center gap-3">
         <div style={{ margin: "20px" }}>

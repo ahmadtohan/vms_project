@@ -1,28 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
-import { Dropdown } from "primereact/dropdown";
-import { AutoComplete } from "primereact/autocomplete";
 import { SpeedDial } from 'primereact/speeddial';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
+import { Input } from "./../../custom/Input";
 
 import { useFormik } from "formik";
-import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 
 const AddUser = () => {
   const toast = useRef(null);
   const [user, setUser] = useState({});
-  const [fdate, setFdate] = useState(null);
-  const [tdate, setTdate] = useState(null);
   const [message, setMessage] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
@@ -135,16 +127,7 @@ const AddUser = () => {
     return new Date(date).toISOString().slice(0, 19).replace("T", " ");
   }
 
-  const isFormFieldInvalid = (name) =>
-    !!(formik.touched[name] && formik.errors[name]);
 
-  const getFormErrorMessage = (name) => {
-    return isFormFieldInvalid(name) ? (
-      <small className="p-error">{formik.errors[name]}</small>
-    ) : (
-      <small className="p-error">&nbsp;</small>
-    );
-  };
 
   const types = [
     { value: "ADMIN", label: "Admin" },
@@ -164,179 +147,43 @@ const AddUser = () => {
       <form onSubmit={formik.handleSubmit}>
 
             <div className="flex align-items-center">
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="fullName"
-                  name="fullName"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("fullName", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("fullName"),
-                  })}
-                />
-                <label htmlFor="fullName">Full Name</label>
-                <div>{getFormErrorMessage("fullName")}</div>
-              </span>
+               <Input name="fullName" type ="text" title="Full Name"  formik={formik} />
 
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="email"
-                  name="email"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("email", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("email"),
-                  })}
-                />
-                <label htmlFor="email">Email</label>
-                <div>{getFormErrorMessage("email")}</div>
-              </span>
+               <Input name="email" type ="text" title="Email"  formik={formik} />
 
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputMask
-                  id="eid"
-                  name="eid"
-                  value={formik.values.value}
-                  mask="999-9999-9999999-9"
-                  onChange={(e) => {
-                    formik.setFieldValue("eid", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("eid"),
-                  })}
-                />
-                <label htmlFor="eid">E-ID</label>
-                <div>{getFormErrorMessage("eid")}</div>
-              </span>
+              <Input name="eid" type ="mask" mask="999-9999-9999999-9" title="E-ID"  formik={formik} />
 
-              <span
-                className="p-float-label  align-items-center gap-2 input-margin"
-              >
-                <Calendar
-                  id="birthDate"
-                  name="birthDate"
-                  dateFormat="yy-mm-dd"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("birthDate", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("birthDate"),
-                  })}
-                />
-                <label htmlFor="birthDate">birth Date</label>
-                <div>{getFormErrorMessage("birthDate")}</div>
-              </span>
+               <Input name="birthDate" type ="calendar" title="Birth Date"  formik={formik} />
 
-                <span className="p-float-label  align-items-center gap-2 input-margin">
-                                            <Dropdown
-                                              id="gender"
-                                              name="gender"
-                                              value={selectedGender}
-                                              onChange={(e) => {
-                                                setSelectedGender(e.value);
-                                                formik.setFieldValue("gender", e.value);
-                                              }}
-                                              options={genders}
-                                              optionLabel="label"
-                                              placeholder="Select Gender"
-                                              className={classNames(
-                                                {
-                                                  "p-invalid": isFormFieldInvalid("gender"),
-                                                },
-                                                "w-full md:w-14rem"
-                                              )}
-                                            />
+               <Input name="gender" type ="dropdown" title="Gender"  value={selectedGender}
+                                                               onChange={(e) => {
+                                                                 setSelectedGender(e.value);
+                                                                 formik.setFieldValue("gender", e.value);
+                                                               }}
+                  options={genders}  optionLabel="label"  placeholder="Select Gender" formik={formik} />
 
-                                            <label htmlFor="gender">Gender</label>
-                                            <div>{getFormErrorMessage("gender")}</div>
-                                          </span>
             </div>
 
 
-
             <div className="flex align-items-center">
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="username"
-                  name="username"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("username", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("username"),
-                  })}
-                />
-                <label htmlFor="username">User Name</label>
-                <div>{getFormErrorMessage("username")}</div>
-              </span>
 
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("password", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("password"),
-                  })}
-                />
-                <label htmlFor="password">Password</label>
-                <div>{getFormErrorMessage("password")}</div>
-              </span>
+      <Input name="username" type ="text" title="Username"  formik={formik} />
+       <Input name="password" type ="password" title="Password"  formik={formik} />
 
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <Dropdown
-                  id="type"
-                  name="type"
-                  value={selectedType}
-                  onChange={(e) => {
-                    setSelectedType(e.value);
-                    formik.setFieldValue("type", e.value);
-                    setIsAdmin(e.value=="ADMIN"?true:false);
-                  }}
-                  options={types}
-                  optionLabel="label"
-                  placeholder="Select a Type"
-                  className={classNames(
-                    {
-                      "p-invalid": isFormFieldInvalid("type"),
-                    },
-                    "w-full md:w-14rem"
-                  )}
-                />
+     <Input name="type" type ="dropdown" title="Type"  value={selectedType}
+                                                  onChange={(e) => {
+                                                           setSelectedType(e.value);
+                                                            formik.setFieldValue("type", e.value);
+                                                          setIsAdmin(e.value=="ADMIN"?true:false);
 
-                <label htmlFor="type">Type</label>
-                <div>{getFormErrorMessage("type")}</div>
-              </span>
-
-  {!isAdmin && <span className="p-float-label  align-items-center gap-2 input-margin">
-                               <AutoComplete  id="roles"
-                                      name="roles"
-                                         field="name" multiple value={selectedRoles}
-                               suggestions={filteredRoles} completeMethod={search}
-                                onChange={(e) => {setSelectedRoles(e.value); }}
-
-                                  className={classNames(
-                                                                   {
-                                                                     "p-invalid": isFormFieldInvalid("roles"),
-                                                                   },
-                                                                   "w-full md:w-14rem"
-                                                                 )}
-                                                                 />
+                                                               }}
+                  options={types}  optionLabel="label"  placeholder="Select Type" formik={formik} />
 
 
-                              <label htmlFor="roles">Roles</label>
-                              <div>{getFormErrorMessage("roles")}</div>
-                            </span>}
+  {!isAdmin &&
+   <Input name="roles" type ="autoComplete" field="name" value={selectedRoles}
+   title="Roles" multiple="true" suggestions={filteredRoles} completeMethod={search}
+   onChange={(e) => {setSelectedRoles(e.value); }} formik={formik} />}
 
 
             </div>

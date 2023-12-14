@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
+
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
@@ -9,6 +7,7 @@ import { Tag } from "primereact/tag";
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
+import { Show } from "./../../custom/Show";
 
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
@@ -81,40 +80,7 @@ const rows = {
 
   return (
     <div className="card">
-    { visitor.id!=null?Object.keys(rows).map((row) => (
-      <div key={row}  className="flex align-items-center gap-3">
-        {Object.keys(rows[row]).map((key) => (
-          <div key={key} style={{ margin: "20px" }}>
-            <span className="flex align-items-center gap-2">
-              <i className={rows[row][key].icon}></i>
-
-              <span className="font-semibold">
-                {rows[row][key]["isTag"] === true ? (
-                  <Tag
-                    severity={getSeverityByStatus(
-                      rows[row][key]["subKey"] !== undefined
-                        ? visitor[key][rows[row][key]["subKey"]]
-                        : visitor[key]
-                    )}
-                  >
-                    {rows[row][key]["subKey"] !== undefined
-                      ? visitor[key][rows[row][key]["subKey"]]
-                      : visitor[key]}
-                  </Tag>
-                ) : rows[row][key]["subKey"] !== undefined ? (
-                  visitor[key][rows[row][key]["subKey"]]
-                ) : (
-                  visitor[key]
-                )}
-
-
-              </span>
-            </span>
-            <small>{rows[row][key].label}</small>
-          </div>
-        ))}
-      </div>
-      ))
+    { visitor.id!=null? <Show rows={rows} object={visitor} severityByStatus={getSeverityByStatus} />
       :<Tag severity="danger" value="Error"></Tag>}
     </div>
   );

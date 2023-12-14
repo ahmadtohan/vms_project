@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
-import { Dropdown } from "primereact/dropdown";
-import { AutoComplete } from "primereact/autocomplete";
 import { SpeedDial } from 'primereact/speeddial';
+import { Input } from "./../../custom/Input";
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -107,18 +102,6 @@ const AddRole = () => {
     return new Date(date).toISOString().slice(0, 19).replace("T", " ");
   }
 
-  const isFormFieldInvalid = (name) =>
-    !!(formik.touched[name] && formik.errors[name]);
-
-  const getFormErrorMessage = (name) => {
-    return isFormFieldInvalid(name) ? (
-      <small className="p-error">{formik.errors[name]}</small>
-    ) : (
-      <small className="p-error">&nbsp;</small>
-    );
-  };
-
-
 
   return (
     <div className="card">
@@ -128,66 +111,18 @@ const AddRole = () => {
       <form onSubmit={formik.handleSubmit}>
 
             <div className="flex align-items-center">
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="name"
-                  name="name"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("name", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("name"),
-                  })}
-                />
-                <label htmlFor="name">Name</label>
-                <div>{getFormErrorMessage("name")}</div>
-              </span>
-
-              <span className="p-float-label  align-items-center gap-2 input-margin">
-                <InputText
-                  id="description"
-                  name="description"
-                  value={formik.values.value}
-                  onChange={(e) => {
-                    formik.setFieldValue("description", e.target.value);
-                  }}
-                  className={classNames({
-                    "p-invalid": isFormFieldInvalid("description"),
-                  })}
-                />
-                <label htmlFor="description">Description</label>
-                <div>{getFormErrorMessage("description")}</div>
-              </span>
+            <Input name="name" type ="text" title="Name"  formik={formik} />
+             <Input name="description" type ="text" title="Description"  formik={formik} />
 
   </div>
 
 
 <div className="flex align-items-center">
-  <span className="p-float-label  align-items-center gap-2 input-margin">
-
-                               <AutoComplete  id="endpoints"
-                                      name="endpoints"
-                                         field="api" multiple value={selectedEndpoints}
-                               suggestions={filteredEndpoints} completeMethod={search}
-                                onChange={(e) => {setSelectedEndpoints(e.value); }}
-
-                                  className={classNames(
-                                                                   {
-                                                                     "p-invalid": isFormFieldInvalid("endpoints"),
-                                                                   },
-                                                                   "w-full md:w-14rem"
-                                                                 )}
-                                                                 />
-
-
-                              <label htmlFor="endpoints">Endpoints</label>
-                              <div>{getFormErrorMessage("endpoints")}</div>
-                            </span>
+ <Input name="endpoints" type ="autoComplete" field="api" value={selectedEndpoints}
+ title="Endpoints" multiple="true" suggestions={filteredEndpoints} completeMethod={search}
+ onChange={(e) => {setSelectedEndpoints(e.value); }} formik={formik} />
 
 </div>
-
-
 
                  <SpeedDial type="submit"
                          onClick={(e) => {
@@ -195,7 +130,7 @@ const AddRole = () => {
                                        }}
                          direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
                                                       style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-                                                      buttonClassName="p-button-help" />
+                       buttonClassName="p-button-help" />
       </form>
     </div>
   );

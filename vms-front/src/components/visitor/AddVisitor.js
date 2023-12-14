@@ -1,27 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { SpeedDial } from 'primereact/speeddial';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
+import { Input } from "./../../custom/Input";
 
 import { useFormik } from "formik";
-import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 
 const AddVisitor = () => {
   const toast = useRef(null);
   const [visitor, setVisitor] = useState({});
-  const [fdate, setFdate] = useState(null);
-  const [tdate, setTdate] = useState(null);
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {}, []);
@@ -56,7 +49,6 @@ const AddVisitor = () => {
     },
     onSubmit: (data) => {
 
-
       setMessage("");
       data.fromDate = formatDate(data.fromDate);
       data.toDate = formatDate(data.toDate);
@@ -79,16 +71,7 @@ const AddVisitor = () => {
     return new Date(date).toISOString().slice(0, 19).replace("T", " ");
   }
 
-  const isFormFieldInvalid = (name) =>
-    !!(formik.touched[name] && formik.errors[name]);
 
-  const getFormErrorMessage = (name) => {
-    return isFormFieldInvalid(name) ? (
-      <small className="p-error">{formik.errors[name]}</small>
-    ) : (
-      <small className="p-error">&nbsp;</small>
-    );
-  };
 
   return (
     <div className="card">
@@ -96,111 +79,26 @@ const AddVisitor = () => {
       <Tag severity="success" style={{marginBottom:'40px'}} value="Add Visitor: "></Tag>
         <form onSubmit={formik.handleSubmit} >
 
-         <div className="flex align-items-center" >
-                   <span className="p-float-label  align-items-center gap-2 input-margin" >
-                              <InputText
-                                id="fullName"
-                                name="fullName"
-                                value={formik.values.value}
-                                onChange={(e) => {
-                                  formik.setFieldValue("fullName", e.target.value);
-                                }}
-                                className={classNames({
-                                  "p-invalid": isFormFieldInvalid("fullName"),
-                                })}
-                              />
-                              <label htmlFor="fullName">Full Name</label>
-                              <div>{getFormErrorMessage("fullName")}</div>
-                            </span>
-
-                             <span className="p-float-label  align-items-center gap-2 input-margin" >
-                                        <InputText
-                                          id="email"
-                                          name="email"
-                                          value={formik.values.value}
-                                          onChange={(e) => {
-                                            formik.setFieldValue("email", e.target.value);
-                                          }}
-                                          className={classNames({
-                                            "p-invalid": isFormFieldInvalid("email"),
-                                          })}
-                                        />
-                                        <label htmlFor="email">Email</label>
-                                        <div>{getFormErrorMessage("email")}</div>
-                                      </span>
-
-          <span className="p-float-label  align-items-center gap-2 input-margin" >
-            <InputMask
-              id="eid"
-              name="eid"
-              value={formik.values.value}
-              mask="999-9999-9999999-9"
-              onChange={(e) => {
-                formik.setFieldValue("eid", e.target.value);
-              }}
-              className={classNames({ "p-invalid": isFormFieldInvalid("eid") })}
-            />
-            <label htmlFor="eid">E-ID</label>
-            <div>{getFormErrorMessage("eid")}</div>
-          </span>
+        <div className="flex align-items-center" >
+       <Input name="fullName" type ="text" title="Full Name"  formik={formik} />
+       <Input name="email" type ="text" title="Email"  formik={formik} />
+       <Input name="eid" type ="mask" mask="999-9999-9999999-9" title="E-ID"  formik={formik} />
+       </div>
 
 
-              </div>
+        <div className="flex align-items-center">
+                <Input name="fromDate" type ="calendar" title="from Date"  formik={formik} />
+                <Input name="toDate" type ="calendar" title="to Date"  formik={formik} />
 
+        </div>
 
-<div className="flex align-items-center">
-          <span
-            className="p-float-label  align-items-center gap-2 input-margin"
-
-          >
-            <Calendar
-              id="fromDate"
-              name="fromDate"
-              dateFormat="yy-mm-dd"
-              showTime
-              hourFormat="24"
-              value={formik.values.value}
-              onChange={(e) => {
-                formik.setFieldValue("fromDate", e.target.value);
-              }}
-              className={classNames({
-                "p-invalid": isFormFieldInvalid("fromDate"),
-              })}
-            />
-            <label htmlFor="fromDate">from Date</label>
-            <div>{getFormErrorMessage("fromDate")}</div>
-          </span>
-
-          <span
-            className="p-float-label align-items-center gap-2 input-margin"
-
-          >
-            <Calendar
-              id="toDate"
-              name="toDate"
-              dateFormat="yy-mm-dd"
-              showTime
-              hourFormat="24"
-              value={formik.values.value}
-              onChange={(e) => {
-                formik.setFieldValue("toDate", e.target.value);
-              }}
-              className={classNames({
-                "p-invalid": isFormFieldInvalid("toDate"),
-              })}
-            />
-            <label htmlFor="toDate">to Date</label>
-            <div>{getFormErrorMessage("toDate")}</div>
-          </span>
-
-</div>
           <SpeedDial type="submit"
           onClick={(e) => {
                           formik.submitForm();
                         }}
           direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
-                                       style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-                                       buttonClassName="p-button-help" />
+                     style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+                    buttonClassName="p-button-help" />
 
         </form>
 
