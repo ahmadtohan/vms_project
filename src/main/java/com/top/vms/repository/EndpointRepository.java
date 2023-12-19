@@ -21,4 +21,5 @@ public interface EndpointRepository extends BaseRepository<Endpoint> {
 
     public Endpoint findByApi(String api);
 
+    public List<Endpoint> findByHasPermission(Boolean hasPermission);
 }

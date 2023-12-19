@@ -15,6 +15,10 @@ import com.top.vms.helper.Utils;
 import io.jsonwebtoken.ExpiredJwtException;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import static com.top.vms.security.SecurityConfig.*;
 
 @Component
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
@@ -50,7 +59,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String path = request.getServletPath();
-        System.out.println("session: "+request.getSession().getId()+ " path:" + path);
+        System.out.println("session: " + request.getSession().getId() + " path:" + path);
         boolean isFront = path.startsWith("/app");
         if (isFront) {
             request.getRequestDispatcher("/").forward(request, response);
@@ -90,8 +99,13 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         request.setAttribute("SHOULD_NOT_FILTER", true);
 
 
-        int accessCode = checkCurrentApiHasPermission(request);
-        if (accessCode!=200) {
+        int accessCode = 0;
+        try {
+            accessCode = checkCurrentApiHasPermission(request);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (accessCode != 200) {
             response.sendError(accessCode, "Access Denied");
             return;
         }
@@ -103,80 +117,49 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         return Boolean.TRUE.equals(request.getAttribute("SHOULD_NOT_FILTER"));
     }
 
-    private int checkCurrentApiHasPermission(HttpServletRequest request) {
-        int okCode=200;
+    private int checkCurrentApiHasPermission(HttpServletRequest request) throws Exception {
+        int okCode = 200;
         String path = request.getServletPath();
 
-        if (Arrays.stream(SecurityConfig.permitMatchers).anyMatch(s -> path.startsWith(s))) {
+        if (Arrays.stream(permitMatchers).anyMatch(s -> path.startsWith(s))) {
             logger.info("-------------permitMatchers: ok");
             return okCode;
         }
 
         LoggedUserInfo loggedUserInfo = Setup.getCurrentUserInfo();
-        if (loggedUserInfo == null || loggedUserInfo.getUser() ==null) {
+        if (loggedUserInfo == null || loggedUserInfo.getUser() == null) {
             logger.info("-------------user is null");
             return 401;
         }
         if (loggedUserInfo.getUser().getType().equals(User.Type.ADMIN)) {
             logger.info("-------------admin: ok");
-           return okCode;
+            return okCode;
         }
-        String api = null;
-        String[] controllerMappings = new String[]{};
-        String[] methodMappings = new String[]{};
-        for (HandlerMapping handlerMapping : Setup.getApplicationContext().getBeansOfType(HandlerMapping.class).values()) {
-            HandlerExecutionChain handlerExecutionChain = null;
-            try {
-                handlerExecutionChain = handlerMapping.getHandler(request);
 
-                if (handlerExecutionChain != null) {
-                    Object handler = handlerExecutionChain.getHandler();
-                    if (handler != null && handler instanceof HandlerMethod) {
-                        HandlerMethod handlerMethod = (HandlerMethod) handlerExecutionChain.getHandler();
-                        if(handlerMethod.getMethod().isAnnotationPresent(NoPermissionApi.class)){
-                            return okCode;
-                        }
-                        methodMappings = handlerMethod.getMethod().getAnnotation(RequestMapping.class).value();
-                        logger.info("---------handlerMethod-----{} {}", handlerMethod);
-                        if (handlerMethod.getMethod().getDeclaringClass().isAnnotationPresent(RequestMapping.class)) {
-                            controllerMappings = handlerMethod.getMethod().getDeclaringClass().getAnnotation(RequestMapping.class).value();
-                        } else {
+        HandlerExecutionChain handlerExecutionChain = Setup.getApplicationContext().getBean(HandlerMapping.class).getHandler(request);
+        logger.info("-------------handlerExecutionChain {}", handlerExecutionChain);
+        HandlerMethod handlerMethod = (HandlerMethod) handlerExecutionChain.getHandler();
+        if (handlerMethod.getMethod().isAnnotationPresent(NoPermissionApi.class)) {
+            return okCode;
+        }
+        Map<RequestMappingInfo, HandlerMethod> map = Setup.getApplicationContext().getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
+            PatternsRequestCondition patternsRequestCondition = entry.getKey().getPatternsCondition().getMatchingCondition(request);
+            if (entry.getValue().getMethod().equals(handlerMethod.getMethod()) && patternsRequestCondition != null) {
+                logger.info("-------------patternsRequestCondition {}", patternsRequestCondition);
+                Set<String> patterns = patternsRequestCondition.getPatterns();
 
-                            for (String methodMap : methodMappings) {
-                                String firstSeg = "/" + Arrays.asList(methodMap.split("/")).get(1);
-                                logger.info("---------------firstSeg: " + firstSeg);
-                                if (path.contains(firstSeg)) {
-                                    String controller = path.substring(0, path.indexOf(firstSeg));
-                                    controllerMappings = new String[]{controller};
-                                    logger.info("-------------controller: " + controller);
-                                    break;
-                                }
-                            }
-
-                        }
-                        break;
+                logger.info("-------------Patterns {}", patterns);
+                for (String p : patterns) {
+                    if (Setup.getNoPermissionEndpointList().contains(p) || loggedUserInfo.getEndpointApis().contains(p)) {
+                        logger.info("-------------permission true: " + p);
+                        return okCode;
                     }
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-        logger.info("--------------{} {}", controllerMappings, methodMappings);
-
-        for (String controllerMap : controllerMappings) {
-            for (String methodMap : methodMappings) {
-                String matchApi = controllerMap + methodMap;
-                String match = Utils.replaceBetween(matchApi, "{", "}", true, true, "");
-                logger.info("-------------api: " + matchApi + "   ===>   " + match);
-                logger.info("-------------endpointApis {}", loggedUserInfo.getEndpointApis());
-                if (path.startsWith(match) && loggedUserInfo.getEndpointApis().contains(matchApi)) {
-                        return okCode;
-                }
-
 
             }
         }
+
         return 403;
     }
 }

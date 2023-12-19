@@ -27,7 +27,7 @@ const Permissions = () => {
 
     useEffect(() => {
      endPoint(
-          config.permissionAPIs.permissionmap,"GET",null
+          config.permissionAPIs.permissionlist,"GET",null
         ).then((res) => {
           console.log(res);
 
@@ -77,6 +77,10 @@ const Permissions = () => {
         setGlobalFilterValue('');
     };
 
+ const hasPerBodyTemplate = (rowData) => {
+        return <i style={{ color: rowData.hasPermission ?'green':'#F59E0B' }} className={classNames('pi', { 'true-icon pi-check-circle': rowData.hasPermission, 'false-icon pi-times-circle': !rowData.hasPermission })}></i>;
+    };
+
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
@@ -96,10 +100,11 @@ const Permissions = () => {
 
     return (
         <div className="card">
-            <DataTable resizableColumns value={permissions} /*paginator*/ showGridlines rows={10} loading={loading} dataKey="id"
+            <DataTable resizableColumns value={permissions} /*paginator*/ showGridlines rows={10} loading={loading} dataKey="api"
                     filters={filters} globalFilterFields={['api']} header={header}
                     emptyMessage="No customers found.">
                 <Column field="api" header="api" sortable style={{ width: "6rem" }} />
+                 <Column field="hasPermission" header="Has Permission" dataType="boolean"   body={hasPerBodyTemplate} sortable style={{ width: "3rem",textAlign: 'center' }} />
                  <Column
                           field="roles"
                           header="Roles"

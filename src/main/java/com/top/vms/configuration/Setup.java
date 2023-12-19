@@ -62,6 +62,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
     private static Map<String, Object> memoryMap = new HashMap<>();
 
+    private static Set<String> noPermissionEndpoints = new HashSet<>();
+
     public static final String TOKEN_HEADER = "Authorization";
 
 
@@ -184,12 +186,22 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         }
     }
 
+    /////////////////////////////////////////////
+    public static void setNoPermissionEndpointList() {
+        noPermissionEndpoints = applicationContext.getBean(EndpointRepository.class).findByHasPermission(false).stream().map(e -> e.getApi()).collect(Collectors.toSet());
+    }
+
+    public static Set<String> getNoPermissionEndpointList() {
+        return noPermissionEndpoints;
+    }
+
+
+    //////////////////////////////////////////////
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
-                .getBean(RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
-                .getHandlerMethods();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         map.forEach((key, value) -> {
             if (!value.getMethod().isAnnotationPresent(NoPermissionApi.class)) {
                 Iterator<String> namesIterator = key.getPatternsCondition().getPatterns().iterator();
@@ -206,6 +218,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 }
             }
         });
+        setNoPermissionEndpointList();
         logger.info("========================Endpoint-done====");
     }
 }

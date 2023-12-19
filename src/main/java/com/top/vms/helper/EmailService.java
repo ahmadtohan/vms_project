@@ -29,11 +29,24 @@ public class EmailService
     @Async
     public void sendMail(String to, String subject, String body)
     {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
+        MimeMessagePreparator preparator = new MimeMessagePreparator()
+        {
+            public void prepare(MimeMessage mimeMessage) throws Exception
+            {
+                mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                mimeMessage.setFrom(new InternetAddress("admin@gmail.com"));
+                mimeMessage.setSubject(subject);
+                mimeMessage.setText(body);
+            }
+        };
+
+        try {
+            mailSender.send(preparator);
+        }
+        catch (MailException ex) {
+            // simply log it and go on...
+            System.err.println(ex.getMessage());
+        }
     }
 
     /**

@@ -58,7 +58,7 @@ permissionAPIs :{
                 create:'permission/create',
                 update:'permission/update',
                 delete:'permission/delete',
-                permissionmap :'permission/permissionmap'
+                permissionlist :'permission/permissionlist'
                 },
  parameterAPIs:{
  listPage:'parameter/page',

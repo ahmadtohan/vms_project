@@ -46,7 +46,7 @@ public class PermissionController extends BaseRepositoryController<Permission> {
     }
 
 
-    @RequestMapping(value = "/permissionmap", method = RequestMethod.GET)
+    @RequestMapping(value = "/permissionlist", method = RequestMethod.GET)
     public ResponseEntity<?> permissionMap() {
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -65,6 +65,7 @@ public class PermissionController extends BaseRepositoryController<Permission> {
             }
             Map<String, Object> resultMap = new HashMap<>();
             resultMap. put("api", endpoint.getApi());
+            resultMap. put("hasPermission", endpoint.getHasPermission());
             resultMap. put("roles", list);
             result.add(resultMap);
         }

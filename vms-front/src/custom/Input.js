@@ -28,6 +28,7 @@ export function Input(props) {
           id={props.name}
           name={props.name}
           value={props.formik.values.value}
+          dateFormat={props.dateFormat} showTime={props.showTime} hourFormat={props.hourFormat}
           onChange={(e) => {
             props.formik.setFieldValue(props.name, e.target.value);
           }}

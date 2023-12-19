@@ -77,13 +77,22 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
         String url = visitorParameterUrl.getValue() + "?accessKey=" + accessKey;
         try {
             Attachment attachment = QRGenerator.createQRAsAttachment(url, entity.getId(), entity.getClass().getSimpleName());
-            emailService.sendMailWithInlineResources(entity.getEmail(), "VMS QR", "Hello dear<br><br> you can access by this QR: <br>", attachment.getPath());
+            emailService.sendMailWithInlineResources(entity.getEmail(), "VMS Request", "Hello dear<br><br>your request is pending.... <br> when admin approve!, you can access by this QR: <br>", attachment.getPath());
         } catch (WriterException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(entity);
+    }
+
+    @Override
+    protected ResponseEntity<?> updateEntity(Visitor entity) {
+        if(entity.getStatus()!=null){
+            emailService.sendMail(entity.getEmail(), "VMS Request", "Hello dear<br><br>your request has been "+entity.getStatus().getLabel());
+        }
+        visitorRepository.save(entity);
+        return new ResponseEntity<>(new Response("Updated"), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/verify/{accessKey}", method = RequestMethod.GET)

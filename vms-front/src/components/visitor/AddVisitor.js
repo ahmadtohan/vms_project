@@ -67,8 +67,15 @@ const AddVisitor = () => {
     },
   });
 
-  function formatDate(date) {
-    return new Date(date).toISOString().slice(0, 19).replace("T", " ");
+  function formatDate(d) {
+  console.log("--------",d);
+  var dformat = [d.getFullYear(),
+                 d.getDate(),
+                d.getMonth()+1].join('-')+' '+
+                [d.getHours(),
+                 d.getMinutes(),
+                 d.getSeconds()].join(':');
+    return dformat;
   }
 
 
@@ -87,8 +94,8 @@ const AddVisitor = () => {
 
 
         <div className="flex align-items-center">
-                <Input name="fromDate" type ="calendar" title="from Date"  formik={formik} />
-                <Input name="toDate" type ="calendar" title="to Date"  formik={formik} />
+                <Input name="fromDate" type ="calendar" title="from Date" dateFormat="yy-mm-dd" showTime hourFormat="24"  formik={formik} />
+                <Input name="toDate" type ="calendar" title="to Date" dateFormat="yy-mm-dd" showTime hourFormat="24" formik={formik} />
 
         </div>
 

@@ -123,9 +123,16 @@ const AddUser = () => {
     },
   });
 
-  function formatDate(date) {
-    return new Date(date).toISOString().slice(0, 19).replace("T", " ");
-  }
+   function formatDate(d) {
+   console.log("--------",d);
+   var dformat = [d.getFullYear(),
+                  d.getDate(),
+                 d.getMonth()+1].join('-')+' '+
+                 [d.getHours(),
+                  d.getMinutes(),
+                  d.getSeconds()].join(':');
+     return dformat;
+   }
 
 
 
