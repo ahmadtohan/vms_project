@@ -36,7 +36,8 @@ public class EmailService
                 mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
                 mimeMessage.setFrom(new InternetAddress("admin@gmail.com"));
                 mimeMessage.setSubject(subject);
-                mimeMessage.setText(body);
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                helper.setText("<html><body><p>"+body+"</p></body></html>", true);
             }
         };
 
@@ -63,10 +64,9 @@ public class EmailService
                 mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
                 mimeMessage.setFrom(new InternetAddress("admin@gmail.com"));
                 mimeMessage.setSubject(subject);
-                mimeMessage.setText(body);
-
-                FileSystemResource file = new FileSystemResource(new File(fileToAttach));
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                helper.setText("<html><body><p>"+body+"</p></body></html>", true);
+                FileSystemResource file = new FileSystemResource(new File(fileToAttach));
                 helper.addAttachment("logo.jpg", file);
             }
         };

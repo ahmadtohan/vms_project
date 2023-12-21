@@ -89,7 +89,7 @@ public class VisitorController extends BaseRepositoryController<Visitor> {
     @Override
     protected ResponseEntity<?> updateEntity(Visitor entity) {
         if(entity.getStatus()!=null){
-            emailService.sendMail(entity.getEmail(), "VMS Request", "Hello dear<br><br>your request has been "+entity.getStatus().getLabel());
+            emailService.sendMail(entity.getEmail(), "Re: VMS Request", "Hello dear, your request has been "+entity.getStatus().getLabel());
         }
         visitorRepository.save(entity);
         return new ResponseEntity<>(new Response("Updated"), HttpStatus.OK);

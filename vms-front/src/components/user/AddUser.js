@@ -8,6 +8,7 @@ import { SpeedDial } from 'primereact/speeddial';
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
 import { Input } from "./../../custom/Input";
+import Utils from "./../../services/Utils";
 
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +21,6 @@ const AddUser = () => {
   const [selectedType, setSelectedType] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [roles, setRoles] = useState([]);
-   const [selectedRoles, setSelectedRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState(null);
   const navigate = useNavigate();
 
@@ -95,20 +95,19 @@ const AddUser = () => {
                         if (!data.gender) {
                                 errors.gender = "gender is required.";
                               }
-                              data.roles=selectedRoles;
                               console.log("isAdmin",isAdmin);
                                if (!isAdmin && (!data.roles || !data.roles.length)) {
-                                                              errors.roles = "roles are required.";
+                                   errors.roles = "roles are required.";
                                   }
 
       console.log("data , err: ",data, errors);
       return errors;
     },
     onSubmit: (data) => {
-
+      const obj = Object.assign({},data);
       setMessage("");
-      data.birthDate = formatDate(data.birthDate);
-      endPoint(config.userAPIs.create, "POST", data).then((res) => {
+      obj.birthDate = Utils.formatDate(obj.birthDate);
+      endPoint(config.userAPIs.create, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({
           severity: "info",
@@ -123,16 +122,7 @@ const AddUser = () => {
     },
   });
 
-   function formatDate(d) {
-   console.log("--------",d);
-   var dformat = [d.getFullYear(),
-                  d.getDate(),
-                 d.getMonth()+1].join('-')+' '+
-                 [d.getHours(),
-                  d.getMinutes(),
-                  d.getSeconds()].join(':');
-     return dformat;
-   }
+
 
 
 
@@ -162,9 +152,8 @@ const AddUser = () => {
 
                <Input name="birthDate" type ="calendar" title="Birth Date"  formik={formik} />
 
-               <Input name="gender" type ="dropdown" title="Gender"  value={selectedGender}
+               <Input name="gender" type ="dropdown" title="Gender"  value={formik.values["gender"]}
                                                                onChange={(e) => {
-                                                                 setSelectedGender(e.value);
                                                                  formik.setFieldValue("gender", e.value);
                                                                }}
                   options={genders}  optionLabel="label"  placeholder="Select Gender" formik={formik} />
@@ -177,9 +166,8 @@ const AddUser = () => {
       <Input name="username" type ="text" title="Username"  formik={formik} />
        <Input name="password" type ="password" title="Password"  formik={formik} />
 
-     <Input name="type" type ="dropdown" title="Type"  value={selectedType}
+     <Input name="type" type ="dropdown" title="Type"  value={formik.values["type"]}
                                                   onChange={(e) => {
-                                                           setSelectedType(e.value);
                                                             formik.setFieldValue("type", e.value);
                                                           setIsAdmin(e.value=="ADMIN"?true:false);
 
@@ -188,9 +176,9 @@ const AddUser = () => {
 
 
   {!isAdmin &&
-   <Input name="roles" type ="autoComplete" field="name" value={selectedRoles}
+   <Input name="roles" type ="autoComplete" field="name" value={formik.values["roles"]}
    title="Roles" multiple="true" suggestions={filteredRoles} completeMethod={search}
-   onChange={(e) => {setSelectedRoles(e.value); }} formik={formik} />}
+   onChange={(e) => { formik.setFieldValue("roles", e.value);}} formik={formik} />}
 
 
             </div>

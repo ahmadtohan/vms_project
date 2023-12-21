@@ -17,10 +17,7 @@ const AddRole = () => {
   const toast = useRef(null);
   const [role, setRole] = useState({});
   const [message, setMessage] = useState("");
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedGender, setSelectedGender] = useState(null);
   const [endpoints, setEndpoints] = useState([]);
-   const [selectedEndpoints, setSelectedEndpoints] = useState(null);
   const [filteredEndpoints, setFilteredEndpoints] = useState(null);
   const navigate = useNavigate();
 
@@ -67,23 +64,23 @@ const AddRole = () => {
       if (!data.name) {
         errors.name = "name is required.";
       }
-          data.endpoints=selectedEndpoints;
+
             if (!data.endpoints || !data.endpoints.length){
               errors.endpoints = "endpoints are required.";
             }
 
-      console.log("data , err: ",data, errors);
+      console.log("data , err: ",formik,data, errors);
       return errors;
     },
     onSubmit: (data) => {
-
+      const obj = Object.assign({},data);
       setMessage("");
-      data.permissions=[];
-      for(var point in data.endpoints){
-        data.permissions.push({'endpoint':data.endpoints[point]});
+      obj.permissions=[];
+      for(var point in obj.endpoints){
+        obj.permissions.push({'endpoint':obj.endpoints[point]});
       }
-      delete data.endpoints;
-      endPoint(config.roleAPIs.create, "POST", data).then((res) => {
+      delete obj.endpoints;
+      endPoint(config.roleAPIs.create, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({
           severity: "info",
@@ -115,9 +112,9 @@ const AddRole = () => {
 
 
 <div className="flex align-items-center">
- <Input name="endpoints" type ="autoComplete" field="api" value={selectedEndpoints}
+ <Input name="endpoints" type ="autoComplete" field="api" value={formik.values["endpoints"]}
  title="Endpoints" multiple="true" suggestions={filteredEndpoints} completeMethod={search}
- onChange={(e) => {setSelectedEndpoints(e.value); }} formik={formik} />
+ onChange={(e) => { formik.setFieldValue("endpoints", e.value);}} formik={formik} />
 
 </div>
 

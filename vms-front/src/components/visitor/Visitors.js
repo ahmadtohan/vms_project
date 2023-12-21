@@ -77,7 +77,7 @@ const Visitors = () => {
   }, [loading, sortField, sortOrder]);
 
   const list = (page, size, sort, cond) => {
-    sort = sort == null ? "id" : sort;
+    sort = sort == null ? "id,DESC" : sort;
     endPoint(
       config.visitorAPIs.listPage +
         "?page=" +

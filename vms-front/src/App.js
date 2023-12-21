@@ -223,7 +223,7 @@ setCurrentUser(null);
                 <Route exact path={"/vms/app/permissions"} element={<Permissions />} />
 
             <Route exact path={"/vms/app/Parameters"} element={<Parameters />} />
- <Route exact path={"/vms/app/Picklists"} element={<Picklists />} />
+            <Route exact path={"/vms/app/Picklists"} element={<Picklists />} />
 
            <Route exact path={"/vms/app/verifyVisitor"} element={<VerifyVisitor />} />
           <Route exact path={"/vms/app/visitors"} element={<Visitors />} />

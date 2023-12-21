@@ -7,6 +7,7 @@ import { SpeedDial } from 'primereact/speeddial';
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
 import { Input } from "./../../custom/Input";
+import Utils from "./../../services/Utils";
 
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -48,11 +49,11 @@ const AddVisitor = () => {
       return errors;
     },
     onSubmit: (data) => {
-
+      const obj = Object.assign({},data);
       setMessage("");
-      data.fromDate = formatDate(data.fromDate);
-      data.toDate = formatDate(data.toDate);
-      endPoint(config.visitorAPIs.create, "POST", data).then((res) => {
+      obj.fromDate = Utils.formatDate(obj.fromDate);
+      obj.toDate = Utils.formatDate(obj.toDate);
+      endPoint(config.visitorAPIs.create, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({
           severity: "info",
@@ -66,17 +67,6 @@ const AddVisitor = () => {
       });
     },
   });
-
-  function formatDate(d) {
-  console.log("--------",d);
-  var dformat = [d.getFullYear(),
-                 d.getDate(),
-                d.getMonth()+1].join('-')+' '+
-                [d.getHours(),
-                 d.getMinutes(),
-                 d.getSeconds()].join(':');
-    return dformat;
-  }
 
 
 
