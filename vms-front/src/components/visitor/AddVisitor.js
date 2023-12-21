@@ -18,7 +18,7 @@ const AddVisitor = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -49,7 +49,7 @@ const AddVisitor = () => {
       return errors;
     },
     onSubmit: (data) => {
-      const obj = Object.assign({},data);
+      const obj = Object.assign({}, data);
       setMessage("");
       obj.fromDate = Utils.formatDate(obj.fromDate);
       obj.toDate = Utils.formatDate(obj.toDate);
@@ -73,31 +73,31 @@ const AddVisitor = () => {
   return (
     <div className="card">
       <Toast ref={toast} />
-      <Tag severity="success" style={{marginBottom:'40px'}} value="Add Visitor: "></Tag>
-        <form onSubmit={formik.handleSubmit} >
+      <Tag severity="success" style={{ marginBottom: '40px' }} value="Add Visitor: "></Tag>
+      <form onSubmit={formik.handleSubmit} >
 
         <div className="flex align-items-center" >
-       <Input name="fullName" type ="text" title="Full Name"  formik={formik} />
-       <Input name="email" type ="text" title="Email"  formik={formik} />
-       <Input name="eid" type ="mask" mask="999-9999-9999999-9" title="E-ID"  formik={formik} />
-       </div>
+          <Input name="fullName" type="text" title="Full Name" formik={formik} />
+          <Input name="email" type="text" title="Email" formik={formik} />
+          <Input name="eid" type="mask" mask="999-9999-9999999-9" title="E-ID" formik={formik} />
+        </div>
 
 
         <div className="flex align-items-center">
-                <Input name="fromDate" type ="calendar" title="from Date" dateFormat="yy-mm-dd" showTime hourFormat="24"  formik={formik} />
-                <Input name="toDate" type ="calendar" title="to Date" dateFormat="yy-mm-dd" showTime hourFormat="24" formik={formik} />
+          <Input name="fromDate" type="calendar" title="from Date" dateFormat="yy-mm-dd" showTime hourFormat="24" formik={formik} />
+          <Input name="toDate" type="calendar" title="to Date" dateFormat="yy-mm-dd" showTime hourFormat="24" formik={formik} />
 
         </div>
 
-          <SpeedDial type="submit"
+        <SpeedDial type="submit"
           onClick={(e) => {
-                          formik.submitForm();
-                        }}
+            formik.submitForm();
+          }}
           direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
-                     style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-                    buttonClassName="p-button-help" />
+          style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+          buttonClassName="p-button-help" />
 
-        </form>
+      </form>
 
 
     </div>

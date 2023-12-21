@@ -1,48 +1,48 @@
 import axios from "axios";
 import config from "./config"
- import EventBus from "./../common/eventBus";
+import EventBus from "./../common/eventBus";
 
 
-export default function endPoint(api,method,body) {
-console.log("----endPoint-------",api,method,body);
-    if(api!==config.userAPIs.login && api!==config.visitorAPIs.create){
-        var sessionUser=JSON.parse(localStorage.getItem("user"));
-            if(sessionUser==null || sessionUser === undefined ){
-               sessionUser={token:""};
-            }
-        axios.defaults.headers.common['Authorization'] = 'Bearer '+sessionUser.token;
-    }else{
-      axios.defaults.headers.common['Authorization'] = "";
+export default function endPoint(api, method, body) {
+  console.log("----endPoint-------", api, method, body);
+  if (api !== config.userAPIs.login && api !== config.visitorAPIs.create) {
+    var sessionUser = JSON.parse(localStorage.getItem("user"));
+    if (sessionUser == null || sessionUser === undefined) {
+      sessionUser = { token: "" };
     }
-axios.defaults.withCredentials = true;
-   if(method.toUpperCase()==='GET'){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionUser.token;
+  } else {
+    axios.defaults.headers.common['Authorization'] = "";
+  }
+  axios.defaults.withCredentials = true;
+  if (method.toUpperCase() === 'GET') {
 
-   return  axios.get(config.baseUrl + api, body)
-          .then((response) => {
+    return axios.get(config.baseUrl + api, body)
+      .then((response) => {
 
-         return response.data;
-       }).catch((error) => {
-                  console.log({...error})
-                  EventBus.dispatch("handelHttpError",{...error});
+        return response.data;
+      }).catch((error) => {
+        console.log({ ...error })
+        EventBus.dispatch("handelHttpError", { ...error });
 
-                    throw {...error};
-                  });
+        throw { ...error };
+      });
 
-   }
-   else if(method.toUpperCase()==='POST'){
-          return   axios.post(config.baseUrl + api, body)
-                  .then((response) => {
+  }
+  else if (method.toUpperCase() === 'POST') {
+    return axios.post(config.baseUrl + api, body)
+      .then((response) => {
 
-                  console.log("ok: ",response);
-                return  response.data;
-                       }).catch((error) => {
-                                            console.log({...error})
-                                            EventBus.dispatch("handelHttpError",{...error});
+        console.log("ok: ", response);
+        return response.data;
+      }).catch((error) => {
+        console.log({ ...error })
+        EventBus.dispatch("handelHttpError", { ...error });
 
-                                              throw {...error};
-                                            });
+        throw { ...error };
+      });
 
-           }
+  }
 
 };
 
