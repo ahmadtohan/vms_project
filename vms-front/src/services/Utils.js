@@ -3,8 +3,8 @@
 const Utils = {
   formatDate(d) {
     return [d.getFullYear(),
-                  d.getDate(),
-                 d.getMonth()+1].join('-')+' '+
+                  d.getMonth()+1,
+                 d.getDate()].join('-')+' '+
                  [d.getHours(),
                   d.getMinutes(),
                   d.getSeconds()].join(':');
