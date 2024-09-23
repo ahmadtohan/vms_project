@@ -70,8 +70,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     ///////////////////////////////PARAMETERS/////////////////////////////////////
     public static final String UPLOAD_PATH_PARAMETER_CODE = "upload_path";
     public static final String BASE_HOST_PARAMETER_CODE = "base_host";
-    public static final String BASE_VMS_HOST_PARAMETER_CODE = "base_vms_host";
-    public static final String BASE_VERIFY_VISITOR_URL_PARAMETER_CODE = "base_verify_visitor_url";
+    public static final String BASE_LCD_HOST_PARAMETER_CODE = "base_lcd_host";
 
     /////////////////////////////////Picklists/////////////////////////////////////////////////////
     public static final String NATIONALITIES_PICKLIST_CODE = "nationalities";
@@ -82,8 +81,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Parameter[] parameters = new Parameter[]{
                 new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
-                new Parameter(BASE_VMS_HOST_PARAMETER_CODE, "Base VMS Host", "http://localhost:8088/vms/"),
-                new Parameter(BASE_VERIFY_VISITOR_URL_PARAMETER_CODE, "Base Verify Visitor Url", "http://localhost:3000/vms/app/verifyVisitor")};
+                new Parameter(BASE_LCD_HOST_PARAMETER_CODE, "Base LCD Host", "http://localhost:8088/lcd/")};
 
         Arrays.stream(parameters).forEach(p -> {
             Parameter oldParameter = parameterRepository.findByCode(p.getCode());

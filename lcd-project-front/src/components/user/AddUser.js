@@ -116,7 +116,7 @@ const AddUser = () => {
           life: 3000,
         });
         setTimeout(() => {
-          navigate("/vms/app/users");
+          navigate("/lcd/app/users");
         }, "500");
       });
     },

@@ -1,6 +1,6 @@
 const config = {
 
-    baseUrl: "http://localhost:8088/vms/",
+    baseUrl: "http://localhost:8088/lcd/",
 
 
     ////////userServices//////////
@@ -26,17 +26,6 @@ const config = {
         update: 'role/update',
         delete: 'role/delete',
         activeRoles: 'role/activeroles'
-    },
-
-    visitorAPIs: {
-
-        listPage: 'visitor/page',
-        list: 'visitor/list',
-        view: 'visitor/get',
-        create: 'visitor/create',
-        update: 'visitor/update',
-        delete: 'visitor/delete',
-        verify: 'visitor/verify'
     },
 
     endpointAPIs: {

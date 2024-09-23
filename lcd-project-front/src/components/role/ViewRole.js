@@ -35,7 +35,7 @@ const ViewRole = () => {
       label: "Add",
       icon: "pi pi-pencil",
       command: () => {
-        navigate("/vms/app/editRole");
+        navigate("/lcd/app/editRole");
       },
     },
     {

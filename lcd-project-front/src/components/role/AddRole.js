@@ -89,7 +89,7 @@ const AddRole = () => {
           life: 3000,
         });
         setTimeout(() => {
-          navigate("/vms/app/roles");
+          navigate("/lcd/app/roles");
         }, "500");
       });
     },

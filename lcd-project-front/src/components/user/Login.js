@@ -49,7 +49,7 @@ const Login = () => {
             console.log("--------",res);
                           console.log(res);
                            EventBus.dispatch("handelUserLogged",res);
-                           navigate("/vms/app/visitors");
+                           navigate("/lcd/app/users");
 
             }
             );
@@ -61,7 +61,7 @@ const Login = () => {
 
     
   return (
-           <div className="background" style={{backgroundImage: 'url("/vms/wood.jpg")'}}>
+           <div className="background" style={{backgroundImage: 'url("/lcd/wood.jpg")'}}>
           <div className="card" style={{width: '25%', marginTop:'10%'}}>
 
     <div className="flex flex-wrap gap-q  justify-content-center"  >

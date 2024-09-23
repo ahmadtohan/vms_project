@@ -37,7 +37,7 @@ const ViewUser = () => {
       label: "Add",
       icon: "pi pi-pencil",
       command: () => {
-        navigate("/vms/app/editUser");
+        navigate("/lcd/app/editUser");
       },
     },
     {

@@ -212,7 +212,7 @@ const onFilter= (event) => {
 
     const onRowSelect = (event) => {
     console.log(event);
-    navigate("/vms/app/viewRole?id="+event.data.id);
+    navigate("/lcd/app/viewRole?id="+event.data.id);
     };
 
     const onRowUnselect = (event) => {
@@ -270,7 +270,7 @@ const onFilter= (event) => {
 
         <SpeedDial
                       onClick={(e) => {
-                                 navigate("/vms/app/addRole");
+                                 navigate("/lcd/app/addRole");
                          }}
           direction="up" transitionDelay={80} showIcon="pi pi-plus" hideIcon="pi pi-plus" buttonClassName="p-button-outlined"
           style={{ right: "2rem", bottom: "2rem", position: "fixed" }}

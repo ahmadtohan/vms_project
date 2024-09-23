@@ -174,7 +174,7 @@ const onFilter= (event) => {
 
     const onRowSelect = (event) => {
     console.log(event);
-    navigate("/vms/app/viewPicklist?id="+event.data.id);
+    navigate("/lcd/app/viewPicklist?id="+event.data.id);
     };
 
     const onRowUnselect = (event) => {

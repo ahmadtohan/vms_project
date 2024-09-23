@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenUtils jwtTokenUtils;
 
     public static String[] permitMatchers = new String[]{"/content",
-            "/static", "/vmsApp","/user/login", "/user/logout", "/visitor/create", "/error"};
+            "/static", "/lcdApp","/user/login", "/user/logout", /*"/user/create",*/ "/error"};
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -97,10 +97,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**"
                        /* ,"/content/**",
                         "/static/**",
-                        "/vmsApp/**",
+                        "/lcdApp/**",
                         "/user/login/**",
                         "/user/logout/**",
-                        "/visitor/create/**"*/
+                        "/user/create/**"*/
 
 
                 )

@@ -7,10 +7,7 @@ import "./App.css";
 import endPoint from "./services/endPoint";
 import config from "./services/config";
 
-import Visitors from "./components/visitor/Visitors";
-import AddVisitor from "./components/visitor/AddVisitor";
-import VerifyVisitor from "./components/visitor/VerifyVisitor";
-import ViewVisitor from "./components/visitor/ViewVisitor";
+
 import Login from "./components/user/Login";
 
 import Users from "./components/user/Users";
@@ -72,7 +69,7 @@ EventBus.on("handelUserLogged", (data) => {
 if(error.response.status==401 || error.response.status==403 ){
       setTimeout(() => {
 
-                            window.location.href = '/vms/app/login';
+                            window.location.href = '/lcd/app/login';
                             }, "1000");
 
  }
@@ -91,38 +88,13 @@ const logOut = () => {
   document.cookie="";
 setCurrentUser(null);
     localStorage.removeItem("user");
-    load('/vms/app/login');
+    load('/lcd/app/login');
   };
 
 
 
     const items = [
-            {
-                label: 'Visitors',
-                icon: 'pi pi-fw pi-id-card',
-                 command: () => {
-                                    navigate("/vms/app/visitors");
-                                 },
-                items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-align-left',
-                         command: () => {
-                                navigate("/vms/app/");
-                              }
-                    },
 
-                    {
-                        label: 'Verify',
-                        icon: 'pi pi-fw pi-check'
-                    },
-                    {
-                        label: 'Justify',
-                        icon: 'pi pi-fw pi-align-justify'
-                    },
-
-                ]
-            },
             {
                 label: 'Users & Roles',
                 icon: 'pi pi-fw pi-user',
@@ -131,14 +103,14 @@ setCurrentUser(null);
                         label: 'Users',
                         icon: 'pi pi-fw pi-user',
                         command: () => {
-                                    navigate("/vms/app/users");
+                                    navigate("/lcd/app/users");
                                  },
                     },
                     {
                         label: 'Roles',
                         icon: 'pi pi-fw pi-user',
                              command: () => {
-                                         navigate("/vms/app/roles");
+                                         navigate("/lcd/app/roles");
                                   }
 
                     },
@@ -146,7 +118,7 @@ setCurrentUser(null);
                         label: 'Permission',
                         icon: 'pi pi-fw pi-lock',
                       command: () => {
-                                         navigate("/vms/app/permissions");
+                                         navigate("/lcd/app/permissions");
                                   }
                     }
                 ]
@@ -159,14 +131,14 @@ setCurrentUser(null);
                         label: 'Parameters',
                         icon: 'pi pi-fw pi-circle-fill',
                          command: () => {
-                           navigate("/vms/app/Parameters");
+                           navigate("/lcd/app/Parameters");
                                     }
                     },
                     {
                                             label: 'Picklist',
                                             icon: 'pi pi-fw pi-circle-fill',
                                              command: () => {
-                            navigate("/vms/app/Picklists");
+                            navigate("/lcd/app/Picklists");
                                                         }
                                         },
                 ]
@@ -208,27 +180,22 @@ setCurrentUser(null);
       { isLogged() &&   <Toolbar  style={{height:'50px'}}   start={startContent} end={endContent}  />}
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/vms/"} element={<Login />} />
-          <Route exact path={"/vms/app/"} element={<Login />} />
-          <Route exact path={"/vms/app/login"} element={<Login />} />
+          <Route exact path={"/lcd/"} element={<Login />} />
+          <Route exact path={"/lcd/app/"} element={<Login />} />
+          <Route exact path={"/lcd/app/login"} element={<Login />} />
 
-             <Route exact path={"/vms/app/users"} element={<Users />} />
-             <Route exact path={"/vms/app/viewUser"} element={<ViewUser />} />
-             <Route exact path={"/vms/app/addUser"} element={<AddUser />} />
+             <Route exact path={"/lcd/app/users"} element={<Users />} />
+             <Route exact path={"/lcd/app/viewUser"} element={<ViewUser />} />
+             <Route exact path={"/lcd/app/addUser"} element={<AddUser />} />
 
-              <Route exact path={"/vms/app/roles"} element={<Roles />} />
-             <Route exact path={"/vms/app/viewRole"} element={<ViewRole />} />
-             <Route exact path={"/vms/app/addRole"} element={<AddRole />} />
+              <Route exact path={"/lcd/app/roles"} element={<Roles />} />
+             <Route exact path={"/lcd/app/viewRole"} element={<ViewRole />} />
+             <Route exact path={"/lcd/app/addRole"} element={<AddRole />} />
 
-                <Route exact path={"/vms/app/permissions"} element={<Permissions />} />
+                <Route exact path={"/lcd/app/permissions"} element={<Permissions />} />
 
-            <Route exact path={"/vms/app/Parameters"} element={<Parameters />} />
-            <Route exact path={"/vms/app/Picklists"} element={<Picklists />} />
-
-           <Route exact path={"/vms/app/verifyVisitor"} element={<VerifyVisitor />} />
-          <Route exact path={"/vms/app/visitors"} element={<Visitors />} />
-          <Route exact path={"/vms/app/addVisitor"} element={<AddVisitor />} />
-           <Route exact path={"/vms/app/viewVisitor"} element={<ViewVisitor />} />
+            <Route exact path={"/lcd/app/Parameters"} element={<Parameters />} />
+            <Route exact path={"/lcd/app/Picklists"} element={<Picklists />} />
 
 
         </Routes>

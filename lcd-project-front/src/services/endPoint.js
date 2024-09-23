@@ -5,7 +5,7 @@ import EventBus from "./../common/eventBus";
 
 export default function endPoint(api, method, body) {
   console.log("----endPoint-------", api, method, body);
-  if (api !== config.userAPIs.login && api !== config.visitorAPIs.create) {
+  if (api !== config.userAPIs.login) {
     var sessionUser = JSON.parse(localStorage.getItem("user"));
     if (sessionUser == null || sessionUser === undefined) {
       sessionUser = { token: "" };

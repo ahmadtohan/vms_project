@@ -20,24 +20,24 @@ public class BaseEntityAOP {
         @Autowired
         private BaseEntityService entityService;
         
-	@Around("execution(* com.top.vms.repository..*.save(..))")
+	@Around("execution(* com.top.lcd.repository..*.save(..))")
 	public Object onSaveEntity(ProceedingJoinPoint point) throws Throwable {
 		return entityService.save(point);
 	}
         
-        @Around("execution(* com.top.vms.repository..*.silentSave(..))")
+        @Around("execution(* com.top.lcd.repository..*.silentSave(..))")
         public Object onSilentSaveEntity(ProceedingJoinPoint point) throws Throwable {
   
                 return entityService.save(point);
           
         }
 
-	@Around("execution(* com.top.vms.repository..*.saveWithFlush(..))")
+	@Around("execution(* com.top.lcd.repository..*.saveWithFlush(..))")
 	public Object onSaveAndFlushEntity(ProceedingJoinPoint point) throws Throwable {
 		return entityService.save(point);
 	}
 
-	@Around("execution(* com.top.vms.repository..*.delete(..))")
+	@Around("execution(* com.top.lcd.repository..*.delete(..))")
 	public Object onDeleteEntity(ProceedingJoinPoint point) throws Throwable {
 		return entityService.delete(point);
 	}
