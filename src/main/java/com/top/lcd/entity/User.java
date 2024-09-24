@@ -65,7 +65,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public enum Type implements EnumEntity {
-        ADMIN("Admin"), NORMAL("Normal");
+        ADMIN("Admin"), NORMAL_USER("Normal User"), PATIENT("Patient"), PHARMACIST("Pharmacist"), RECEPTIONIST("Receptionist");
 
         private final String label;
 
@@ -105,7 +105,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type type = Type.NORMAL;
+    private Type type = Type.NORMAL_USER;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

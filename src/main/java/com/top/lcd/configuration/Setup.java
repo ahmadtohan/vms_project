@@ -78,6 +78,18 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     /////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        User user=applicationContext.getBean(UserRepository.class).findByUsername("admin");
+        if(user==null){
+            user=new User();
+            user.setGender(User.Gender.MALE);
+            user.setType(User.Type.ADMIN);
+            user.setUsername("admin");
+            user.setPassword("admin");
+            user.setEmail("admin@mail.com");
+            user.setFullName("Admin");
+            applicationContext.getBean(UserRepository.class).save(user);
+        }
+        //////////////////////////Parms//////////////////////////////////
         Parameter[] parameters = new Parameter[]{
                 new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
