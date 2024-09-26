@@ -158,7 +158,7 @@ setCurrentUser(null);
 
   const startContent = (
         <React.Fragment>
-        <Menubar model={items} />
+        <Menubar model={items}  />
         </React.Fragment>
     );
 
@@ -177,7 +177,7 @@ setCurrentUser(null);
   return (
     <div>
      <Toast ref={toast} />
-      { isLogged() &&   <Toolbar  style={{height:'50px'}}   start={startContent} end={endContent}  />}
+      { isLogged() &&   <Toolbar  style={{height:'55px', backgroundColor: '#A855F7'}}    start={startContent} end={endContent}  />}
       <div className="container mt-3">
         <Routes>
           <Route exact path={"/lcd/"} element={<Login />} />

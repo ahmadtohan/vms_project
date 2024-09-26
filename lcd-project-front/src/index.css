@@ -50,7 +50,7 @@ li a:hover:not(.active) {
 .p-toolbar-group-left, .p-toolbar-group-right {
     display: flex;
     align-items: center;
-    margin-top: -20px;
+    margin-top: -17px;
 }
 
 .p-toolbar {
@@ -84,3 +84,4 @@ li a:hover:not(.active) {
 margin-inline-end: 50px;
     margin-bottom: 20px;
 }
+

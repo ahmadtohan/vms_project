@@ -65,7 +65,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public enum Type implements EnumEntity {
-        ADMIN("Admin"), NORMAL_USER("Normal User"), PATIENT("Patient"), PHARMACIST("Pharmacist"), RECEPTIONIST("Receptionist");
+        ADMIN("Admin"), NORMAL_USER("Normal User"), DOCTOR("Doctor"), PATIENT("Patient"), PHARMACIST("Pharmacist"), RECEPTIONIST("Receptionist");
 
         private final String label;
 
