@@ -45,9 +45,7 @@ public class User extends BaseEntity implements UserDetails {
         public String getLabel() {
             return label;
         }
-    }
-
-    ;
+    };
 
     public enum Gender implements EnumEntity {
         MALE("Male"), FEMALE("Female");
@@ -121,6 +119,12 @@ public class User extends BaseEntity implements UserDetails {
     @Transient
     private String token;
 
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private List<Treatment> doctors;
+
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<Treatment> patients;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(using = GenericSerializer.class)

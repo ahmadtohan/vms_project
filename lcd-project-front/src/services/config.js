@@ -27,7 +27,14 @@ const config = {
         delete: 'role/delete',
         activeRoles: 'role/activeroles'
     },
-
+  treatmentAPIs: {
+        listPage: 'treatment/page',
+        list: 'treatment/list',
+        view: 'treatment/get',
+        create: 'treatment/create',
+        update: 'treatment/update',
+        delete: 'treatment/delete'
+    },
     endpointAPIs: {
 
         listPage: 'endpoint/page',
