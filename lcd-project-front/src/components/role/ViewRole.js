@@ -89,7 +89,7 @@ const ViewRole = () => {
     <div className="card">
        <Show rows={rows} object={role} severityByStatus={getSeverityByStatus} />
 
-      <div className="flex align-items-center gap-3">
+      <div className="flex align-items-center gap-3" style={{marginInlineStart: '15%'}}>
         <div style={{ margin: "20px" }}>
           <span className="flex align-items-center gap-2">
             <i className="pi pi-bars"></i>

@@ -173,7 +173,7 @@ const onFilter= (event) => {
 
     const onRowSelect = (event) => {
     console.log(event);
-    navigate("/lcd/app/viewParameter?id="+event.data.id);
+   // navigate("/lcd/app/viewParameter?id="+event.data.id);
     };
 
     const onRowUnselect = (event) => {

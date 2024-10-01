@@ -15,9 +15,9 @@ export default function endPoint(api, method, body) {
     axios.defaults.headers.common['Authorization'] = "";
   }
   axios.defaults.withCredentials = true;
-  if (method.toUpperCase() === 'GET') {
+  if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
 
-    return axios.get(config.baseUrl + api, body)
+    return axios.get(config.baseUrl + api)
       .then((response) => {
 
         return response.data;

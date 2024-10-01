@@ -5,7 +5,7 @@ export function Show(props) {
  return (
   <div>
 {Object.keys(props.rows).map((row) => (
-      <div key={row}  className="flex align-items-center gap-3">
+      <div key={row}  className="flex align-items-center gap-3" style={{marginInlineStart: '15%'}}>
         {Object.keys(props.rows[row]).map((key) => (
           <div key={key} style={{ margin: "20px" }}>
             <span className="flex align-items-center gap-2">
