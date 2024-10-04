@@ -46,7 +46,7 @@ public class Role extends BaseEntity{
     @JsonIgnore
     private List<User> users;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Permission> permissions;
 

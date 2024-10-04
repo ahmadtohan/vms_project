@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.top.lcd.annotations.BeforeDelete;
 import com.top.lcd.annotations.BeforeInsert;
 import com.top.lcd.annotations.EntityJsonSerializer;
 import com.top.lcd.configuration.Setup;
@@ -134,6 +135,15 @@ public class User extends BaseEntity implements UserDetails {
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Role> roles;
+
+
+    @BeforeDelete
+    void checkDelete() {
+   if(this.username.equals("admin")){
+       throw new RuntimeException("User is admin");
+   }
+
+    }
 
     @BeforeInsert
     void addRole() {

@@ -43,7 +43,15 @@ const ViewUser = () => {
     {
       label: "Delete",
       icon: "pi pi-trash",
-      command: () => {},
+      command: () => {
+        
+        endPoint(config.userAPIs.delete + "/" + id, "DELETE", null).then(
+          (res) => {
+            navigate("/lcd/app/users");
+          },
+          (error) => {}
+        );
+      },
     },
     {
       label: "Update",
@@ -142,9 +150,8 @@ const ViewUser = () => {
         transitionDelay={80}
         showIcon="pi pi-bars"
         hideIcon="pi pi-times"
-        buttonClassName="p-button-outlined"
-        style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
         buttonClassName="p-button-help"
+        style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
       />
     </div>
   );

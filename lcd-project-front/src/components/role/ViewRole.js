@@ -41,7 +41,16 @@ const ViewRole = () => {
     {
       label: "Delete",
       icon: "pi pi-trash",
-      command: () => {},
+      command: () => {
+
+        endPoint(config.roleAPIs.delete + "/" + id, "DELETE", null).then(
+          (res) => {
+            navigate("/lcd/app/roles");
+          },
+          (error) => {}
+        );
+        
+      },
     },
     {
       label: "Update",
@@ -113,9 +122,8 @@ const ViewRole = () => {
         transitionDelay={80}
         showIcon="pi pi-bars"
         hideIcon="pi pi-times"
-        buttonClassName="p-button-outlined"
-        style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
         buttonClassName="p-button-help"
+        style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
       />
     </div>
   );
