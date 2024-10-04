@@ -188,9 +188,9 @@ const AddUser = () => {
                   onClick={(e) => {
                                   formik.submitForm();
                                 }}
-                  direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-outlined"
+                  direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-help"
                                                style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-                                               buttonClassName="p-button-help" />
+                                                />
       </form>
     </div>
   );
