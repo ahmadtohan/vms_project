@@ -46,7 +46,9 @@ public class User extends BaseEntity implements UserDetails {
         public String getLabel() {
             return label;
         }
-    };
+    }
+
+    ;
 
     public enum Gender implements EnumEntity {
         MALE("Male"), FEMALE("Female");
@@ -139,9 +141,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @BeforeDelete
     void checkDelete() {
-   if(this.username.equals("admin")){
-       throw new RuntimeException("User is admin");
-   }
+        if (this.username.equals("admin")) {
+            throw new RuntimeException("User is admin");
+        }
 
     }
 
@@ -149,14 +151,14 @@ public class User extends BaseEntity implements UserDetails {
     void addRole() {
         final User user = this;
 
-        if(user.type.equals(Type.ADMIN)){
+        if (user.type.equals(Type.ADMIN)) {
 
-            this.roles=new ArrayList<>();
+            this.roles = new ArrayList<>();
             return;
         }
-        if (this.roles==null || this.roles.isEmpty()){
+        if (this.roles == null || this.roles.isEmpty()) {
 
-            throw  new RuntimeException("roles are empty");
+            throw new RuntimeException("roles are empty");
         }
         List<Role> newRoles = new ArrayList<>();
         for (Role roleObj : this.roles) {
