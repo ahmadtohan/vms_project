@@ -6,6 +6,7 @@
 package com.top.lcd.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.entity.User;
 import com.top.lcd.helper.GenericProjection;
@@ -14,6 +15,7 @@ import com.top.lcd.repository.BaseRepository;
 import com.top.lcd.repository.UserRepository;
 import com.top.lcd.security.JwtTokenUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -122,5 +124,15 @@ public class UserController extends BaseRepositoryController<User> {
                 "id", "fullName", "status", "username", "gender", "type","email","mobileNumber","birthDate","eid",
                 "{name:'roles', keys : {'id', 'name'}}"});
         return new ResponseEntity<>(projection.project(user), HttpStatus.OK);
+    }
+
+    @NoPermissionApi
+    @RequestMapping(value = "/getusers", method = RequestMethod.GET)
+    @ResponseBody
+    protected ResponseEntity<?> getUsersByType(@RequestParam(required = true) User.Type type) {
+        List<User> users = userRepository.findByTypeAndStatus(type,User.Status.ACTIVE);
+
+        GenericProjection projection = new GenericProjection(new String[]{ "id", "fullName"});
+        return new ResponseEntity<>(projection.projectIterable(users), HttpStatus.OK);
     }
 }
