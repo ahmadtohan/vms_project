@@ -9,6 +9,7 @@ const config = {
 
         listPage: 'user/page',
         list: 'user/list',
+        getusers: 'user/getusers',
         view: 'user/get',
         create: 'user/create',
         update: 'user/update',

@@ -23,40 +23,40 @@ const AddRole = () => {
 
   useEffect(() => {
 
-      endPoint(
-        config.endpointAPIs.endpoints,
-        "GET",
-        null
-      ).then((res) => {
-        console.log(res);
-        setEndpoints(res);
-             }
-        );
+    endPoint(
+      config.endpointAPIs.endpoints,
+      "GET",
+      null
+    ).then((res) => {
+      console.log(res);
+      setEndpoints(res);
+    }
+    );
   }, []);
 
-    const search = (event) => {
-        // Timeout to emulate a network connection
-        setTimeout(() => {
-            let _filteredEndpoints;
+  const search = (event) => {
+    // Timeout to emulate a network connection
+    setTimeout(() => {
+      let _filteredEndpoints;
 
-            if (!event.query.trim().length) {
-                filteredEndpoints = [...endpoints];
-            }
-            else {
-                _filteredEndpoints = endpoints.filter((obj) => {
-                    return obj.api.toLowerCase().includes(event.query.toLowerCase());
-                });
-            }
+      if (!event.query.trim().length) {
+        filteredEndpoints = [...endpoints];
+      }
+      else {
+        _filteredEndpoints = endpoints.filter((obj) => {
+          return obj.api.toLowerCase().includes(event.query.toLowerCase());
+        });
+      }
 
-            setFilteredEndpoints(_filteredEndpoints);
-        }, 50);
-    }
+      setFilteredEndpoints(_filteredEndpoints);
+    }, 50);
+  }
 
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
-       endpoints: [],
+      endpoints: [],
     },
     validate: (data) => {
       let errors = {};
@@ -65,19 +65,19 @@ const AddRole = () => {
         errors.name = "name is required.";
       }
 
-            if (!data.endpoints || !data.endpoints.length){
-              errors.endpoints = "endpoints are required.";
-            }
+      if (!data.endpoints || !data.endpoints.length) {
+        errors.endpoints = "endpoints are required.";
+      }
 
-      console.log("data , err: ",formik,data, errors);
+      console.log("data , err: ", formik, data, errors);
       return errors;
     },
     onSubmit: (data) => {
-      const obj = Object.assign({},data);
+      const obj = Object.assign({}, data);
       setMessage("");
-      obj.permissions=[];
-      for(var point in obj.endpoints){
-        obj.permissions.push({'endpoint':obj.endpoints[point]});
+      obj.permissions = [];
+      for (var point in obj.endpoints) {
+        obj.permissions.push({ 'endpoint': obj.endpoints[point] });
       }
       delete obj.endpoints;
       endPoint(config.roleAPIs.create, "POST", obj).then((res) => {
@@ -100,31 +100,31 @@ const AddRole = () => {
   return (
     <div className="card">
       <Toast ref={toast} />
-      <Tag severity="success" style={{marginBottom:'40px'}} value="Add Role: "></Tag>
+      <Tag severity="success" style={{ marginBottom: '40px' }} value="Add Role: "></Tag>
 
       <form onSubmit={formik.handleSubmit}>
 
-            <div className="flex align-items-center">
-            <Input name="name" type ="text" title="Name"  formik={formik} />
-             <Input name="description" type ="text" title="Description"  formik={formik} />
+        <div className="flex align-items-center">
+          <Input name="name" type="text" title="Name" formik={formik} />
+          <Input name="description" type="text" title="Description" formik={formik} />
 
-  </div>
+        </div>
 
 
-<div className="flex align-items-center">
- <Input name="endpoints" type ="autoComplete" field="api" value={formik.values["endpoints"]}
- title="Endpoints" multiple="true" suggestions={filteredEndpoints} completeMethod={search}
- onChange={(e) => { formik.setFieldValue("endpoints", e.value);}} formik={formik} />
+        <div className="flex align-items-center">
+          <Input name="endpoints" type="autoComplete" field="api" value={formik.values["endpoints"]}
+            title="Endpoints" multiple="true" suggestions={filteredEndpoints} completeMethod={search}
+            onChange={(e) => { formik.setFieldValue("endpoints", e.value); }} formik={formik} />
 
-</div>
+        </div>
 
-                 <SpeedDial type="submit"
-                         onClick={(e) => {
-                                         formik.submitForm();
-                                       }}
-                         direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-help"
-                                                      style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-                        />
+        <SpeedDial type="submit"
+          onClick={(e) => {
+            formik.submitForm();
+          }}
+          direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-help"
+          style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
+        />
       </form>
     </div>
   );

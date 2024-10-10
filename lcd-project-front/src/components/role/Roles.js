@@ -272,9 +272,8 @@ const onFilter= (event) => {
                       onClick={(e) => {
                                  navigate("/lcd/app/addRole");
                          }}
-          direction="up" transitionDelay={80} showIcon="pi pi-plus" hideIcon="pi pi-plus" buttonClassName="p-button-outlined"
+          direction="up" transitionDelay={80} showIcon="pi pi-plus" hideIcon="pi pi-plus" buttonClassName="p-button-help"
           style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-          buttonClassName="p-button-help"
         />
       </div>
     </div>
