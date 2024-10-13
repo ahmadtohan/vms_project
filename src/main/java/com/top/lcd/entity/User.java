@@ -129,10 +129,6 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<Treatment> patients;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonSerialize(using = GenericSerializer.class)
-    @EntityJsonSerializer(keys = {"id", "name"})
-    private Department department;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     @JsonProperty(access = Access.WRITE_ONLY)
@@ -268,14 +264,6 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 
     public List<Role> getRoles() {

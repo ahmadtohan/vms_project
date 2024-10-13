@@ -5,10 +5,8 @@
  */
 package com.top.lcd.controller;
 
-import com.top.lcd.entity.Department;
 import com.top.lcd.entity.Treatment;
 import com.top.lcd.repository.BaseRepository;
-import com.top.lcd.repository.DepartmentRepository;
 import com.top.lcd.repository.TreatmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

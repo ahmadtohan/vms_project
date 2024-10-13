@@ -5,7 +5,6 @@
  */
 package com.top.lcd.repository;
 
-import com.top.lcd.entity.Department;
 import com.top.lcd.entity.Treatment;
 import org.springframework.stereotype.Repository;
 
