@@ -1,6 +1,5 @@
 package com.top.lcd.helper;
 
-import javax.xml.bind.DatatypeConverter;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
@@ -11,8 +10,7 @@ public class Utils {
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[24];
         random.nextBytes(bytes);
-        String token = DatatypeConverter.printBase64Binary(bytes);
-
+        String token = new String(bytes);
         token = token.replaceAll("[^a-zA-Z0-9]+", "");
         return token;
     }
