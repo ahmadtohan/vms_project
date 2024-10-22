@@ -1,4 +1,5 @@
 import { InputText } from "primereact/inputtext";
+import { InputTextarea } from 'primereact/inputtextarea';
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { InputMask } from "primereact/inputmask";
@@ -51,6 +52,20 @@ export function Input(props) {
           })}
         />
       )}
+      {(props.type == "textarea") && (
+        <InputTextarea
+          id={props.name}
+          type={props.type}
+          name={props.name}
+          value={props.formik.values.value}
+          onChange={(e) => {
+            props.formik.setFieldValue(props.name, e.target.value);
+          }}
+          className={classNames({
+            "p-invalid": isFormFieldInvalid(props.name, props.formik),
+          })}
+        />
+      )}
       {props.type == "mask" && (
         <InputMask
           id={props.name}
@@ -72,7 +87,7 @@ export function Input(props) {
           name={props.name}
           value={props.value}
           field={props.field}
-          multiple={props.multiple}
+          {...props.multiple==="true" ? { multiple: true } : {multiple: false }}
           suggestions={props.suggestions}
           completeMethod={props.completeMethod}
           onChange={props.onChange}

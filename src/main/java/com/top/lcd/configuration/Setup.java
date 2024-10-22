@@ -10,13 +10,6 @@ import com.top.lcd.entity.*;
 import com.top.lcd.helper.LoggedUserInfo;
 import com.top.lcd.repository.*;
 import com.top.lcd.security.JwtTokenUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
-
 import com.top.lcd.security.SecurityConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +25,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -127,6 +126,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
             });
         });
 
+
     }
 
 
@@ -218,7 +218,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 EndpointRepository endpointRepository = applicationContext.getBean(EndpointRepository.class);
                 while (namesIterator.hasNext()) {
                     String api = namesIterator.next();
-                    if (!Arrays.stream(SecurityConfig.permitMatchers).anyMatch(s -> api.startsWith(s)) && endpointRepository.findByApi(api) == null) {
+                    if (!Arrays.stream(SecurityConfig.noLoginMatchers).anyMatch(s -> api.startsWith(s)) && endpointRepository.findByApi(api) == null) {
                         Endpoint endpoint = new Endpoint();
                         endpoint.setApi(api);
                         endpointRepository.save(endpoint);

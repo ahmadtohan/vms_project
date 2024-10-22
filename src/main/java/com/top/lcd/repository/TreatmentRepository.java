@@ -9,12 +9,12 @@ import com.top.lcd.entity.Treatment;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author Ahmad
  */
 
 @Repository
 public interface TreatmentRepository extends BaseRepository<Treatment> {
 
+    public Treatment findOneByIdAndPatientId(Long id, Long patientId);
 
 }

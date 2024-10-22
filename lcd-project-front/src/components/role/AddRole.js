@@ -5,6 +5,7 @@ import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { SpeedDial } from 'primereact/speeddial';
 import { Input } from "./../../custom/Input";
+import { InputSwitch } from 'primereact/inputswitch';
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -19,6 +20,8 @@ const AddRole = () => {
   const [message, setMessage] = useState("");
   const [endpoints, setEndpoints] = useState([]);
   const [filteredEndpoints, setFilteredEndpoints] = useState(null);
+  const [full, setFull] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -108,10 +111,16 @@ const AddRole = () => {
           <Input name="name" type="text" title="Name" formik={formik} />
           <Input name="description" type="text" title="Description" formik={formik} />
 
+            <label htmlFor="switch1">Full Access</label>
+            <InputSwitch inputId="switch1" checked={full} onChange={(e) => {
+              setFull(e.value);
+               e.value ? formik.setFieldValue("endpoints", endpoints) : formik.setFieldValue("endpoints", []) }} />
+
         </div>
 
 
         <div className="flex align-items-center">
+
           <Input name="endpoints" type="autoComplete" field="api" value={formik.values["endpoints"]}
             title="Endpoints" multiple="true" suggestions={filteredEndpoints} completeMethod={search}
             onChange={(e) => { formik.setFieldValue("endpoints", e.value); }} formik={formik} />

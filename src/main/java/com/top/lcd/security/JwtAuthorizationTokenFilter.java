@@ -2,24 +2,11 @@ package com.top.lcd.security;
 
 import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.configuration.Setup;
-
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.top.lcd.entity.User;
 import com.top.lcd.helper.LoggedUserInfo;
 import io.jsonwebtoken.ExpiredJwtException;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +21,16 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static com.top.lcd.security.SecurityConfig.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+
+import static com.top.lcd.security.SecurityConfig.noLoginMatchers;
 
 @Component
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
@@ -117,7 +113,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         int okCode = 200;
         String path = request.getServletPath();
 
-        if (Arrays.stream(permitMatchers).anyMatch(s -> path.startsWith(s))) {
+        if (Arrays.stream(noLoginMatchers).anyMatch(s -> path.startsWith(s))) {
             logger.info("-------------permitMatchers: ok");
             return okCode;
         }

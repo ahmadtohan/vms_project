@@ -7,6 +7,7 @@ const config = {
 
     userAPIs: {
 
+        addpatient:'user/addpatient',
         listPage: 'user/page',
         list: 'user/list',
         getusers: 'user/getusers',
@@ -30,6 +31,11 @@ const config = {
     },
   treatmentAPIs: {
         listPage: 'treatment/page',
+
+        patienttreatmentlistPage:'treatment/patienttreatmentlistPage',
+        getpatienttreatment:'treatment/getpatienttreatment',
+        addpatienttreatment:'treatment/addpatienttreatment',
+
         list: 'treatment/list',
         view: 'treatment/get',
         create: 'treatment/create',

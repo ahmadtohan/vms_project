@@ -8,13 +8,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.top.lcd.entity.BaseEntity;
 import com.top.lcd.helper.SelectQuery;
 import com.top.lcd.repository.BaseRepositoryParent;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
@@ -24,6 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * @param <T>
@@ -54,11 +53,13 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
             for (Object object : list) {
                 Map<String, Object> map = getObjectMapper().convertValue(object, new TypeReference<Map<String, Object>>() {
                 });
-                Field field = getEntityClass().getDeclaredField(map.get("field").toString());
-                Class fieldType = field.getType();
                 Object value = map.get("value");
-                if (fieldType.isEnum()) {
-                    value = Enum.valueOf(fieldType, value.toString());
+                if (!map.get("field").toString().contains(".")) {
+                    Field field = getEntityClass().getDeclaredField(map.get("field").toString());
+                    Class fieldType = field.getType();
+                    if (fieldType.isEnum()) {
+                        value = Enum.valueOf(fieldType, value.toString());
+                    }
                 }
                 query.filterBy(map.get("field").toString(), map.get("operation").toString(), value).setAnd(false);
             }

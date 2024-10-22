@@ -3,29 +3,18 @@ package com.top.lcd.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.top.lcd.annotations.BeforeDelete;
 import com.top.lcd.annotations.BeforeInsert;
-import com.top.lcd.annotations.EntityJsonSerializer;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.helper.EnumEntity;
-
-import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
-
-import com.top.lcd.helper.GenericSerializer;
 import com.top.lcd.repository.RoleRepository;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * @author Ahmad
@@ -46,9 +35,7 @@ public class User extends BaseEntity implements UserDetails {
         public String getLabel() {
             return label;
         }
-    }
-
-    ;
+    };
 
     public enum Gender implements EnumEntity {
         MALE("Male"), FEMALE("Female");
@@ -123,10 +110,12 @@ public class User extends BaseEntity implements UserDetails {
     private String token;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Treatment> doctors;
 
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Treatment> patients;
 
 
@@ -167,6 +156,22 @@ public class User extends BaseEntity implements UserDetails {
             newRoles.add(role);
         }
         this.setRoles(newRoles);
+    }
+
+    public List<Treatment> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<Treatment> doctors) {
+        this.doctors = doctors;
+    }
+
+    public List<Treatment> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Treatment> patients) {
+        this.patients = patients;
     }
 
     public String getUsername() {

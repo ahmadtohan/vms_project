@@ -68,8 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
-    public static String[] permitMatchers = new String[]{"/content",
-            "/static", "/lcdApp","/user/login", "/user/logout", /*"/user/create",*/ "/error"};
+    public static String[] noLoginMatchers = new String[]{"/content",
+            "/static", "/lcdApp","/user/login", "/user/logout", "/user/addpatient", "/error"};
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
