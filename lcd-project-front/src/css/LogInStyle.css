@@ -1,0 +1,144 @@
+*{
+    font-family: 'Poppins',sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+  .login{
+    background-color: rgb(58, 116, 149);
+    color: white;
+    padding: 8px 17px;
+    border-radius: 22px;
+  }
+ 
+
+.frame{
+    width: 440px;
+    height: 490px;
+    background: transparent;
+    color: #fff;
+    border-radius: 15px;
+    padding: 30px 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(70px);
+    margin: auto;
+  
+
+}
+.frame h1{
+    font-size: 36px;
+    text-align: center;
+
+}
+.frame .input-area{
+    position: relative;
+    width: 100%;
+    height:50px;
+    margin: 30px 0;
+}
+
+.input-area input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+
+}
+.input-area input::placeholder{
+    color: #fff;
+
+}
+.input-area i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+
+}
+
+.frame .check-area{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin:6px 0 18px;
+}
+.check-area label input{
+    accent-color: #fff;
+    margin-right: 3px;
+}
+
+.check-area a{
+    color: #fff;
+    text-decoration: none;
+
+}
+
+.check-area a:hover{
+    text-decoration: underline;
+}
+.frame .Login-btn{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.frame .Register-Page-Link{
+    font-size: 14.5px;
+    text-align: center;
+    margin:30px 0 15px;
+}
+
+.Register-Page-Link p a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.Register-Page-Link p a:hover{
+    text-decoration: underline;
+   
+}
+
+
+.UAE-Pass-Button a .UaePassP {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    margin:12px 0 15px;
+    
+   
+
+
+
+}
+
+
+
+
+
+
+
