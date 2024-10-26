@@ -10,6 +10,7 @@ import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.entity.Role;
 import com.top.lcd.entity.User;
+import com.top.lcd.entity.UserRole;
 import com.top.lcd.helper.GenericProjection;
 import com.top.lcd.helper.SelectQuery;
 import com.top.lcd.repository.BaseRepository;
@@ -92,7 +93,7 @@ public class UserController extends BaseRepositoryController<User> {
         Setup.setCurrentUserInMemory(loggedUser);
 
         GenericProjection projection = new GenericProjection(new String[]{
-                "id", "username", "fullName", "email", "type", "token", "{name : 'roles', keys : {'id', 'name' ,{name:'permissions', keys : {'id', {name:'endpoint',keys:{'id','api'}}}}}}"});
+                "id", "username", "fullName", "email", "type", "token"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
@@ -125,7 +126,7 @@ public class UserController extends BaseRepositoryController<User> {
 
         GenericProjection projection = new GenericProjection(new String[]{
                 "id", "fullName", "status", "username", "gender", "type", "email", "mobileNumber", "birthDate", "eid",
-                "{name:'roles', keys : {'id', 'name'}}"});
+                "{name:'userRoles', keys : {'id',{name:'role', keys : {'id', 'name'}}}}"});
         return new ResponseEntity<>(projection.project(user), HttpStatus.OK);
     }
 
@@ -142,9 +143,11 @@ public class UserController extends BaseRepositoryController<User> {
             role.setPermissions(new ArrayList<>());
             role = roleRepository.save(role);
         }
-        Role finalRole = role;
-        user.setRoles(new ArrayList<Role>() {{
-            add(finalRole);
+
+        UserRole userRole = new UserRole();
+        userRole.setRole(role);
+        user.setUserRoles(new ArrayList<UserRole>() {{
+            add(userRole);
         }});
         return super.createEntity(user);
     }

@@ -13,6 +13,8 @@ import Utils from "./../../services/Utils";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
+import './../../css/addPatient.css'
+
 const AddPatient = () => {
   const toast = useRef(null);
   const [user, setUser] = useState({});
@@ -39,23 +41,27 @@ const AddPatient = () => {
       eid: "",
       birthDate: "",
       gender: "",
-      roles: [],
+      mobileNumber:"",
+      userRoles: [],
     },
     validate: (data) => {
       let errors = {};
 
       if (!data.fullName) {
-        errors.fullName = "username is required.";
+        errors.fullName = "full name is required.";
       }
       if (!data.email) {
         errors.email = "email is required.";
+      }
+      if (!data.mobileNumber) {
+        errors.mobileNumber = "mobile number is required.";
       }
       if (!data.eid) {
         errors.eid = "EID is required.";
       }
 
       if (!data.birthDate) {
-        errors.birthDate = "birthDate is required.";
+        errors.birthDate = "birth date is required.";
       }
       if (!data.username) {
         errors.username = "username is required.";
@@ -63,11 +69,11 @@ const AddPatient = () => {
       if (!data.password) {
         errors.password = "password is required.";
       }
-      
+
       if (!data.gender) {
         errors.gender = "gender is required.";
       }
-      
+
 
       console.log("data , err: ", data, errors);
       return errors;
@@ -77,16 +83,18 @@ const AddPatient = () => {
       setMessage("");
       obj.birthDate = Utils.formatDate(obj.birthDate);
       endPoint(config.userAPIs.addpatient, "POST", obj).then((res) => {
-        console.log(res);
+        console.log("--------------",res);
         toast.current.show({
           severity: "info",
           summary: "Confirmed",
           detail: "User has been created",
           life: 3000,
         });
-        setTimeout(() => {
-          navigate("/lcd/app/login");
-        }, "500");
+       setTimeout(() => {
+        navigate("/lcd/app/login");
+
+       }, 50);
+        
       });
     },
   });
@@ -103,50 +111,74 @@ const AddPatient = () => {
   ];
 
   return (
-    <div className="card">
+    <div>
       <Toast ref={toast} />
-      <Tag severity="success" style={{ marginBottom: '40px' }} value="Add Patient: "></Tag>
+      <div className="content">
+      
+        <div className="sign-up-title">
+        <i className="pi pi-arrow-circle-left"
+         onClick={(e)=>{window.history.go(-1); return false;}}
+         style={{ fontSize: '1.5rem' ,marginInlineEnd:'5px', cursor:'pointer'}}></i>
+        Sign Up</div>
+        <form  onSubmit={formik.handleSubmit}>
+          <div className="user-details">
+            <div className="input-box">
+              <span className="info">Full Name</span>
+              <Input name="fullName" type="text" placeholder="Enter Your Full Name"  formik={formik} />
 
-      <form onSubmit={formik.handleSubmit}>
+            </div>
+            <div className="input-box">
+              <span className="info">E-ID</span>
+              <Input name="eid" type="mask" mask="999-9999-9999999-9"  placeholder="Enter Your E-ID"  formik={formik} />
 
-        <div className="flex align-items-center">
-          <Input name="fullName" type="text" title="Full Name" formik={formik} />
+            </div>
+            <div className="input-box">
+              <span className="info">Email</span>
+              <Input name="email" type="text" placeholder="Enter Your Email"  formik={formik} />
 
-          <Input name="email" type="text" title="Email" formik={formik} />
+            </div>
+            <div className="input-box">
+              <span className="info">Username</span>
+              <Input name="username" type="text" placeholder="Enter Your Username"  formik={formik} />
 
-          <Input name="eid" type="mask" mask="999-9999-9999999-9" title="E-ID" formik={formik} />
-
-          <Input name="birthDate" type="calendar" title="Birth Date" formik={formik} />
-
-          <Input name="gender" type="dropdown" title="Gender" value={formik.values["gender"]}
-            onChange={(e) => {
-              formik.setFieldValue("gender", e.value);
-            }}
-            options={genders} optionLabel="label" placeholder="Select Gender" formik={formik} />
-
-        </div>
-
-
-        <div className="flex align-items-center">
-
-          <Input name="username" type="text" title="Username" formik={formik} />
-          <Input name="password" type="password" title="Password" formik={formik} />
-
-        
+            </div>
+            <div className="input-box">
+              <span className="info">Password</span>
+              <Input name="password" type="password" placeholder="Enter Your Password"  formik={formik} />
 
 
-        </div>
+            </div>
+            <div className="input-box">
+              <span className="info">Phone Number</span>
+              <Input name="mobileNumber" type="mask" mask="0-99-9999999"  placeholder="Enter Your Phone Number"  formik={formik} />
 
+            </div>
+            <div className="input-box">
+              <span className="info">Birth Date</span>
+              <Input name="birthDate" type="calendar" placeholder="Select Your Birth Date" formik={formik} />
 
-        <SpeedDial type="submit"
-          onClick={(e) => {
-            formik.submitForm();
-          }}
-          direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-help"
-          style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-        />
-      </form>
+            </div>
+            <div className="input-box">
+              <span className="info">Gender</span>
+              <Input name="gender" type="dropdown" value={formik.values["gender"]}
+                onChange={(e) => {
+                  formik.setFieldValue("gender", e.value);
+                }}
+                options={genders} optionLabel="label" placeholder="Select Gender" formik={formik} />
+            </div>
+
+          </div>
+          <div className="Create-Button">
+            <input type="submit"   value="Create An Account" />
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
+
   );
 };
 

@@ -77,7 +77,8 @@ const config = {
         view: 'picklist/get',
         create: 'picklist/create',
         update: 'picklist/update',
-        delete: 'picklist/delete'
+        delete: 'picklist/delete',
+        getbycode:'picklist/getbycode'
     }
 
 }

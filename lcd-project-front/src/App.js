@@ -4,6 +4,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import { Toast } from 'primereact/toast';
 import { Chip } from "primereact/chip";
+import { OverlayPanel } from 'primereact/overlaypanel';
+import { Card } from 'primereact/card';
 
 import endPoint from "./services/endPoint";
 import config from "./services/config";
@@ -51,6 +53,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const navigate = useNavigate();
   const toast = useRef(null);
+  const op = useRef(null);
 
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem("user")));
@@ -81,7 +84,10 @@ const App = () => {
       if (error.response.status == 401 || error.response.status == 403) {
         setTimeout(() => {
 
-          window.location.href = '/lcd/app/login';
+          document.cookie = "";
+          setCurrentUser(null);
+          localStorage.removeItem("user");
+          load('/lcd/app/login');
         }, "1000");
 
       }
@@ -171,26 +177,42 @@ const App = () => {
 
   ];
 
-  const lastItems = [
-    {
-      label: 'Logout',
-      icon: 'pi pi-fw pi-power-off',
-      command: () => {
-        logOut();
-      }
-    }
-  ]
+
 
   const startContent = (
     <React.Fragment>
-     {currentUser?.type?.value !== 'PATIENT' && <Menubar model={items} />}
+      {currentUser?.type?.value !== 'PATIENT' && <Menubar model={items} />}
     </React.Fragment>
   );
 
   const endContent = (
     <React.Fragment>
-      <Chip style={{marginInlineEnd:'10px'}} label={currentUser?.fullName}icon="pi pi-user" />
-      <Menubar model={lastItems} />
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYElEQVR4nNVZ3W8iVRSfF9347INuNDEmxjWuf4WJr8aNiWZ98sGv6K4+aKJvGp/V7v4bNWnScs4AsymlX/SLdtttoXSgLdCW0qVQZoChQOWaMzsosEA7dy6we5NfMhnmnvv73XPuveceJElAA4BXEfEzRLwPAF4AiCJiDgCqBOs5Sr9Z39ymPtIw29jY2MsA8D0ArCAi4wEALAPAXbI1MOKyLL8OAPcQscRLvIOQIgCMuFyu1/pGPBgMvoCIPwBAQRRxfBo0Kb/JsnxNKHm3230DEdf7SJy14SEivi2EPCJ+3OdZZ12gu1yuW47IA8DnAFAbAnlm4QIRv+El//UQibNm0E5lO2ws9UMnj/974qMrkfd4PG8BgPYMkGZtXihMTEy805P86Ojoi6J2G4/Hw/z+aRP0LEjEGm3nveL+FycDKA8esPBOlJ3mC8yosRZkznQWiqjmNw5F/NSRPJ2CdCLyGt7YDDG9XHuKeDsK5Rp7uLHpKJTcbvf1TrN/j9dobD9xKfF2UB/kF/FnC3lKpnhzm3BEtU2+ga1whFdAsSUBpKySx5B/eoaVqnVuAaVqnU3PzPJ64rtmAVwp8UHqhJt8A8mjNK+AJZM8LQgAqNs14FUUR7Pf7AWvovCEUX18fPwVybpJ2TawHFx1TN6wsLQS5PXCpyTgPk/nR1thYQI2NkO8i3lEsu6ptjuHtneECQht7/AKkMkDuzyd6TASJWBt/RGvgCh5IMvTeT6wIEzA3HyAdw1kyAMVns6yLDOtVHFMXitVTFucHjjnFkCgxM1x/EdU3tl/IoA3hAher5fli+fc5M8KZdMG7/hmCAFAzIEBNjM7xwrnF7bJFyv/sNm5eSfk/1vEXNtoMwILi0w3qrbinvqgw3Eb2yjXQdaOyUkfix+kLiW/nzxikz6f4/Gw6SC7LcJYA1NTfrYZ2jaTtPTpmQl6pnc+35SwcfCJgE8kSoh4krlhAxrJnJVOLz+HAhaa7wN3n0MB37ZcKZ1c6LuB8nyeXB/tXiktL4w4IbqyumZe1I8zuY5bKr2j3+gb+taJMAD4Q0hZZWFxiSUOj7luZtQncXhs2rApQO/69xQA/HwVI3SC0myKykZPsnkzu72igB+lbo3KdlS+69aZSoS78aQw4kYbKLwuKUOu9iwt9iru0gF1qhX7Rt6wQGPQWF0qcjd6km9aD7eay+sUMiJyfzu50mxronfhcrk+vBL5pvXwlTnz/mlbiZoo6OWaWfSysoQvJJ6mKMqXOd0YOHnDQlYrMUVR7khOmhrb+1U3qvVBk9eMan1nd/93SUQLh9UPHue04qDIn2TzxUgk9r4ksqmqei1+kBqnmelb3BvV+m78wBsIBF6S+tXCsdh7yVR6VS/XhAnRjGo9mUoHt1T1XWlQbXF9/c395NHfJzlN500l0tm8vpc4HA2FQm8MjHinRl6J7sVHEkfHa+lMLpPVSxWtVKnTxZ1Az/Qunck9Ju9F9+J/RROJmyIG/xfCWpgNDDFCCwAAAABJRU5ErkJggg=="     
+style={{cursor:'pointer'}}
+onClick={(e) => op.current.toggle(e)} />
+      <OverlayPanel ref={op}>
+
+        <Card
+          title={<div>
+            <i className="pi pi-user" style={{ fontSize: '2.5rem' }}></i>
+            &nbsp;&nbsp;{currentUser?.fullName}</div>}
+          subTitle={currentUser?.email}
+          footer={<div><Button label="Logout" onClick={(e) => { logOut(); }}
+            severity="secondary" icon="pi pi-fw pi-power-off" style={{ marginLeft: '0.5em' }} />
+          </div>}
+          header={<div></div>}
+          className="md:w-25rem"
+          style={{ boxShadow: 'none' }}>
+
+          <p className="m-0">
+            {currentUser?.mobileNumber}
+          </p>
+
+        </Card>
+
+
+      </OverlayPanel>
+
 
     </React.Fragment>
   );
@@ -203,7 +225,7 @@ const App = () => {
   return (
     <div>
       <Toast ref={toast} />
-      {isLogged()  && <Toolbar style={{ height: '55px', backgroundColor: '#A855F7' }} start={startContent} end={endContent} />}
+      {isLogged() && <Toolbar style={{ height: '55px', backgroundColor: '#A855F7' }} start={startContent} end={endContent} />}
       <div className="container mt-3">
         <Routes>
           <Route exact path={"/lcd/"} element={<Login />} />
@@ -222,7 +244,7 @@ const App = () => {
           <Route exact path={"/lcd/app/addTreatment"} element={<AddTreatment />} />
           <Route exact path={"/lcd/app/viewTreatment"} element={<ViewTreatment />} />
           <Route exact path={"/lcd/app/treatments"} element={<Treatments />} />
-          
+
           <Route exact path={"/lcd/app/roles"} element={<Roles />} />
           <Route exact path={"/lcd/app/viewRole"} element={<ViewRole />} />
           <Route exact path={"/lcd/app/addRole"} element={<AddRole />} />

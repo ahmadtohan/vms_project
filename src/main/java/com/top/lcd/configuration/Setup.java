@@ -73,7 +73,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
     /////////////////////////////////Picklists/////////////////////////////////////////////////////
     public static final String NATIONALITIES_PICKLIST_CODE = "nationalities";
-
+    public static final String AVL_TIMES_PICKLIST_CODE = "avl_times";
     /////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -108,6 +108,14 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                     add(new PickListItem("syria_nationality", "syria nation", "Syria", null));
                     add(new PickListItem("oman_nationality", "oman nation", "Oman", null));
                     add(new PickListItem("qatar_nationality", "qatar nation", "Qatar", null));
+                }}),
+                new PickList(AVL_TIMES_PICKLIST_CODE, "AVL Times", "doctors times", new ArrayList<PickListItem>() {{
+                    add(new PickListItem("Time1", "Time1", "09:00 AM", null));
+                    add(new PickListItem("Time2", "Time2", "10:00 AM", null));
+                    add(new PickListItem("Time3", "Time3", "11:00 AM", null));
+                    add(new PickListItem("Time4", "Time4", "03:00 PM", null));
+                    add(new PickListItem("Time5", "Time5", "04:00 PM", null));
+                    add(new PickListItem("Time6", "Time6", "05:00 PM", null));
                 }})
         };
         Arrays.stream(pickLists).forEach(p -> {
@@ -181,7 +189,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     }
 
     public static void setCurrentUserInMemory(User user) {
-        Set<String> endpointApis = permissionRepository.findByRoleIn(user.getRoles()).stream().filter(p -> p.getRole().getStatus().equals(Role.Status.ACTIVE)).map(p -> p.getEndpoint().getApi()).collect(Collectors.toSet());
+        Set<String> endpointApis = permissionRepository.findByRoleIn(user.getUserRoles().stream().map(r->r.getRole()).collect(Collectors.toList())
+        ).stream().filter(p -> p.getRole().getStatus().equals(Role.Status.ACTIVE)).map(p -> p.getEndpoint().getApi()).collect(Collectors.toSet());
         LoggedUserInfo loggedUserInfo = new LoggedUserInfo(user, endpointApis);
         memoryMap.put(user.getUsername(), loggedUserInfo);
     }

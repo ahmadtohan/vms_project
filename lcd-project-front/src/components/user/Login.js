@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from "react-router-dom";
 import EventBus from "./../../common/eventBus";
-
+import './../../css/LogInStyle.css'
 
 const Login = () => {
     const [message, setMessage] = useState("");
@@ -66,8 +66,36 @@ const Login = () => {
 
 
     return (
-        <div className="background" >
-            <div className="card" style={{ width: '25%', marginTop: '10%' }}>
+        <div  >
+            <div className="frame">
+                <form onSubmit={formik.handleSubmit}>
+                    <h1>Log In</h1>
+                    <div className="input-area">
+                        <Input name="username" type="text" placeholder="Enter your Username" formik={formik} />
+                        <i className="pi pi-user"></i>
+                    </div>
+                    <div className="input-area">
+                        <Input name="password" type="password" placeholder="Enter your password" formik={formik} />
+                        <i className="pi pi-lock"></i>
+                    </div>
+                    <div className="check-area">
+                        <label for="remember me"><input type="checkbox" />Remember me</label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <button type="submit" className="Login-btn">Login</button>
+                    <div className="UAE-Pass-Button">
+                        <a className="UaePass" href="https://uaepass.ae/">
+                            <img className="UaePassP" src="/lcd/uae-pass.png" alt="signup by uae pass" />
+                        </a>
+
+
+                    </div>
+                    <div className="Register-Page-Link">
+                        <p>Don't have an account? <a href="/lcd/app/addPatient" >Register</a></p>
+                    </div>
+                </form>
+            </div>
+            { /*<div className="card" style={{ width: '25%', marginTop: '10%' }}>
 
                 <div className="flex flex-wrap gap-q  justify-content-center"  >
 
@@ -85,7 +113,7 @@ const Login = () => {
                         onClick={(e) => { navigate("/lcd/app/addPatient"); }}></Tag>
 
                 </div>
-            </div>
+            </div>*/}
         </div>
     );
 };

@@ -111,13 +111,18 @@ const AddRole = () => {
           <Input name="name" type="text" title="Name" formik={formik} />
           <Input name="description" type="text" title="Description" formik={formik} />
 
-            <label htmlFor="switch1">Full Access</label>
+        
+        </div>
+
+        <div className="flex align-items-center">
+         
+            <label htmlFor="switch1">ALL</label>
             <InputSwitch inputId="switch1" checked={full} onChange={(e) => {
               setFull(e.value);
                e.value ? formik.setFieldValue("endpoints", endpoints) : formik.setFieldValue("endpoints", []) }} />
 
         </div>
-
+        <br/> <br/> <br/>
 
         <div className="flex align-items-center">
 

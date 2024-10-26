@@ -4,6 +4,9 @@ import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { SpeedDial } from 'primereact/speeddial';
+import { Card } from 'primereact/card';
+
+import { Chip } from "primereact/chip";
 
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
@@ -23,6 +26,12 @@ const AddPatientTreatment = () => {
   const [filteredDoctors, setFilteredDoctors] = useState(null);
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(null);
+  const [avlTimes, setAvlTimes] = useState({});
+  const [avlDates, setAvlDates] = useState([]);
+
+  const [selectedTime, setSelectedTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,8 +46,39 @@ const AddPatientTreatment = () => {
     }
     );
 
+    endPoint(
+      config.picklistAPIs.getbycode + "?code=avl_times",
+      "GET",
+      null
+    ).then((res) => {
+      console.log(res);
+      setAvlTimes(res);
+    }
+    );
+
+    setAvlDates(getNextFourWeekdays());
 
   }, []);
+
+  function getNextFourWeekdays() {
+    const weekdays = [];
+    const today = new Date();
+
+    // Start from tomorrow
+    today.setDate(today.getDate() + 1);
+
+    while (weekdays.length < 4) {
+      // Check if the day is a weekday (Monday to Friday)
+      if (today.getDay() !== 0 && today.getDay() !== 6) {
+        weekdays.push(Utils.formatDateWithoutTime(new Date(today)));
+      }
+      // Move to the next day
+      today.setDate(today.getDate() + 1);
+    }
+
+    return weekdays;
+  }
+
 
   const searchDoctor = (event) => {
     // Timeout to emulate a network connection
@@ -94,7 +134,6 @@ const AddPatientTreatment = () => {
     onSubmit: (data) => {
       const obj = Object.assign({}, data);
       setMessage("");
-      obj.appointmentDate = Utils.formatDate(obj.appointmentDate);
       endPoint(config.treatmentAPIs.addpatienttreatment, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({
@@ -123,53 +162,102 @@ const AddPatientTreatment = () => {
 
 
   return (
-    <div className="card">
+    <div className="flex ">
       <Toast ref={toast} />
-      <Tag severity="success" style={{ marginBottom: '40px' }} value="Add Appointment Treatment: "></Tag>
 
-      <form onSubmit={formik.handleSubmit}>
+      <Card title="New Appointment" subTitle=""
+        footer={<div> <Button label="Save" icon="pi pi-save" onClick={(e) => {
+          formik.submitForm();
+        }} />
+          <Button label="Back" onClick={(e) => { window.history.go(-1); return false; }}
+            severity="secondary" icon="pi pi-arrow-circle-left" style={{ marginLeft: '0.5em' }} />
+        </div>}
+        header={<div> </div>}
+        style={{ marginTop: '50px' }}
+        className="md:w-45rem">
+        <form onSubmit={formik.handleSubmit}>
+          <div className="flex align-items-center">
+            <Input name="doctor" type="autoComplete" field="fullName" value={formik.values["doctor"]}
+              title="Doctor" multiple="false" suggestions={filteredDoctors} completeMethod={searchDoctor}
+              onChange={(e) => { formik.setFieldValue("doctor", e.value); }} formik={formik} />
 
+            <Input name="type" type="dropdown" title="Type" value={formik.values["type"]}
+              onChange={(e) => {
+                formik.setFieldValue("type", e.value);
 
-
-        <div className="flex align-items-center">
-
-
-
-          <Input name="doctor" type="autoComplete" field="fullName" value={formik.values["doctor"]}
-            title="Doctor" multiple="false" suggestions={filteredDoctors} completeMethod={searchDoctor}
-            onChange={(e) => { formik.setFieldValue("doctor", e.value); }} formik={formik} />
-
-          <Input name="type" type="dropdown" title="Type" value={formik.values["type"]}
-            onChange={(e) => {
-              formik.setFieldValue("type", e.value);
-
-            }}
-            options={types} optionLabel="label" placeholder="Select Type" formik={formik} />
-
-
-        </div>
-
-
+              }}
+              options={types} optionLabel="label" placeholder="Select Type" formik={formik} />
 
 
-        <div className="flex align-items-center">
-          <Input name="appointmentDate" type="calendar" title="Appointment Date" formik={formik} />
-
-          <Input name="description" type="textarea" title="Description" formik={formik} />
+          </div>
 
 
 
-        </div>
+
+          <div className="flex align-items-center">
+
+            <Input name="description" type="textarea" title="Description" formik={formik} />
+
+          </div>
+
+          <div >
+            <div>
+              <h2> Available Dates</h2>
+            </div>
+            <br />
+            <div>
+              {avlDates.map((date, index) => (
+                <Chip
+                  onClick={(e) => {
+                    console.log(date); setSelectedDate(date);
+                    formik.setFieldValue("appointmentDate", date + " " + Utils.convertTime12to24(selectedTime));
+
+                  }}
+                  key={index}
+                  label={date}
+                  style={{
+                    marginInlineEnd: "8px", cursor: 'pointer',
+                    backgroundColor: selectedDate === date ? '#8af98a' : ''
+                  }}
+                />
+              ))}
+            </div>
+
+          </div>
+          <br /><br />
+          <div >
+            <div>
+              <h2> Available Times</h2>
+            </div>
+            <br />
+            <div>
+              {avlTimes.pickListItems?.map((timeObj, index) => (
+                <Chip
+                  onClick={(e) => {
+                    console.log(timeObj); setSelectedTime(timeObj.value)
+                    formik.setFieldValue("appointmentDate", selectedDate + " " + Utils.convertTime12to24(timeObj.value));
+                  }}
+                  key={index}
+                  label={timeObj?.value}
+                  style={{
+                    marginInlineEnd: "8px", cursor: 'pointer',
+                    backgroundColor: selectedTime === timeObj.value ? '#8af98a' : ''
+                  }}
+                />
+              ))}
+            </div>
+            <div>
+              <span style={{ color: 'red' }}>{formik.errors?.appointmentDate}</span>
+            </div>
+          </div>
+        </form>
+      </Card>
 
 
-        <SpeedDial type="submit"
-          onClick={(e) => {
-            formik.submitForm();
-          }}
-          direction="up" transitionDelay={80} showIcon="pi pi-save" hideIcon="pi pi-save" buttonClassName="p-button-help"
-          style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-        />
-      </form>
+
+
+
+
     </div>
   );
 };

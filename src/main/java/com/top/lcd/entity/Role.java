@@ -1,6 +1,5 @@
 package com.top.lcd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.top.lcd.annotations.AfterInsert;
 import com.top.lcd.configuration.Setup;
@@ -42,9 +41,8 @@ public class Role extends BaseEntity{
     @Column
     private String description;
 
-    @ManyToMany
-    @JsonIgnore
-    private List<User> users;
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private List<UserRole> userRoles;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -83,12 +81,12 @@ public class Role extends BaseEntity{
         this.description = description;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     public List<Permission> getPermissions() {

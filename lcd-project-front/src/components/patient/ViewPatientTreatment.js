@@ -104,6 +104,9 @@ const ViewPatientTreatment = () => {
 
   return (
     <div className="card">
+       <i className="pi pi-arrow-circle-left"
+         onClick={(e)=>{window.history.go(-1); return false;}}
+         style={{ fontSize: '1.5rem' ,marginInlineEnd:'5px', cursor:'pointer'}}></i>
       <Show rows={rows} object={treatment} severityByStatus={getSeverityByStatus} />
 
   

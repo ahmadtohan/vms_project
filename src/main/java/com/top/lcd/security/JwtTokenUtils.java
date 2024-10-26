@@ -6,20 +6,20 @@
 package com.top.lcd.security;
 
 import com.top.lcd.entity.User;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
-import java.util.stream.Collectors;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtils implements Serializable {
@@ -44,7 +44,7 @@ public class JwtTokenUtils implements Serializable {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         User user = (User) userDetails;
-        if (user.getRoles() != null) {
+        if (user.getUserRoles() != null) {
             claims.put(CLAIM_KEY_ROLES, userDetails.getAuthorities()
                     .stream()
                     .map(auth -> auth.getAuthority())

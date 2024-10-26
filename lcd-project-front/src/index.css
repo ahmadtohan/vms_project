@@ -10,7 +10,7 @@ body {
   padding: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('../public/h.jpg');
+  background-image: url('../public/bak.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
      min-height: 95vh;
@@ -90,3 +90,4 @@ li a:hover:not(.active) {
   margin-inline-end: 50px;
   margin-bottom: 20px;
 }
+

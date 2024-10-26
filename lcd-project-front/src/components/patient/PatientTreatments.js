@@ -9,6 +9,8 @@ import { InputText } from "primereact/inputtext";
 import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { Dropdown } from "primereact/dropdown";
 import { Paginator } from "primereact/paginator";
+import { Chip } from "primereact/chip";
+import { Card } from 'primereact/card';
 
 import { useNavigate } from "react-router-dom";
 import endPoint from "./../../services/endPoint";
@@ -28,7 +30,7 @@ const reducer = (state, { type, payload }) => {
 };
 
 const PatientTreatments = () => {
-  const numOfRows = 7;
+  const numOfRows = 100;
   const [start, setStart] = useState(false);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(numOfRows);
@@ -226,8 +228,36 @@ const PatientTreatments = () => {
 
 
   return (
-    <div className="card">
-      <DataTable resizableColumns
+    <div >
+
+
+      <div className="flex align-items-center" style={{ margin: '80px' ,flexWrap: 'wrap'}}>
+        {treatments?.map((obj, index) => (
+
+          <Card key={index}
+            title={<div>
+              <i className="pi pi-user" style={{ fontSize: '2.5rem' }}></i>
+            &nbsp;&nbsp;{obj?.doctor?.fullName}</div>}
+            subTitle={<div> {statusBodyTemplate(obj)}&nbsp;{obj?.appointmentDate}</div>}
+            footer={<div><Button label="View" onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}
+            severity="secondary" icon="pi pi-eye" style={{ marginLeft: '0.5em' }} /></div>}
+            header={<div></div>}
+            className="md:w-25rem"
+            style={{marginRight: '2%', marginBottom:'2%'}}>
+
+            <p className="m-0">
+              {obj?.description}
+              </p>
+
+          </Card>
+        ))}
+      </div>
+
+
+
+
+
+      {/*<DataTable resizableColumns
         value={treatments}
         dataKey="id"
         header={header}
@@ -269,7 +299,7 @@ const PatientTreatments = () => {
         totalRecords={totalRecords}
         rowsPerPageOptions={[10, 25, 50]}
         onPageChange={onPageChange}
-      />
+      />*/}
 
       <div
         style={{ height: "300px" }}

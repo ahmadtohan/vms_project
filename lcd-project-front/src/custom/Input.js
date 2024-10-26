@@ -23,12 +23,16 @@ const getFormErrorMessage = (name, formik) => {
 
 export function Input(props) {
   return (
-    <span className="p-float-label  align-items-center gap-2 input-margin">
+    <span className={props.title ? "p-float-label " : "" + " align-items-center gap-2 input-margin"}
+     style={{marginInlineEnd: '15px',
+      marginBottom: '20px'}}>
+
       {props.type == "calendar" && (
         <Calendar
           id={props.name}
           name={props.name}
           value={props.formik.values.value}
+          placeholder={props.placeholder}
           dateFormat={props.dateFormat} showTime={props.showTime} hourFormat={props.hourFormat}
           onChange={(e) => {
             props.formik.setFieldValue(props.name, e.target.value);
@@ -44,6 +48,7 @@ export function Input(props) {
           type={props.type}
           name={props.name}
           value={props.formik.values.value}
+          placeholder={props.placeholder}
           onChange={(e) => {
             props.formik.setFieldValue(props.name, e.target.value);
           }}
@@ -55,9 +60,11 @@ export function Input(props) {
       {(props.type == "textarea") && (
         <InputTextarea
           id={props.name}
+          style={{width:'300%'}}
           type={props.type}
           name={props.name}
           value={props.formik.values.value}
+          placeholder={props.placeholder}
           onChange={(e) => {
             props.formik.setFieldValue(props.name, e.target.value);
           }}
@@ -71,6 +78,7 @@ export function Input(props) {
           id={props.name}
           name={props.name}
           value={props.formik.values.value}
+          placeholder={props.placeholder}
           mask={props.mask}
           onChange={(e) => {
             props.formik.setFieldValue(props.name, e.target.value);
@@ -87,7 +95,7 @@ export function Input(props) {
           name={props.name}
           value={props.value}
           field={props.field}
-          {...props.multiple==="true" ? { multiple: true } : {multiple: false }}
+          {...props.multiple === "true" ? { multiple: true } : { multiple: false }}
           suggestions={props.suggestions}
           completeMethod={props.completeMethod}
           onChange={props.onChange}
@@ -115,7 +123,7 @@ export function Input(props) {
         />
       )}
 
-      <label htmlFor={props.name}>{props.title}</label>
+      {props.title && <label htmlFor={props.name}>{props.title}</label>}
       <div>{getFormErrorMessage(props.name, props.formik)}</div>
     </span>
   );

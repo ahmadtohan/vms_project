@@ -107,6 +107,15 @@ const AddUser = () => {
       const obj = Object.assign({}, data);
       setMessage("");
       obj.birthDate = Utils.formatDate(obj.birthDate);
+
+      obj.userRoles = [];
+      for (let index = 0; index < obj.roles.length; index++) {
+        const role = obj.roles[index];
+        obj.userRoles.push({role:role});
+
+      }
+      delete obj['roles'];
+
       endPoint(config.userAPIs.create, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({

@@ -3,11 +3,11 @@ package com.top.lcd.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.top.lcd.annotations.AfterInsert;
 import com.top.lcd.annotations.BeforeDelete;
-import com.top.lcd.annotations.BeforeInsert;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.helper.EnumEntity;
-import com.top.lcd.repository.RoleRepository;
+import com.top.lcd.repository.UserRoleRepository;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +35,9 @@ public class User extends BaseEntity implements UserDetails {
         public String getLabel() {
             return label;
         }
-    };
+    }
+
+    ;
 
     public enum Gender implements EnumEntity {
         MALE("Male"), FEMALE("Female");
@@ -53,7 +55,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public enum Type implements EnumEntity {
-        ADMIN("Admin"), NORMAL_USER("Normal User"), DOCTOR("Doctor"), PATIENT("Patient"), PHARMACIST("Pharmacist"), RECEPTIONIST("Receptionist"),CASHER("Casher");
+        ADMIN("Admin"), NORMAL_USER("Normal User"), DOCTOR("Doctor"), PATIENT("Patient"), PHARMACIST("Pharmacist"), RECEPTIONIST("Receptionist"), CASHER("Casher");
 
         private final String label;
 
@@ -119,9 +121,8 @@ public class User extends BaseEntity implements UserDetails {
     private List<Treatment> patients;
 
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private List<Role> roles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserRole> userRoles;
 
 
     @BeforeDelete
@@ -132,30 +133,24 @@ public class User extends BaseEntity implements UserDetails {
 
     }
 
-    @BeforeInsert
+    @AfterInsert
     void addRole() {
         final User user = this;
 
         if (user.type.equals(Type.ADMIN)) {
 
-            this.roles = new ArrayList<>();
+            this.userRoles = new ArrayList<>();
             return;
         }
-        if (this.roles == null || this.roles.isEmpty()) {
+        if (this.userRoles == null || this.userRoles.isEmpty()) {
 
             throw new RuntimeException("roles are empty");
         }
-        List<Role> newRoles = new ArrayList<>();
-        for (Role roleObj : this.roles) {
-            Role role = Setup.getApplicationContext().getBean(RoleRepository.class).findOne(roleObj.getId());
-            role.setUsers(new ArrayList<User>() {
-                {
-                    add(user);
-                }
-            });
-            newRoles.add(role);
+        for (UserRole roleObj : this.userRoles) {
+            roleObj.setUser(this);
+            Setup.getApplicationContext().getBean(UserRoleRepository.class).save(roleObj);
         }
-        this.setRoles(newRoles);
+
     }
 
     public List<Treatment> getDoctors() {
@@ -271,12 +266,12 @@ public class User extends BaseEntity implements UserDetails {
         this.token = token;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     @Override
@@ -285,16 +280,16 @@ public class User extends BaseEntity implements UserDetails {
 
         Set<GrantedAuthority> authorities = new HashSet<>();
 
-        for (Role r : roles) {
+        for (UserRole r : userRoles) {
             authorities.add(new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
-                    return r.getName();
+                    return r.getRole().getName();
                 }
 
                 @Override
                 public String toString() {
-                    return r.getName();
+                    return r.getRole().getName();
                 }
 
             });
@@ -323,5 +318,7 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return status.equals(Status.ACTIVE);
     }
+
+
 
 }

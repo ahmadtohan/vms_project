@@ -20,7 +20,7 @@ const ViewUser = () => {
     status: {},
     gender: {},
     type: {},
-    roles: [{}],
+    userRoles: [{}],
   });
 
   useEffect(() => {
@@ -131,10 +131,10 @@ const ViewUser = () => {
           <span className="flex align-items-center gap-2">
             <i className="pi pi-bars"></i>
             <span className="font-semibold">
-              {user.roles.map((role, index) => (
+              {user.userRoles.map((ur, index) => (
                 <Chip
                   key={index}
-                  label={role.name}
+                  label={ur?.role?.name}
                   style={{ marginInlineEnd: "5px" }}
                 />
               ))}
