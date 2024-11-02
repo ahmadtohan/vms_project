@@ -95,25 +95,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
-            { /*<div className="card" style={{ width: '25%', marginTop: '10%' }}>
 
-                <div className="flex flex-wrap gap-q  justify-content-center"  >
-
-                    <form onSubmit={formik.handleSubmit} >
-
-                        <Input name="username" type="text" title="Username" formik={formik} />
-                        <Input name="password" type="password" title="Password" formik={formik} />
-
-
-
-                        <Button type="submit" label="Login" />
-
-                    </form>
-                    <Tag severity="success" style={{ marginInlineStart: '200px', cursor: 'pointer' }} value="New Patient"
-                        onClick={(e) => { navigate("/lcd/app/addPatient"); }}></Tag>
-
-                </div>
-            </div>*/}
         </div>
     );
 };
