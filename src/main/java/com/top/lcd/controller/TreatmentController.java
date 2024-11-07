@@ -35,9 +35,19 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     @NoPermissionApi
     @RequestMapping(value = "/patienttreatmentlistPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> getLoggedUserTreatments(Pageable pageable) {
+    public ResponseEntity<?> getLoggedPatientUserTreatments(Pageable pageable) {
         SelectQuery<Object> query = new SelectQuery(Treatment.class);
         query.filterBy("patient.id", "=", Setup.getCurrentUserInfo().getUser().getId());
+        return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
+    }
+
+
+    @NoPermissionApi
+    @RequestMapping(value = "/doctortreatmentlistPage", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> getLoggedDoctorUserTreatments(Pageable pageable) {
+        SelectQuery<Object> query = new SelectQuery(Treatment.class);
+        query.filterBy("doctor.id", "=", Setup.getCurrentUserInfo().getUser().getId());
         return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
     }
 

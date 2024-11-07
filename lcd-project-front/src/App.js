@@ -11,6 +11,7 @@ import endPoint from "./services/endPoint";
 import config from "./services/config";
 
 
+import Home from "./components/user/Home";
 import Login from "./components/user/Login";
 
 import Users from "./components/user/Users";
@@ -21,6 +22,7 @@ import AddPatient from "./components/patient/AddPatient";
 import PatientTreatments from "./components/patient/PatientTreatments";
 import ViewPatientTreatment from "./components/patient/ViewPatientTreatment";
 import AddPatientTreatment from "./components/patient/AddPatientTreatment";
+import PatientProfile from "./components/patient/PatientProfile";
 
 
 import AddTreatment from "./components/treatment/AddTreatment";
@@ -87,7 +89,7 @@ const App = () => {
           document.cookie = "";
           setCurrentUser(null);
           localStorage.removeItem("user");
-          load('/lcd/app/login');
+          load('/lcd/app/home');
         }, "1000");
 
       }
@@ -106,7 +108,7 @@ const App = () => {
     document.cookie = "";
     setCurrentUser(null);
     localStorage.removeItem("user");
-    load('/lcd/app/login');
+    load('/lcd/app/home');
   };
 
 
@@ -181,15 +183,15 @@ const App = () => {
 
   const startContent = (
     <React.Fragment>
-      {currentUser?.type?.value !== 'PATIENT' && <Menubar model={items} />}
+      {<Menubar model={items} />}
     </React.Fragment>
   );
 
   const endContent = (
     <React.Fragment>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYElEQVR4nNVZ3W8iVRSfF9347INuNDEmxjWuf4WJr8aNiWZ98sGv6K4+aKJvGp/V7v4bNWnScs4AsymlX/SLdtttoXSgLdCW0qVQZoChQOWaMzsosEA7dy6we5NfMhnmnvv73XPuveceJElAA4BXEfEzRLwPAF4AiCJiDgCqBOs5Sr9Z39ymPtIw29jY2MsA8D0ArCAi4wEALAPAXbI1MOKyLL8OAPcQscRLvIOQIgCMuFyu1/pGPBgMvoCIPwBAQRRxfBo0Kb/JsnxNKHm3230DEdf7SJy14SEivi2EPCJ+3OdZZ12gu1yuW47IA8DnAFAbAnlm4QIRv+El//UQibNm0E5lO2ws9UMnj/974qMrkfd4PG8BgPYMkGZtXihMTEy805P86Ojoi6J2G4/Hw/z+aRP0LEjEGm3nveL+FycDKA8esPBOlJ3mC8yosRZkznQWiqjmNw5F/NSRPJ2CdCLyGt7YDDG9XHuKeDsK5Rp7uLHpKJTcbvf1TrN/j9dobD9xKfF2UB/kF/FnC3lKpnhzm3BEtU2+ga1whFdAsSUBpKySx5B/eoaVqnVuAaVqnU3PzPJ64rtmAVwp8UHqhJt8A8mjNK+AJZM8LQgAqNs14FUUR7Pf7AWvovCEUX18fPwVybpJ2TawHFx1TN6wsLQS5PXCpyTgPk/nR1thYQI2NkO8i3lEsu6ptjuHtneECQht7/AKkMkDuzyd6TASJWBt/RGvgCh5IMvTeT6wIEzA3HyAdw1kyAMVns6yLDOtVHFMXitVTFucHjjnFkCgxM1x/EdU3tl/IoA3hAher5fli+fc5M8KZdMG7/hmCAFAzIEBNjM7xwrnF7bJFyv/sNm5eSfk/1vEXNtoMwILi0w3qrbinvqgw3Eb2yjXQdaOyUkfix+kLiW/nzxikz6f4/Gw6SC7LcJYA1NTfrYZ2jaTtPTpmQl6pnc+35SwcfCJgE8kSoh4krlhAxrJnJVOLz+HAhaa7wN3n0MB37ZcKZ1c6LuB8nyeXB/tXiktL4w4IbqyumZe1I8zuY5bKr2j3+gb+taJMAD4Q0hZZWFxiSUOj7luZtQncXhs2rApQO/69xQA/HwVI3SC0myKykZPsnkzu72igB+lbo3KdlS+69aZSoS78aQw4kYbKLwuKUOu9iwt9iru0gF1qhX7Rt6wQGPQWF0qcjd6km9aD7eay+sUMiJyfzu50mxronfhcrk+vBL5pvXwlTnz/mlbiZoo6OWaWfSysoQvJJ6mKMqXOd0YOHnDQlYrMUVR7khOmhrb+1U3qvVBk9eMan1nd/93SUQLh9UPHue04qDIn2TzxUgk9r4ksqmqei1+kBqnmelb3BvV+m78wBsIBF6S+tXCsdh7yVR6VS/XhAnRjGo9mUoHt1T1XWlQbXF9/c395NHfJzlN500l0tm8vpc4HA2FQm8MjHinRl6J7sVHEkfHa+lMLpPVSxWtVKnTxZ1Az/Qunck9Ju9F9+J/RROJmyIG/xfCWpgNDDFCCwAAAABJRU5ErkJggg=="     
-style={{cursor:'pointer'}}
-onClick={(e) => op.current.toggle(e)} />
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYElEQVR4nNVZ3W8iVRSfF9347INuNDEmxjWuf4WJr8aNiWZ98sGv6K4+aKJvGp/V7v4bNWnScs4AsymlX/SLdtttoXSgLdCW0qVQZoChQOWaMzsosEA7dy6we5NfMhnmnvv73XPuveceJElAA4BXEfEzRLwPAF4AiCJiDgCqBOs5Sr9Z39ymPtIw29jY2MsA8D0ArCAi4wEALAPAXbI1MOKyLL8OAPcQscRLvIOQIgCMuFyu1/pGPBgMvoCIPwBAQRRxfBo0Kb/JsnxNKHm3230DEdf7SJy14SEivi2EPCJ+3OdZZ12gu1yuW47IA8DnAFAbAnlm4QIRv+El//UQibNm0E5lO2ws9UMnj/974qMrkfd4PG8BgPYMkGZtXihMTEy805P86Ojoi6J2G4/Hw/z+aRP0LEjEGm3nveL+FycDKA8esPBOlJ3mC8yosRZkznQWiqjmNw5F/NSRPJ2CdCLyGt7YDDG9XHuKeDsK5Rp7uLHpKJTcbvf1TrN/j9dobD9xKfF2UB/kF/FnC3lKpnhzm3BEtU2+ga1whFdAsSUBpKySx5B/eoaVqnVuAaVqnU3PzPJ64rtmAVwp8UHqhJt8A8mjNK+AJZM8LQgAqNs14FUUR7Pf7AWvovCEUX18fPwVybpJ2TawHFx1TN6wsLQS5PXCpyTgPk/nR1thYQI2NkO8i3lEsu6ptjuHtneECQht7/AKkMkDuzyd6TASJWBt/RGvgCh5IMvTeT6wIEzA3HyAdw1kyAMVns6yLDOtVHFMXitVTFucHjjnFkCgxM1x/EdU3tl/IoA3hAher5fli+fc5M8KZdMG7/hmCAFAzIEBNjM7xwrnF7bJFyv/sNm5eSfk/1vEXNtoMwILi0w3qrbinvqgw3Eb2yjXQdaOyUkfix+kLiW/nzxikz6f4/Gw6SC7LcJYA1NTfrYZ2jaTtPTpmQl6pnc+35SwcfCJgE8kSoh4krlhAxrJnJVOLz+HAhaa7wN3n0MB37ZcKZ1c6LuB8nyeXB/tXiktL4w4IbqyumZe1I8zuY5bKr2j3+gb+taJMAD4Q0hZZWFxiSUOj7luZtQncXhs2rApQO/69xQA/HwVI3SC0myKykZPsnkzu72igB+lbo3KdlS+69aZSoS78aQw4kYbKLwuKUOu9iwt9iru0gF1qhX7Rt6wQGPQWF0qcjd6km9aD7eay+sUMiJyfzu50mxronfhcrk+vBL5pvXwlTnz/mlbiZoo6OWaWfSysoQvJJ6mKMqXOd0YOHnDQlYrMUVR7khOmhrb+1U3qvVBk9eMan1nd/93SUQLh9UPHue04qDIn2TzxUgk9r4ksqmqei1+kBqnmelb3BvV+m78wBsIBF6S+tXCsdh7yVR6VS/XhAnRjGo9mUoHt1T1XWlQbXF9/c395NHfJzlN500l0tm8vpc4HA2FQm8MjHinRl6J7sVHEkfHa+lMLpPVSxWtVKnTxZ1Az/Qunck9Ju9F9+J/RROJmyIG/xfCWpgNDDFCCwAAAABJRU5ErkJggg=="
+        style={{ cursor: 'pointer' }}
+        onClick={(e) => op.current.toggle(e)} />
       <OverlayPanel ref={op}>
 
         <Card
@@ -225,11 +227,16 @@ onClick={(e) => op.current.toggle(e)} />
   return (
     <div>
       <Toast ref={toast} />
-      {isLogged() && <Toolbar style={{ height: '55px', backgroundColor: '#A855F7' }} start={startContent} end={endContent} />}
+      {isLogged()
+        && currentUser?.type?.value !== 'PATIENT'
+        && currentUser?.type?.value !== 'DOCTOR'
+        && <Toolbar style={{ height: '55px', backgroundColor: '#A855F7' }} start={startContent} end={endContent} />}
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/lcd/"} element={<Login />} />
-          <Route exact path={"/lcd/app/"} element={<Login />} />
+          <Route exact path={"/lcd/"} element={<Home />} />
+          <Route exact path={"/lcd/app"} element={<Home />} />
+          <Route exact path={"/lcd/app/home"} element={<Home />} />
+
           <Route exact path={"/lcd/app/login"} element={<Login />} />
 
           <Route exact path={"/lcd/app/users"} element={<Users />} />
@@ -240,6 +247,7 @@ onClick={(e) => op.current.toggle(e)} />
           <Route exact path={"/lcd/app/patientTreatments"} element={<PatientTreatments />} />
           <Route exact path={"/lcd/app/viewPatientTreatment"} element={<ViewPatientTreatment />} />
           <Route exact path={"/lcd/app/addPatientTreatment"} element={<AddPatientTreatment />} />
+          <Route exact path={"/lcd/app/patientProfile"} element={<PatientProfile />} />
 
           <Route exact path={"/lcd/app/addTreatment"} element={<AddTreatment />} />
           <Route exact path={"/lcd/app/viewTreatment"} element={<ViewTreatment />} />

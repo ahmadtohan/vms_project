@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 import './../../css/addPatient.css'
 
+
 const AddPatient = () => {
   const toast = useRef(null);
   const [user, setUser] = useState({});
@@ -111,7 +112,7 @@ const AddPatient = () => {
   ];
 
   return (
-    <div>
+    <div  className="use-add-patient-css">
       <Toast ref={toast} />
       <div className="content">
       

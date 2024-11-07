@@ -1,222 +1,285 @@
-* {
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-}
+.use-add-patient-css {
+    * {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
-.content {
-    max-width: 700px;
-    width: 100%;
-    background-color: transparent;
-    backdrop-filter: blur(100px);
-    box-shadow: 0.5px 1px 10px black;
-    padding: 25px 30px;
-    border-radius: 20px;
-    margin-top: 4%;
-    margin-left: 50%;
+    .content {
+        max-width: 700px;
+        width: 100%;
+        background-color: transparent;
+        backdrop-filter: blur(100px);
+        box-shadow: 0.5px 1px 10px black;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-top: 4%;
+        margin-left: 50%;
 
-}
+    }
 
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    min-width: 150vh;
-    background-image: url('https://t3.ftcdn.net/jpg/06/12/89/52/360_F_612895290_5m4XeQsdmekGhrRlgId6HB3jfPkKvzwq.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-}
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        min-width: 150vh;
+        background-image: url('https://t3.ftcdn.net/jpg/06/12/89/52/360_F_612895290_5m4XeQsdmekGhrRlgId6HB3jfPkKvzwq.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
 
-.sign-up-title {
-    font-size: 25px;
-    font-weight: 200;
-    position: relative;
-    color: aliceblue;
+    .sign-up-title {
+        font-size: 25px;
+        font-weight: 200;
+        position: relative;
+        color: aliceblue;
 
-}
+    }
 
-.content .sign-up-title::before {
-    content: '';
-    position: absolute;
-    height: 3px;
-    width: 30px;
-    background: #089F76;
-    left: 0;
-    top: 35px;
-    color: white;
+    .content .sign-up-title::before {
+        content: '';
+        position: absolute;
+        height: 3px;
+        width: 30px;
+        background: #089F76;
+        left: 0;
+        top: 35px;
+        color: white;
 
-}
+    }
 
-.content form .user-details {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 30px 0 12px 0;
+    .content form .user-details {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 30px 0 12px 0;
 
-}
+    }
 
-form .user-details .input-box {
+    form .user-details .input-box {
 
-    width: calc(100% / 2 - 20px);
+        width: calc(100% / 2 - 20px);
 
-    margin-bottom: 0px;
-
-
-}
-
-/*input*/
-form .user-details .input-box input {
-width: 100%;
-height: 50px; /* Match height with the frame input */
-background: transparent;
-border: 2px solid rgba(255, 255, 255, 0.4); /* Slightly more opaque border */
-border-radius: 40px; /* More rounded corners */
-font-size: 16px;
-color: #fff; /* Change text color to white */
-padding: 15px 20px; /* Adjusted padding */
-outline: none;
-transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition effects */
-}
+        margin-bottom: 0px;
 
 
-form .user-details .input-box input:focus {
-border-color: #089F76; /* Change border color on focus */
-box-shadow: 0 0 10px rgba(8, 159, 118, 0.5); /* Add a glow effect on focus */
-}
+    }
 
-form .user-details .input-box input::placeholder {
-color: rgba(255, 255, 255, 0.7); /* Slightly transparent placeholder color */
-}
-
-/* when you click on the input*/
-form .user-details .input-box input:focus,
-form .user-details .input-box input:valid {
-   /*border-color: yellowgreen;*/
-
-}
-
-.user-details .input-box .info {
-    display: block;
-    font-weight: 500;
-    color:aliceblue ;
-
-
-}
-
-/*create an account button*/
-form .Create-Button input {
-    width: 50%;
-height: 45px;
-margin-left:20% ;
-background: #fff;
-border: none;
-outline: none;
-border-radius: 40px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-cursor: pointer;
-font-size: 16px;
-color: #333;
-font-weight: 600;
+    /*input*/
+    form .user-details .input-box input {
+        width: 100%;
+        height: 50px;
+        /* Match height with the frame input */
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        /* Slightly more opaque border */
+        border-radius: 40px;
+        /* More rounded corners */
+        font-size: 16px;
+        color: #fff;
+        /* Change text color to white */
+        padding: 15px 20px;
+        /* Adjusted padding */
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        /* Smooth transition effects */
+    }
 
 
+    form .user-details .input-box input:focus {
+        border-color: #089F76;
+        /* Change border color on focus */
+        box-shadow: 0 0 10px rgba(8, 159, 118, 0.5);
+        /* Add a glow effect on focus */
+    }
 
-}
+    form .user-details .input-box input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        /* Slightly transparent placeholder color */
+    }
 
-form .Create-Button {
-    height: 45px;
+    /* when you click on the input*/
+    form .user-details .input-box input:focus,
+    form .user-details .input-box input:valid {
+        /*border-color: yellowgreen;*/
+
+    }
+
+    .user-details .input-box .info {
+        display: block;
+        font-weight: 500;
+        color: aliceblue;
+
+
+    }
+
+    /*create an account button*/
+    form .Create-Button input {
+        width: 50%;
+        height: 45px;
+        margin-left: 20%;
+        background: #fff;
+        border: none;
+        outline: none;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        font-size: 16px;
+        color: #333;
+        font-weight: 600;
+
+
+
+    }
+
+    form .Create-Button {
+        height: 45px;
+
+
+
+    }
+
+
+
+
+    .title-content {
+        min-width: 20vh;
+        width: 40%;
+        position: absolute;
+        margin-top: 36%;
+        margin-right: 43%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        color: aliceblue;
+        padding-left: 4px;
+        background: transparent;
+        backdrop-filter: blur(120px);
+        border-radius: 20px;
+        background-attachment: fixed;
+
+
+    }
+
+    .title-content p {
+        text-align: justify;
+        font-size: 25px;
+
+    }
+
+    #reg {
+        background-color: rgb(58, 116, 149);
+        border-radius: 30px;
+        color: white;
+        box-shadow: 0.5px 1px 5px black;
+    }
+
+    nav {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 5%;
+        background-color: #E9E9E9;
+    }
+
+    .heading img {
+
+        margin-top: -15px;
+        margin-left: -15px;
+        border-radius: 15px;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+    }
+
+    nav ul li {
+        padding: 8px 15px;
+        border-radius: 22px;
+        transition: 0.2s ease-in;
+    }
+
+    nav ul li a {
+        color: black;
+        font-size: 20px;
+        font-weight: bold;
+        text-decoration: none;
+        color: black;
+    }
+
+    .login {
+        background-color: rgb(58, 116, 149);
+        color: white;
+        padding: 8px 17px;
+        border-radius: 22px;
+    }
+
+    nav ul li:hover {
+        background-color: rgb(58, 116, 149);
+    }
+
+    nav ul li a:hover {
+        color: white;
+    }
+
+    .p-calendar {
+        position: relative;
+        display: inline-flex;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .pi {
+        font-family: 'primeicons';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
     
-
-
-}
-
-
-
-
-.title-content {
-    min-width: 20vh;
-    width: 40%;
-   position: absolute;
-    margin-top: 36%;
-    margin-right: 43%;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    color: aliceblue;
-    padding-left: 4px;
-    background: transparent;
-    backdrop-filter: blur(120px);
-    border-radius: 20px;
-    background-attachment: fixed;
-
-
-}
-
-.title-content p {
-    text-align: justify;
-    font-size: 25px;
-
-}
-#reg {
-    background-color: rgb(58, 116, 149);
-    border-radius: 30px;
-    color: white;
-    box-shadow: 0.5px 1px 5px black;
-}
-
-nav {
-width: 100%;
-height: 80px;
-display: flex;
-justify-content: space-between;
-padding: 20px 5%;
-background-color:  #E9E9E9;
-}
-
-.heading img {
-
-margin-top: -15px;
-margin-left: -15px;
-border-radius: 15px;
-}
-
-nav ul {
-display: flex;
-list-style: none;
-}
-
-nav ul li {
-padding: 8px 15px;
-border-radius: 22px;
-transition: 0.2s ease-in;
-}
-
-nav ul li a {
-color: black;
-font-size: 20px;
-font-weight: bold;
-text-decoration: none;
-color: black;
-}
-.login{
-background-color: rgb(58, 116, 149);
-color: white;
-padding: 8px 17px;
-border-radius: 22px;
-}
-
-nav ul li:hover {
-background-color: rgb(58, 116, 149);
-}
-
-nav ul li a:hover {
-color: white;
-}
-
-.p-calendar {
-    position: relative;
-    display: inline-flex;
-    max-width: 100% !important;
-    width: 100% !important;
+    .pi:before {
+        --webkit-backface-visibility:hidden;
+        backface-visibility: hidden;
+    }
+    
+    .pi-fw {
+        width: 1.28571429em;
+        text-align: center;
+    }
+    
+    .pi-spin {
+        -webkit-animation: fa-spin 2s infinite linear;
+        animation: fa-spin 2s infinite linear;
+    }
+    
+    @-webkit-keyframes fa-spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
+    
+    @keyframes fa-spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
 }

@@ -1,322 +1,101 @@
-import React, { useState, useEffect, useRef, useReducer } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
-import { SpeedDial } from "primereact/speeddial";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
-import { InputText } from "primereact/inputtext";
-import { FilterMatchMode, FilterOperator } from "primereact/api";
-import { Dropdown } from "primereact/dropdown";
-import { Paginator } from "primereact/paginator";
+import { SpeedDial } from "primereact/speeddial";
 import { Chip } from "primereact/chip";
-import { Card } from 'primereact/card';
 
-import { useNavigate } from "react-router-dom";
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
+import { Show } from "./../../custom/Show";
 
-const init = (initialState) => initialState;
-
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case "onSortingChanged":
-      return { ...state, ...payload, loading: true };
-    case "dataLoaded":
-      return { ...state, results: payload, loading: false };
-    default:
-      throw new Error();
-  }
-};
-
+import { useFormik } from "formik";
+import { classNames } from "primereact/utils";
+import { useNavigate } from "react-router-dom";
+import PaAside from './PaAside'
+import './../../css/All.css'
+import './../../css/patientTreatments.css'
 const PatientTreatments = () => {
-  const numOfRows = 100;
-  const [start, setStart] = useState(false);
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(numOfRows);
-  const [totalRecords, setTotalRecords] = useState(numOfRows);
-  const [treatments, setTreatments] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({});
-  const [selectedTreatments, setSelectedTreatments] = useState(null);
 
-  const initialState = {
-    results: [],
-    loading: true,
-    sortField: null,
-    sortOrder: null,
-  };
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState({});
 
-  const [state, dispatch] = useReducer(reducer, initialState, init);
-  const { results, loading, sortField, sortOrder } = state;
+    useEffect(() => {
+        setCurrentUser(JSON.parse(localStorage.getItem("user")));
 
-
-  const [statuses] = useState(["Pending", "Done", "Cancelled"]);
-  const statusesMap = {
-    Pending: "PENDING",
-    Done: "DONE",
-    Cancelled: "CANCELLED"
-  };
-
-  const toast = useRef(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loading) {
-      setTimeout(() => {
-        if (sortField != null) {
-          list(
-            0,
-            numOfRows,
-            sortField + "," + (sortOrder == -1 ? "DESC" : "ASC"),
-            []
-          );
-        } else {
-          initFilters();
-        }
-        dispatch({ type: "dataLoaded", payload: treatments });
-      }, 50);
-    }
-  }, [loading, sortField, sortOrder]);
-
-  const list = (page, size, sort, cond) => {
-    sort = sort == null ? "id" : sort;
-    endPoint(
-      config.treatmentAPIs.patienttreatmentlistPage +
-      "?page=" +
-      page +
-      "&size=" +
-      size +
-      "&sort=" +
-      sort,
-      "POST",
-      cond
-    ).then((res) => {
-      console.log(res);
-
-      setFirst(size * page);
-      setRows(size);
-      setTotalRecords(res.totalElements);
-      setTreatments(res.content);
-      console.log(
-        "=======first, size, cond====",
-        size * page,
-        size,
-        totalRecords,
-        res.totalElements
-      );
+        console.log(currentUser);
     });
-  };
 
-  ////////////////////////////////////
 
-  const getSeverityByStatus = (statusVal) => {
-    switch (statusVal) {
-      case "Done":
-        return "success";
-
-      case "Cancelled":
-        return "danger";
-      case "Pending":
-        return "warning";
-
-      default:
-        return null;
-    }
-  };
-
-  const statusBodyTemplate = (rowData) => {
     return (
-      <Tag
-        value={rowData.status.label}
-        severity={getSeverityByStatus(rowData.status.label)}
-      ></Tag>
+        <div >
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+            <div className="use-all-css use-patient-treatments-css">
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <PaAside />
+
+                        <div class="main-content">
+                            <div class="content-header">
+                                <h1>Your Appointments</h1>
+                                <div class="content-subheader">Manage your upcoming doctor appointments</div>
+                            </div>
+
+                            <div class="appointments-container" id="appointmentsContainer">
+
+                                <div class="card">
+                                    <div class="doctor-info">
+                                        <div class="doctor-avatar">
+                                            <i class="fas fa-user-md"></i>
+                                        </div>
+                                        <div class="doctor-details">
+                                            <div class="doctor-name">Dr. Sarah Johnson</div>
+                                            <div class="doctor-specialty">Oncologist</div>
+                                        </div>
+                                    </div>
+                                    <div class="appointment-info">
+                                        <div class="time-location">
+                                            <div class="appointment-time">
+                                                <i class="far fa-clock"></i>
+                                                Oct 23, 2024 - 10:30 AM
+                                            </div>
+                                            <div class="appointment-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Memorial Hospital, Room 302
+                                            </div>
+                                        </div>
+                                        <span class="status-badge status-confirmed">Confirmed</span>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="btn btn-primary">
+
+                                            View Details
+                                        </button>
+                                        <button class="btn btn-secondary">
+                                            <i class="fas fa-pencil-alt"></i>
+                                            Reschedule
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                        <button class="fab" id="addAppointment" onClick={(e) => { navigate('/lcd/app/AddPatientTreatment') }}>
+                            <i class="fas fa-plus"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
     );
-  };
-
-
-  const onFilter = (event) => {
-    console.log("-----event------", event.filters['status.label'].constraints);
-    var cond = [];
-    for (var key in event.filters['status.label'].constraints) {
-      var value = event.filters['status.label'].constraints[key].value;
-      if (value !== null && value !== undefined) {
-        cond.push({ field: "status", operation: "=", value: statusesMap[value] });
-      }
-    }
-    list(0, numOfRows, null, cond);
-
-  }
-
-
-  const statusItemTemplate = (option) => {
-    return <Tag value={option} severity={getSeverityByStatus(option)} />;
-  };
-  const statusFilterTemplate = (options) => {
-    return (
-      <Dropdown
-        value={options.value}
-        options={statuses}
-        onChange={(e) => options.filterCallback(e.value, options.index)}
-        itemTemplate={statusItemTemplate}
-        placeholder="Select One"
-        className="p-column-filter"
-        showClear
-      />
-    );
-  };
-
-  const onGlobalFilterChange = (e) => {
-    console.log("===========", e);
-    const value = e.target.value;
-    setSearch(value);
-    list(0, numOfRows, null, [
-      { field: "description", operation: "like", value: "%" + value + "%" },
-      { field: "doctor.fullName", operation: "like", value: "%" + value + "%" }
-    ]);
-  };
-
-  const onPageChange = (event) => {
-    console.log(event);
-    list(event.page, event.rows, null, []);
-  };
-
-
-  const initFilters = () => {
-    setFilters({
-      "status.label": {
-        operator: FilterOperator.OR,
-        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
-      },
-    });
-    setSearch("");
-    list(0, numOfRows, null, []);
-  };
-
-  const renderHeader = () => {
-    return (
-      <div className="flex justify-content-between">
-        <Button
-          type="button"
-          icon="pi pi-filter-slash"
-          label="Clear"
-          outlined
-          onClick={initFilters}
-        />
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-            value={search}
-            onChange={onGlobalFilterChange}
-            placeholder="Keyword Search"
-          />
-        </span>
-      </div>
-    );
-  };
-  const header = renderHeader();
-
-
-  const onRowSelect = (event) => {
-    console.log(event);
-    navigate("/lcd/app/viewPatientTreatment?id=" + event.data.id);
-  };
-
-  const onRowUnselect = (event) => {
-    console.log(event);
-  };
-
-
-  return (
-    <div >
-
-
-      <div className="flex align-items-center" style={{ margin: '80px' ,flexWrap: 'wrap'}}>
-        {treatments?.map((obj, index) => (
-
-          <Card key={index}
-            title={<div>
-              <i className="pi pi-user" style={{ fontSize: '2.5rem' }}></i>
-            &nbsp;&nbsp;{obj?.doctor?.fullName}</div>}
-            subTitle={<div> {statusBodyTemplate(obj)}&nbsp;{obj?.appointmentDate}</div>}
-            footer={<div><Button label="View" onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}
-            severity="secondary" icon="pi pi-eye" style={{ marginLeft: '0.5em' }} /></div>}
-            header={<div></div>}
-            className="md:w-25rem"
-            style={{marginRight: '2%', marginBottom:'2%'}}>
-
-            <p className="m-0">
-              {obj?.description}
-              </p>
-
-          </Card>
-        ))}
-      </div>
-
-
-
-
-
-      {/*<DataTable resizableColumns
-        value={treatments}
-        dataKey="id"
-        header={header}
-        filterDisplay="menu"
-        filters={filters}
-        onFilter={onFilter}
-        sortField={sortField}
-        sortOrder={sortOrder}
-        onSort={(event) => {
-          dispatch({ type: "onSortingChanged", payload: event });
-        }}
-        emptyMessage="No treatments found."
-
-        selectionMode="single" selection={selectedTreatments} onSelectionChange={(e) => setSelectedTreatments(e.value)}
-        onRowSelect={onRowSelect} onRowUnselect={onRowUnselect} metaKeySelection={false}
-      >
-        <Column field="doctor.fullName" header="Doctor"></Column>
-
-        <Column
-          filterMenuStyle={{ width: "14rem" }}
-          style={{ minWidth: "12rem" }}
-          filter
-          filterElement={statusFilterTemplate}
-          field="status.label"
-          header="Status"
-          body={statusBodyTemplate}
-        ></Column>
-        <Column field="type.label" header="Type" ></Column>
-        <Column field="description" header="Description" ></Column>
-        <Column field="appointmentDate" header="Date"></Column>
-
-
-
-      </DataTable>
-
-      <Paginator
-        first={first}
-        rows={rows}
-        totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 25, 50]}
-        onPageChange={onPageChange}
-      />*/}
-
-      <div
-        style={{ height: "300px" }}
-        className="flex align-items-center justify-content-center"
-      >
-
-        <SpeedDial
-          onClick={(e) => {
-            navigate("/lcd/app/addPatientTreatment");
-          }}
-          direction="up" transitionDelay={80} showIcon="pi pi-plus" hideIcon="pi pi-plus" buttonClassName="p-button-help"
-          style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-
-        />
-      </div>
-    </div>
-  );
 };
 
 export default PatientTreatments;

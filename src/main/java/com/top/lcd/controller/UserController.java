@@ -93,7 +93,7 @@ public class UserController extends BaseRepositoryController<User> {
         Setup.setCurrentUserInMemory(loggedUser);
 
         GenericProjection projection = new GenericProjection(new String[]{
-                "id", "username", "fullName", "email", "type", "token"});
+                "id", "username", "fullName", "email", "type", "token", "birthDate" ,"gender" , "status" ,"eid"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 

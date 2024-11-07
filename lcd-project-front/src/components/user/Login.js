@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import EventBus from "./../../common/eventBus";
 import './../../css/LogInStyle.css'
 
+
 const Login = () => {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -50,7 +51,10 @@ const Login = () => {
                     console.log("--------", res);
                     EventBus.dispatch("handelUserLogged", res);
                     if (res.type.value === 'PATIENT') {
-                        navigate("/lcd/app/patientTreatments");
+                        navigate("/lcd/app/patientProfile");
+
+                    } else if (res.type.value === 'DOCTOR') {
+                        navigate("/lcd/app/doctorTreatments");
 
                     } else {
                         navigate("/lcd/app/users");
@@ -66,10 +70,14 @@ const Login = () => {
 
 
     return (
-        <div  >
+        <div  className="use-login-css">
             <div className="frame">
                 <form onSubmit={formik.handleSubmit}>
-                    <h1>Log In</h1>
+                    <h1>
+                        <i className="pi pi-arrow-circle-left"
+                            onClick={(e) => { window.history.go(-1); return false; }}
+                            style={{ fontSize: '1.5rem', marginInlineEnd: '5px', cursor: 'pointer' }}></i>
+                        Log In</h1>
                     <div className="input-area">
                         <Input name="username" type="text" placeholder="Enter your Username" formik={formik} />
                         <i className="pi pi-user"></i>
