@@ -1,0 +1,178 @@
+
+.use-payment-css {
+
+.container{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    padding-bottom: 60px;
+}
+
+
+.container form{
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 600px;
+    padding-top: 160px;
+}
+.container form .input-area{
+    margin-top:20px ;
+
+}
+.container form .input-area span{
+    display: block;
+    padding-bottom: 5px;
+    
+}
+.container form .input-area input, .container form .input-area select{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0,0,0.3);
+    color: #444;
+   
+}
+.container form .flexbox{
+    display: flex;
+    gap: 15px;
+}
+.container form .flexbox .input-area{
+    flex: 1 1 150px ;
+}
+.container form .submit-btn {
+    width: 100%;
+    background: linear-gradient(to bottom, #ff5722, #ff9800);
+    margin-top: 30px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: 2px solid #ff9800;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    box-shadow: 
+        0 6px 10px rgba(0, 0, 0, 0.2),  /* Outer shadow */
+        inset 0 -4px 6px rgba(255, 87, 34, 0.5),  /* Inner shadow at the bottom */
+        inset 0 4px 6px rgba(255, 152, 0, 0.2);  /* Inner highlight at the top */
+}
+
+.container form .submit-btn:hover {
+    transform: translateY(-2px);  /* Slight lift on hover */
+    box-shadow: 
+        0 8px 12px rgba(0, 0, 0, 0.3),  /* Stronger outer shadow */
+        inset 0 -4px 6px rgba(255, 87, 34, 0.6),
+        inset 0 4px 6px rgba(255, 152, 0, 0.25);
+}
+
+.container form .submit-btn:active {
+    transform: translateY(2px);  /* Press down effect */
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.15),
+        inset 0 -2px 4px rgba(255, 87, 34, 0.5),
+        inset 0 2px 4px rgba(255, 152, 0, 0.15);
+}
+
+
+
+/*card info*/
+.container .Card-Info{
+    margin-bottom: -150px;
+    position:relative ;
+    height: 250px;
+    width: 400px;
+
+}
+.container .Card-Info .front{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to bottom, #ff5722, #ff9800);
+    border-radius: 5px;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    padding: 20px;
+    transform:perspective(1000px) rotateY(0deg);
+    transition:0.4s ease-out ;
+
+
+}
+.container .Card-Info .front .CardImage{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+
+}
+.container .Card-Info .front .CardImage img{
+    height: 50px;
+}
+.container .Card-Info .front .cardnum-info{
+    padding: 30px 0;
+    font-size: 22px;
+    color: #fff;
+    
+}
+.container .Card-Info .front .flexbox{
+    display: flex;
+}
+.container .Card-Info .front .flexbox .box:nth-child(1){
+    margin-right: auto;
+
+}
+.container .Card-Info .front .flexbox .box{
+    font-size:15px ;
+    color: #fff;
+
+}
+.container .Card-Info .back{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, #ff5722, #ff9800);
+    border-radius:5px ;
+    padding: 20px 0;
+    text-align: right;
+    backface-visibility: hidden;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    transform:perspective(1000px) rotateY(180deg);
+    transition:0.4s ease-out ;
+
+}
+.container .Card-Info .back .stripe{
+    background: #000;
+    width:100%;
+    margin: 10px 0;
+    height: 50px;
+
+}
+.container .Card-Info .back .box{
+    padding:0 20px;
+
+}
+.container .Card-Info .back .box span{
+    color: #fff;
+    font-size: 15px;
+
+}
+.container .Card-Info .back .box .cvv-box{
+    height: 50px;
+    padding:10px;
+    margin-top: 5px;
+    color: #333;
+    background: #fff;
+    border-radius: 5px;
+    width:100%;
+
+}
+.container .Card-Info .back .box img{
+    margin-top:30px ;
+    height: 30px;
+}
+}

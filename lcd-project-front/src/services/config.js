@@ -34,7 +34,10 @@ const config = {
 
         patienttreatmentlistPage:'treatment/patienttreatmentlistPage',
         doctortreatmentlistPage:'treatment/doctortreatmentlistPage',
+        
         getpatienttreatment:'treatment/getpatienttreatment',
+        getdoctorpatienttreatment:'treatment/getdoctorpatienttreatment',
+
         addpatienttreatment:'treatment/addpatienttreatment',
 
         list: 'treatment/list',

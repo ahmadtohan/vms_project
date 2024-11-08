@@ -54,7 +54,7 @@ const Login = () => {
                         navigate("/lcd/app/patientProfile");
 
                     } else if (res.type.value === 'DOCTOR') {
-                        navigate("/lcd/app/doctorTreatments");
+                        navigate("/lcd/app/doctorProfile");
 
                     } else {
                         navigate("/lcd/app/users");

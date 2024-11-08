@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
 import './../../css/All.css'
 import './../../css/patientProfile.css'
-const PatientProfile = () => {
+const DoctorProfile = () => {
 
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
@@ -169,4 +169,4 @@ const PatientProfile = () => {
     );
 };
 
-export default PatientProfile;
+export default DoctorProfile;

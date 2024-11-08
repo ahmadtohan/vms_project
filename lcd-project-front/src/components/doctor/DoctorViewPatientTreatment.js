@@ -16,7 +16,7 @@ import Aside from './../general/Aside'
 import './../../css/All.css'
 import './../../css/patientProfile.css'
 import './../../css/addPatientTreatment.css'
-const ViewPatientTreatment = () => {
+const DoctorViewPatientTreatment = () => {
 
     const navigate = useNavigate();
     const id = new URLSearchParams(window.location.search).get("id");
@@ -31,7 +31,7 @@ const ViewPatientTreatment = () => {
     useEffect(() => {
 
         if (!loading) {
-            endPoint(config.treatmentAPIs.getpatienttreatment + "/" + id, "GET", null).then(
+            endPoint(config.treatmentAPIs.getdoctorpatienttreatment + "/" + id, "GET", null).then(
                 (res) => {
                     setTreatment(res);
                 },
@@ -59,7 +59,7 @@ const ViewPatientTreatment = () => {
                             <div class="content-header">
                                 <div class="header">
                                     <h1>View Appointment</h1>
-                                    <div class="content-subheader"> Mange your Appointment</div>
+                                    <div class="content-subheader"> Mange Appointment</div>
 
                                 </div>
                             </div>
@@ -69,8 +69,8 @@ const ViewPatientTreatment = () => {
                                 <img src="https://cdn2.stylecraze.com/wp-content/uploads/2013/07/Beautiful-Russian-Women.jpg.avif" alt="Mrs. Maria Waston" />
                                 <div class="patient-details">
                                     <div>
-                                        <strong>Doctor</strong>
-                                        {treatment.doctor?.fullName}
+                                        <strong>Patient</strong>
+                                        {treatment.patient?.fullName}
                                     </div>
 
                                     <div>
@@ -110,4 +110,4 @@ const ViewPatientTreatment = () => {
     );
 };
 
-export default ViewPatientTreatment;
+export default DoctorViewPatientTreatment;

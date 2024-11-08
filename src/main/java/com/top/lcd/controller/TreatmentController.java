@@ -61,6 +61,15 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     }
 
     @NoPermissionApi
+    @RequestMapping(value = "/getdoctorpatienttreatment/{id}",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getDoctorPatientTreatment(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(treatmentRepository.findOneByIdAndDoctorId(id, Setup.getCurrentUserInfo().getUser().getId()), HttpStatus.OK);
+
+    }
+
+    @NoPermissionApi
     @RequestMapping(value = "/addpatienttreatment", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> addPatientTreatment(@RequestBody Treatment treatment) {

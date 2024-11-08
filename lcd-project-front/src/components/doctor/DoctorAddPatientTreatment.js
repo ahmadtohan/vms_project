@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
 import './../../css/All.css'
 import './../../css/addPatientTreatment.css'
-const AddPatientTreatment = () => {
+const DoctorAddPatientTreatment = () => {
 
     const toast = useRef(null);
     const [message, setMessage] = useState("");
@@ -28,21 +28,21 @@ const AddPatientTreatment = () => {
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedType, setSelectedType] = useState("");
-    const [selectedDoctor, setSelectedDoctor] = useState({});
+    const [selectedPatient, setSelectedPatient] = useState({});
 
-    const [doctors, setDoctors] = useState([]);
+    const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
         if (!loading) {
             endPoint(
-                config.userAPIs.getusers + "?type=DOCTOR",
+                config.userAPIs.getusers + "?type=PATIENT",
                 "GET",
                 null
             ).then((res) => {
                 console.log(res);
-                setDoctors(res);
+                setPatients(res);
             }
             );
 
@@ -96,7 +96,7 @@ const AddPatientTreatment = () => {
                         <div class="main-content">
                             <div class="content-header">
                                 <h1>Book Appointment</h1>
-                                <div class="content-subheader"> Book your next docotor appointments</div>
+                                <div class="content-subheader"> Book appointments for patients</div>
                             </div>
 
                             <div class="content">
@@ -110,17 +110,17 @@ const AddPatientTreatment = () => {
                                         <div class="doctor-grid">
 
 
-                                            {doctors?.map((obj, index) => (
+                                            {patients?.map((obj, index) => (
 
-                                                <div key={index} class={"doctor-option " + (selectedDoctor.id === obj.id ? "selected" : "")} onClick={(e) => { setSelectedDoctor(obj) }}>
-                                                    <div class="doctor-avatar">JD</div>
+                                                <div key={index} class={"doctor-option " + (selectedPatient.id === obj.id ? "selected" : "")} onClick={(e) => { setSelectedPatient(obj) }}>
+                                                    <div class="doctor-avatar">MP</div>
                                                     <div class="doctor-info">
-                                                        <div class="doctor-name">Dr. {obj.fullName}</div>
-                                                        <div class="doctor-specialty">Cardiologist</div>
+                                                        <div class="doctor-name">MR. {obj.fullName}</div>
+                                                        <div class="doctor-specialty"></div>
                                                         <div class="doctor-meta">
-                                                            <span>Next available: Today</span><br />
-                                                            <span>Mayo Clinic</span><br />
-                                                            <span>4.9 (120+ reviews)</span>
+                                                            <span></span><br />
+                                                            <span></span><br />
+                                                            <span>Address: UAE</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -179,12 +179,12 @@ const AddPatientTreatment = () => {
                                                         description: document.getElementById("description-area").value,
                                                         appointmentDate: selectedDate + " " + selectedTime,
                                                         type: document.getElementById("appointment-type-id").value,
-                                                        doctor: selectedDoctor,
+                                                        patient: selectedPatient,
 
                                                     }
                                                     console.log("data ", obj);
 
-                                                    if (selectedDate == "" || selectedTime == "" || obj.type == "" || selectedDoctor.id === null) {
+                                                    if (selectedDate == "" || selectedTime == "" || obj.type == "" || selectedPatient.id === null) {
 
                                                         toast.current.show({
                                                             severity: "error",
@@ -204,7 +204,7 @@ const AddPatientTreatment = () => {
                                                             life: 3000,
                                                         });
 
-                                                        navigate("/lcd/app/patientTreatments");
+                                                        navigate("/lcd/app/doctorPatientTreatments");
 
                                                     });
                                                 }, 200);
@@ -226,4 +226,4 @@ const AddPatientTreatment = () => {
     );
 };
 
-export default AddPatientTreatment;
+export default DoctorAddPatientTreatment;

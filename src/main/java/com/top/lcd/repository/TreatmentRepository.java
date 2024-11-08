@@ -17,4 +17,5 @@ public interface TreatmentRepository extends BaseRepository<Treatment> {
 
     public Treatment findOneByIdAndPatientId(Long id, Long patientId);
 
+    public Treatment findOneByIdAndDoctorId(Long id, Long doctorId);
 }

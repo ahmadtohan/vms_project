@@ -14,6 +14,12 @@ import config from "./services/config";
 import Home from "./components/user/Home";
 import Login from "./components/user/Login";
 
+
+import Dashboard from "./components/general/Dashboard";
+import HealthRecored from "./components/general/HealthRecored";
+import Payment from "./components/general/Payment";
+
+
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
 import AddUser from "./components/user/AddUser";
@@ -23,6 +29,12 @@ import PatientTreatments from "./components/patient/PatientTreatments";
 import ViewPatientTreatment from "./components/patient/ViewPatientTreatment";
 import AddPatientTreatment from "./components/patient/AddPatientTreatment";
 import PatientProfile from "./components/patient/PatientProfile";
+
+
+import DoctorAddPatientTreatment from "./components/doctor/DoctorAddPatientTreatment";
+import DoctorProfile from "./components/doctor/DoctorProfile";
+import DoctorPatientTreatments from "./components/doctor/DoctorPatientTreatments";
+import DoctorViewPatientTreatment from "./components/doctor/DoctorViewPatientTreatment";
 
 
 import AddTreatment from "./components/treatment/AddTreatment";
@@ -239,6 +251,12 @@ const App = () => {
 
           <Route exact path={"/lcd/app/login"} element={<Login />} />
 
+          <Route exact path={"/lcd/app/dashboard"} element={<Dashboard />} />
+          <Route exact path={"/lcd/app/healthRecored"} element={<HealthRecored />} />
+          <Route exact path={"/lcd/app/payment"} element={<Payment />} />
+
+
+
           <Route exact path={"/lcd/app/users"} element={<Users />} />
           <Route exact path={"/lcd/app/viewUser"} element={<ViewUser />} />
           <Route exact path={"/lcd/app/addUser"} element={<AddUser />} />
@@ -248,6 +266,13 @@ const App = () => {
           <Route exact path={"/lcd/app/viewPatientTreatment"} element={<ViewPatientTreatment />} />
           <Route exact path={"/lcd/app/addPatientTreatment"} element={<AddPatientTreatment />} />
           <Route exact path={"/lcd/app/patientProfile"} element={<PatientProfile />} />
+
+
+          <Route exact path={"/lcd/app/doctorProfile"} element={<DoctorProfile />} />
+          <Route exact path={"/lcd/app/doctorViewPatientTreatment"} element={<DoctorViewPatientTreatment />} />
+          <Route exact path={"/lcd/app/doctorAddPatientTreatment"} element={<DoctorAddPatientTreatment />} />
+          <Route exact path={"/lcd/app/doctorPatientTreatments"} element={<DoctorPatientTreatments />} />
+
 
           <Route exact path={"/lcd/app/addTreatment"} element={<AddTreatment />} />
           <Route exact path={"/lcd/app/viewTreatment"} element={<ViewTreatment />} />

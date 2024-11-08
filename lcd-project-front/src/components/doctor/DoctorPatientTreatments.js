@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
 import './../../css/All.css'
 import './../../css/patientTreatments.css'
-const PatientTreatments = () => {
+const DoctorPatientTreatments = () => {
 
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState({});
@@ -38,7 +38,7 @@ const PatientTreatments = () => {
     const list = (page, size, sort, cond) => {
         sort = sort == null ? "id" : sort;
         endPoint(
-            config.treatmentAPIs.patienttreatmentlistPage +
+            config.treatmentAPIs.doctortreatmentlistPage +
             "?page=" +
             page +
             "&size=" +
@@ -94,8 +94,8 @@ const PatientTreatments = () => {
 
                         <div class="main-content">
                             <div class="content-header">
-                                <h1>Your Appointments</h1>
-                                <div class="content-subheader">Manage your upcoming doctor appointments</div>
+                                <h1> Appointments</h1>
+                                <div class="content-subheader">Manage appointments</div>
                             </div>
 
                             <div class="appointments-container" id="appointmentsContainer">
@@ -104,11 +104,11 @@ const PatientTreatments = () => {
                                     <div class="card" key={index}>
                                         <div class="doctor-info">
                                             <div class="doctor-avatar">
-                                                <i class="fas fa-user-md"></i>
+                                                <i class="fas fa-user-injured"></i>
                                             </div>
                                             <div class="doctor-details">
-                                                <div class="doctor-name">Dr. {obj?.doctor?.fullName}</div>
-                                                <div class="doctor-specialty">Oncologist</div>
+                                                <div class="doctor-name">MR. {obj?.patient?.fullName}</div>
+                                                <div class="doctor-specialty">...</div>
                                             </div>
                                         </div>
                                         <div class="appointment-info">
@@ -126,7 +126,7 @@ const PatientTreatments = () => {
                                             <span class={"status-badge status-"+(obj.status?.label==="Done"?"confirmed":"pending")}> {statusBodyTemplate(obj)}</span>
                                         </div>
                                         <div class="card-actions">
-                                            <button class="btn btn-primary" onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}>
+                                            <button class="btn btn-primary" onClick={(e) => {  navigate("/lcd/app/doctorViewPatientTreatment?id=" + obj.id); }}>
 
                                                 View Details
                                             </button>
@@ -142,7 +142,7 @@ const PatientTreatments = () => {
                             </div>
                         </div>
 
-                        <button class="fab" id="addAppointment" onClick={(e) => { navigate('/lcd/app/AddPatientTreatment') }}>
+                        <button class="fab" id="addAppointment" onClick={(e) => { navigate('/lcd/app/doctorAddPatientTreatment') }}>
                             <i class="fas fa-plus"></i>
                         </button>
 
@@ -154,4 +154,4 @@ const PatientTreatments = () => {
     );
 };
 
-export default PatientTreatments;
+export default DoctorPatientTreatments;
