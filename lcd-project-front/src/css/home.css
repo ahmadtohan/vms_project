@@ -1,0 +1,283 @@
+.use-home-css {
+
+
+    margin-inline-start: -20px;
+    margin-inline-end: -20px;
+
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f4;
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    header.hero {
+        background: url('https://t3.ftcdn.net/jpg/06/12/89/52/360_F_612895290_5m4XeQsdmekGhrRlgId6HB3jfPkKvzwq.jpg') no-repeat center center / cover;
+        position: relative;
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+    }
+
+    .hero::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-content h1 {
+        font-size: 2.8em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-content p {
+        font-size: 1.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    .cta-button {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        border-radius: 40px;
+        /* Rounded corners */
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        margin: 10px;
+        /* Margin between buttons */
+    }
+
+    .cta-button:hover {
+        background-color: #e6b800;
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+        /* Glowing effect */
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 20px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+        font-size: 2em;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .nav-links li {
+        display: inline;
+        margin: 0 20px;
+    }
+
+    .nav-links a {
+        color: #007bff;
+        /* Darker text color */
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 15px;
+        border-radius: 22px;
+        /* Rounded corners */
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    .nav-links a:hover {
+        background-color: rgba(0, 123, 255, 0.2);
+        /* Light background on hover */
+        color: #0056b3;
+        /* Darker text color on hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* Shadow effect on hover */
+    }
+
+    .nav-links a.active {
+        background-color: rgba(0, 123, 255, 0.4);
+        /* Active link background */
+        color: #0056b3;
+        /* Active link text color */
+    }
+
+    .specialties {
+        text-align: center;
+        padding: 50px 20px;
+        background: linear-gradient(to bottom right, #f9f9f9, #e3f2fd);
+    }
+
+    .specialty-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        /* Responsive grid */
+        gap: 20px;
+        /* Spacing between items */
+        margin-top: 20px;
+        /* Spacing above the grid */
+    }
+
+    .specialty {
+        background: white;
+        border-radius: 15px;
+        /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        /* Animation for hover effect */
+    }
+
+    .specialty:hover {
+        transform: translateY(-5px);
+        /* Slight lift on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        /* Increase shadow on hover */
+    }
+
+    .specialty h3 {
+        margin-top: 10px;
+        /* Space between icon and title */
+        font-size: 1.5em;
+        /* Increase font size for titles */
+    }
+
+    .specialty p {
+        font-size: 1em;
+        /* Font size for description */
+        color: #555;
+        /* Slightly darker color for text */
+    }
+
+    .footer {
+        background-color: #0099cc;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    .footer-links {
+        margin-top: 10px;
+    }
+
+    .footer-links a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    .social-links {
+        margin-top: 10px;
+    }
+
+    .social-links a {
+        color: white;
+        margin: 0 10px;
+        font-size: 1.5em;
+    }
+
+    .cta-button {
+        display: inline-block;
+        color: black;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 22px;
+        /* Rounded corners */
+        text-decoration: none;
+        /* Remove underline */
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .cta-button:hover {
+        color: black;
+        /* Maintain text color */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* Shadow effect on hover */
+    }
+
+    /* Main styles for the goals and objectives section */
+    .goals-objectives {
+        display: flex;
+        justify-content: space-between;
+        padding: 40px;
+        background: #f5f9f9;
+    }
+
+    .goal-container,
+    .objectives-container {
+        flex: 1;
+        margin: 0 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background: linear-gradient(to right, #ffffff, #e0f7fa);
+        /* Soft gradient background */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        /* Enhanced shadow for floating effect */
+        transition: transform 0.3s;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        /* Light border */
+    }
+
+    .goal-container:hover,
+    .objectives-container:hover {
+        transform: scale(1.02);
+    }
+
+    .our-goal h2,
+    .objectives h2 {
+        text-align: center;
+        color: #3a3a3a;
+        margin-bottom: 20px;
+    }
+
+    .objective-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .objective {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .objective:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+}

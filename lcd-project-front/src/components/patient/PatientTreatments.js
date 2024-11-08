@@ -19,13 +19,67 @@ const PatientTreatments = () => {
 
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState({});
+    const [treatments, setTreatments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setCurrentUser(JSON.parse(localStorage.getItem("user")));
+        if (!loading) {
 
-        console.log(currentUser);
+            list(
+                0,
+                100,
+                "DESC",
+                []
+            );
+            setLoading(true);
+        }
     });
 
+    const list = (page, size, sort, cond) => {
+        sort = sort == null ? "id" : sort;
+        endPoint(
+            config.treatmentAPIs.patienttreatmentlistPage +
+            "?page=" +
+            page +
+            "&size=" +
+            size +
+            "&sort=" +
+            sort,
+            "POST",
+            cond
+        ).then((res) => {
+            console.log(res);
+
+            setTreatments(res.content);
+            console.log(
+                "=======res====",
+                res
+            );
+        });
+    };
+
+    ////////////////////////////////////
+    const getSeverityByStatus = (statusVal) => {
+        switch (statusVal) {
+          case "Done":
+            return "success";
+    
+          case "Cancelled":
+            return "danger";
+          case "Pending":
+            return "warning";
+    
+          default:
+            return null;
+        }
+      };
+    
+      const statusBodyTemplate = (rowData) => {
+        return (
+          <span
+          >{rowData.status.label}</span>
+        );
+      };
 
     return (
         <div >
@@ -46,43 +100,45 @@ const PatientTreatments = () => {
 
                             <div class="appointments-container" id="appointmentsContainer">
 
-                                <div class="card">
-                                    <div class="doctor-info">
-                                        <div class="doctor-avatar">
-                                            <i class="fas fa-user-md"></i>
-                                        </div>
-                                        <div class="doctor-details">
-                                            <div class="doctor-name">Dr. Sarah Johnson</div>
-                                            <div class="doctor-specialty">Oncologist</div>
-                                        </div>
-                                    </div>
-                                    <div class="appointment-info">
-                                        <div class="time-location">
-                                            <div class="appointment-time">
-                                                <i class="far fa-clock"></i>
-                                                Oct 23, 2024 - 10:30 AM
+                                {treatments?.map((obj, index) => (
+                                    <div class="card" key={index}>
+                                        <div class="doctor-info">
+                                            <div class="doctor-avatar">
+                                                <i class="fas fa-user-md"></i>
                                             </div>
-                                            <div class="appointment-location">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                Memorial Hospital, Room 302
+                                            <div class="doctor-details">
+                                                <div class="doctor-name">Dr. {obj?.doctor?.fullName}</div>
+                                                <div class="doctor-specialty">Oncologist</div>
                                             </div>
                                         </div>
-                                        <span class="status-badge status-confirmed">Confirmed</span>
+                                        <div class="appointment-info">
+                                            <div class="time-location">
+                                                <div class="appointment-time">
+                                                    <i class="far fa-clock"></i>
+                                                    {obj?.appointmentDate}
+                                                </div>
+                                                <div class="appointment-location">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    Memorial Hospital, Room 302
+                                                      ... {obj?.description}
+                                                </div>
+                                            </div>
+                                            <span class="status-badge status-confirmed"> {statusBodyTemplate(obj)}</span>
+                                        </div>
+                                        <div class="card-actions">
+                                            <button class="btn btn-primary" onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}>
+
+                                                View Details
+                                            </button>
+                                            <button class="btn btn-secondary">
+                                                <i class="fas fa-pencil-alt"></i>
+                                                Reschedule
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="card-actions">
-                                        <button class="btn btn-primary">
-
-                                            View Details
-                                        </button>
-                                        <button class="btn btn-secondary">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            Reschedule
-                                        </button>
-                                    </div>
-                                </div>
 
 
-
+                                ))}
                             </div>
                         </div>
 

@@ -12,116 +12,100 @@ import { Show } from "./../../custom/Show";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
-
+import PaAside from './PaAside'
+import './../../css/All.css'
+import './../../css/patientProfile.css'
 const ViewPatientTreatment = () => {
-  const navigate = useNavigate();
-  const id = new URLSearchParams(window.location.search).get("id");
-  const [treatment, setTreatment] = useState({
-    status: {},
-    type: {},
-    doctor: {},
-    patient: {},
-  });
 
-  useEffect(() => {
-    endPoint(config.treatmentAPIs.getpatienttreatment + "/" + id, "GET", null).then(
-      (res) => {
-        setTreatment(res);
-      },
-      (error) => {}
+    const navigate = useNavigate();
+    const id = new URLSearchParams(window.location.search).get("id");
+    const [treatment, setTreatment] = useState({
+        status: {},
+        type: {},
+        doctor: {},
+        patient: {},
+    });
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+
+        if (!loading) {
+            endPoint(config.treatmentAPIs.getpatienttreatment + "/" + id, "GET", null).then(
+                (res) => {
+                    setTreatment(res);
+                },
+                (error) => { }
+            );
+
+            setLoading(true);
+        }
+
+    });
+
+
+    return (
+        <div >
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+            <div className="use-all-css use-profile-css">
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <PaAside />
+
+                        <div class="content">
+                            <div class="content-header">
+                                <div class="header">
+                                    <h1>View Appointment</h1>
+                                    <div class="content-subheader"> Mange your Appointment</div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="patient-info">
+                                <img src="https://cdn2.stylecraze.com/wp-content/uploads/2013/07/Beautiful-Russian-Women.jpg.avif" alt="Mrs. Maria Waston" />
+                                <div class="patient-details">
+                                    <div>
+                                        <strong>Doctor</strong>
+                                        {treatment.doctor?.fullName}
+                                    </div>
+
+                                    <div>
+                                        <strong>Type</strong>
+                                        {treatment.type?.label}
+                                    </div>
+
+                                    <div>
+                                        <strong>Status</strong>
+                                        {treatment.status?.label}
+                                    </div>
+
+
+
+                                    <div>
+                                        <strong>Appointment Date</strong>
+                                        {treatment.appointmentDate}
+                                    </div>
+
+                                    <div style={{ width: '250%' }}>
+                                        <strong>description</strong>
+                                        {treatment.description}
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     );
-  }, []);
-
-  const redirectItems = [
-    {
-      label: "List",
-      icon: "pi pi-list",
-      command: () => {
-        navigate("/lcd/app/patientTreatments");
-      },
-    },
-    
-    {
-      label: "Update",
-      icon: "pi pi-refresh",
-      command: () => {
-        window.location.reload();
-      },
-    },
-  ];
-
-  const getSeverityByStatus = (statusVal) => {
-    switch (statusVal) {
-      case "Done":
-        return "success";
-
-      case "Cancelled":
-        return "danger";
-      case "Pending":
-        return "warning";
-
-      default:
-        return null;
-    }
-  };
-  const rows = {
-    1: {
-      
-      doctor: {
-        label: "Doctor",
-        icon: "pi pi-user",
-        subKey: "fullName",
-      }
-    },
-
-    2: {
-
-      type: {
-        subKey: "label",
-        label: "Type",
-        icon: "pi pi-bookmark",
-      },
-      status: {
-        isTag: true,
-        subKey: "label",
-        label: "Status",
-        icon: "pi pi-bookmark",
-      },
-     
-    },
-    3:{
-      description: {
-        label: "Description",
-        icon: "pi pi-bookmark",
-      },
-      appointmentDate: {
-        label: "Appointment Date",
-        icon: "pi pi-calendar",
-      },
-
-    }
-  };
-
-  return (
-    <div className="card">
-       <i className="pi pi-arrow-circle-left"
-         onClick={(e)=>{window.history.go(-1); return false;}}
-         style={{ fontSize: '1.5rem' ,marginInlineEnd:'5px', cursor:'pointer'}}></i>
-      <Show rows={rows} object={treatment} severityByStatus={getSeverityByStatus} />
-
-  
-
-      <SpeedDial
-        model={redirectItems}
-        direction="up"
-        transitionDelay={80}
-        showIcon="pi pi-bars"
-        hideIcon="pi pi-times"
-        buttonClassName="p-button-help"
-        style={{ right: "2rem", bottom: "2rem", position: "fixed" }}
-      />
-    </div>
-  );
 };
 
 export default ViewPatientTreatment;
