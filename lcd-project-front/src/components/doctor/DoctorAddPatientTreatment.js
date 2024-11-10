@@ -156,7 +156,7 @@ const DoctorAddPatientTreatment = () => {
 
 
                                         <div class="form-group">
-                                            <h2 class="section-title">Available Dates</h2>
+                                            <h2 class="section-title">Available Times</h2>
                                             <div class="time-slots">
                                                 {avlTimes.pickListItems?.map((timeObj, index) => (
                                                     <button key={index} type="button" class={"time-slot " + (selectedTime === Utils.convertTime12to24(timeObj.value) ? "selected" : "")}
@@ -169,14 +169,14 @@ const DoctorAddPatientTreatment = () => {
                                         </div>
                                         <div class="form-group">
                                             <br />
-                                            <textarea id="description-area" name="description-area" rows="4" cols="100"></textarea>
+                                           {/* <textarea id="description-area" name="description-area" rows="4" cols="100"></textarea>*/}
                                         </div>
                                         <div class="action-buttons">
                                             <button type="submit" class="btn btn-primary" onClick={(e) => {
 
                                                 setTimeout(() => {
                                                     const obj = {
-                                                        description: document.getElementById("description-area").value,
+                                                        description: null/*document.getElementById("description-area").value*/,
                                                         appointmentDate: selectedDate + " " + selectedTime,
                                                         type: document.getElementById("appointment-type-id").value,
                                                         patient: selectedPatient,
@@ -195,7 +195,7 @@ const DoctorAddPatientTreatment = () => {
                                                         return;
                                                     }
                                                     setMessage("");
-                                                    endPoint(config.treatmentAPIs.addpatienttreatment, "POST", obj).then((res) => {
+                                                    endPoint(config.treatmentAPIs.adddoctorpatienttreatment, "POST", obj).then((res) => {
                                                         console.log(res);
                                                         toast.current.show({
                                                             severity: "info",

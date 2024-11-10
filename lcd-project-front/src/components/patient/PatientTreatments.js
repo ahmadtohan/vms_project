@@ -125,15 +125,24 @@ const PatientTreatments = () => {
                                             </div>
                                             <span class={"status-badge status-"+(obj.status?.label==="Done"?"confirmed":"pending")}> {statusBodyTemplate(obj)}</span>
                                         </div>
-                                        <div class="card-actions">
-                                            <button class="btn btn-primary" onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}>
+                                        <div class="card-actions" style={{width:obj.status?.label !== "Pending"?'50%':''}}>
+                                            <button class="btn btn-primary"  onClick={(e) => {  navigate("/lcd/app/viewPatientTreatment?id=" + obj.id); }}>
 
                                                 View Details
                                             </button>
-                                            <button class="btn btn-secondary">
+                                            {obj.status?.label === "Pending" && <button style={{width:'50%'}} class="btn btn-secondary"
+                                                onClick={(e) => {
+                                                    endPoint(config.treatmentAPIs.changetreatmentstatus+"/"+obj.id+"?status=CANCELLED", "POST", {}).then((res) => {                                                     
+
+                                                        navigate("/lcd/app/viewPatientTreatment?id=" + obj.id);
+
+                                                    });
+                                                    
+                                                }}
+                                            >
                                                 <i class="fas fa-pencil-alt"></i>
-                                                Reschedule
-                                            </button>
+                                                Cancel
+                                            </button>}
                                         </div>
                                     </div>
 
@@ -142,9 +151,7 @@ const PatientTreatments = () => {
                             </div>
                         </div>
 
-                        <button class="fab" id="addAppointment" onClick={(e) => { navigate('/lcd/app/AddPatientTreatment') }}>
-                            <i class="fas fa-plus"></i>
-                        </button>
+                     
 
                     </div>
                 </div>

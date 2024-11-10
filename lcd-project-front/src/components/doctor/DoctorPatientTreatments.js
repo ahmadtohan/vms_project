@@ -61,25 +61,25 @@ const DoctorPatientTreatments = () => {
     ////////////////////////////////////
     const getSeverityByStatus = (statusVal) => {
         switch (statusVal) {
-          case "Done":
-            return "success";
-    
-          case "Cancelled":
-            return "danger";
-          case "Pending":
-            return "warning";
-    
-          default:
-            return null;
+            case "Done":
+                return "success";
+
+            case "Cancelled":
+                return "danger";
+            case "Pending":
+                return "warning";
+
+            default:
+                return null;
         }
-      };
-    
-      const statusBodyTemplate = (rowData) => {
+    };
+
+    const statusBodyTemplate = (rowData) => {
         return (
-          <span
-          >{rowData.status.label}</span>
+            <span
+            >{rowData.status.label}</span>
         );
-      };
+    };
 
     return (
         <div >
@@ -120,20 +120,29 @@ const DoctorPatientTreatments = () => {
                                                 <div class="appointment-location">
                                                     <i class="fas fa-map-marker-alt"></i>
                                                     Memorial Hospital, Room 302
-                                                     
+
                                                 </div>
                                             </div>
-                                            <span class={"status-badge status-"+(obj.status?.label==="Done"?"confirmed":"pending")}> {statusBodyTemplate(obj)}</span>
+                                            <span class={"status-badge status-" + (obj.status?.label === "Done" ? "confirmed" : "pending")}> {statusBodyTemplate(obj)}</span>
                                         </div>
-                                        <div class="card-actions">
-                                            <button class="btn btn-primary" onClick={(e) => {  navigate("/lcd/app/doctorViewPatientTreatment?id=" + obj.id); }}>
+                                        <div class="card-actions" style={{width:obj.status?.label !== "Pending"?'50%':''}}>
+                                            <button class="btn btn-primary"  onClick={(e) => { navigate("/lcd/app/doctorViewPatientTreatment?id=" + obj.id); }}>
 
                                                 View Details
                                             </button>
-                                            <button class="btn btn-secondary">
+                                            {obj.status?.label === "Pending" && <button  class="btn btn-secondary"
+                                                onClick={(e) => {
+                                                    endPoint(config.treatmentAPIs.changetreatmentstatus+"/"+obj.id+"?status=DONE", "POST", {}).then((res) => {                                                     
+
+                                                        navigate("/lcd/app/doctorViewPatientTreatment?id=" + obj.id);
+
+                                                    });
+                                                    
+                                                }}
+                                            >
                                                 <i class="fas fa-pencil-alt"></i>
-                                                Reschedule
-                                            </button>
+                                                Mark as Done
+                                            </button>}
                                         </div>
                                     </div>
 
@@ -142,9 +151,7 @@ const DoctorPatientTreatments = () => {
                             </div>
                         </div>
 
-                        <button class="fab" id="addAppointment" onClick={(e) => { navigate('/lcd/app/doctorAddPatientTreatment') }}>
-                            <i class="fas fa-plus"></i>
-                        </button>
+
 
                     </div>
                 </div>

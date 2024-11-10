@@ -78,4 +78,23 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
         return super.createEntity(treatment);
     }
 
+    @NoPermissionApi
+    @RequestMapping(value = "/adddoctorpatienttreatment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> addDoctorPatientTreatment(@RequestBody Treatment treatment) {
+        treatment.setStatus(Treatment.Status.PENDING);
+        treatment.setDoctor(Setup.getCurrentUserInfo().getUser());
+        return super.createEntity(treatment);
+    }
+
+    @NoPermissionApi
+    @RequestMapping(value = "/changetreatmentstatus/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> changeTreatmentStatus(@PathVariable("id") Long id,@RequestParam(required = true) Treatment.Status status) {
+        Treatment treatment = treatmentRepository.findOne(id);
+        treatment.setStatus(status);
+        treatmentRepository.save(treatment);
+        return okResponse();
+    }
+
 }
