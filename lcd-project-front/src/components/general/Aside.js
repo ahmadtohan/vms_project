@@ -12,10 +12,13 @@ import { Show } from "./../../custom/Show";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import Utils from "./../../services/Utils";
 
 
 
 const Aside = () => {
+
+    Utils.customBackGround(false);
 
     const navigate = useNavigate();
     const location = useLocation();

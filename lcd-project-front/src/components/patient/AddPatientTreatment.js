@@ -56,20 +56,31 @@ const AddPatientTreatment = () => {
             }
             );
 
-            setAvlDates(getNextFourWeekdays());
+
+            endPoint(
+                config.parameterAPIs.getbycode + "?code=number_of_avl_dates",
+                "GET",
+                null
+            ).then((res) => {
+                console.log(res);
+                setAvlDates(getNextFourWeekdays(parseInt(res.value)));
+            }
+            );
+
+            
             setLoading(true);
         }
 
     });
 
-    function getNextFourWeekdays() {
+    function getNextFourWeekdays(num_of_dates) {
         const weekdays = [];
         const today = new Date();
 
         // Start from tomorrow
         today.setDate(today.getDate() + 1);
 
-        while (weekdays.length < 4) {
+        while (weekdays.length < num_of_dates) {
             // Check if the day is a weekday (Monday to Friday)
             if (today.getDay() !== 0 && today.getDay() !== 6) {
                 weekdays.push(Utils.formatDateWithoutTime(new Date(today)));

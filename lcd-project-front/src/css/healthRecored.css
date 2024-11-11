@@ -1,603 +1,607 @@
 .use-health-recored-css {
-
-/* Base Styles (same as original) */
+ /* Base Styles (same as original) */
        
 
-    
+ width: 100%;
     
         /* New Health Records Content Styles */
        /* Refined Content Styles */
        .content {
         flex: 1;
-        padding: 32px;
-        background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 transparent;
-    }
-    .content::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .content::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    
-    .content::-webkit-scrollbar-thumb {
-        background-color: #cbd5e1;
-        border-radius: 3px;
-    }
-            /* Enhanced Header Styles */
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 32px;
-        padding-bottom: 16px;
-        border-bottom: 2px solid rgba(203, 213, 225, 0.3);
-    }
-    
-    .header h2 {
-        font-size: 28px;
-        color: #0f172a;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-    }
-    
-    /* Refined Record Section Styles */
-    .record-section {
-        background: white;
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 28px;
-        box-shadow: 
-            0 4px 6px -1px rgba(0, 0, 0, 0.1),
-            0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
-    .record-section h3 {
-        color: #ff5722;
-        font-size: 20px;
-        margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid rgba(255, 87, 34, 0.15);
-        font-weight: 600;
-        letter-spacing: -0.01em;
-    }
-    
-            /* Enhanced Grid Layouts */
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        margin-bottom: 8px;
-    }
-    
-    .info-item {
-        background: #f8fafc;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(226, 232, 240, 0.6);
-        transition: transform 0.2s ease;
-    }
-    
-    .info-item strong {
-        display: block;
-        color: #64748b;
-        font-size: 14px;
-        margin-bottom: 6px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-    }
-    
-    .info-item span {
-        color: #1e293b;
-        font-size: 16px;
-        line-height: 1.4;
-    }
-           /* Modernized Test Results */
-    .test-results {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-    }
-    
-    .test-item {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(226, 232, 240, 0.6);
+        background-color: #f8fafc;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        transition: transform 0.2s ease;
+        gap: 20px;
+        overflow-y: auto;
+        max-height: min(100vh - 32px, 900px);
+        font-family: 'Poppins', sans-serif;
     }
-    
-    .test-item .test-name {
-        color: #64748b;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-    }
-    
-    .test-item .test-value {
-        color: #0f172a;
+
+
+.content::-webkit-scrollbar {
+width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+background-color: #cbd5e1;
+border-radius: 3px;
+}
+    /* Enhanced Header Styles */
+.header {
+        display: flex;
+         align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+        position:relative;
+}
+
+    .header h2 {
         font-size: 20px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-    }
-    
-    .test-item .test-date {
-        color: #94a3b8;
-        font-size: 13px;
-        font-weight: 500;
-    }
-    
-    /* Enhanced Status Tags */
-    .status-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 13px;
         font-weight: 600;
-        letter-spacing: 0.02em;
-        transition: transform 0.2s ease;
-    }
-    
-    .status-normal {
-        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-        color: #166534;
-    }
-    
-    .status-warning {
-        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-        color: #9a3412;
-    }
-    
-    .status-critical {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        color: #991b1b;
-    }
-    
-            /* Add these hover effect styles after your existing CSS */
-    
-    /* Record Section Hover Effect */
-    .record-section {
-        transform: translateY(0);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .record-section:hover {
-        transform: translateY(-4px);
-        box-shadow: 
-            0 20px 25px -5px rgba(0, 0, 0, 0.1),
-            0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    /* Info Item Hover Effect */
-    .info-item {
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-    
-    .info-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .info-item:hover {
-        transform: translateY(-2px);
-        border-color: rgba(99, 102, 241, 0.4);
-        box-shadow: 
-            0 4px 12px rgba(0, 0, 0, 0.05),
-            0 0 0 2px rgba(99, 102, 241, 0.2);
-    }
-    
-    .info-item:hover::before {
-        opacity: 1;
-    }
-    
-    /* Test Item Hover Animation */
-    .test-item {
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .test-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 
-            0 4px 12px rgba(0, 0, 0, 0.05),
-            0 0 0 2px rgba(255, 87, 34, 0.2);
-    }
-    
-    .test-item:hover .test-value {
-        color: #ff5722;
-        transform: scale(1.05);
-    }
-    
-    .test-item .test-value {
-        transition: all 0.3s ease;
-    }
-    
-    /* Status Tag Hover Effects */
-    .status-tag {
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-    
-    .status-tag:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.05);
-    }
-    
-    .status-normal:hover {
-        box-shadow: 0 0 12px rgba(22, 101, 52, 0.2);
-    }
-    
-    .status-warning:hover {
-        box-shadow: 0 0 12px rgba(154, 52, 18, 0.2);
-    }
-    
-    .status-critical:hover {
-        box-shadow: 0 0 12px rgba(153, 27, 27, 0.2);
-    }
-    
-    /* Download Button Style and Hover Effect */
-    .download-btn {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
+        color: #1e293b;
         display: flex;
         align-items: center;
         gap: 8px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
     }
-    
-    .download-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.2) 50%,
-            transparent 100%
-        );
-        transition: left 0.5s ease;
-    }
-    
-    .download-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 
-            0 4px 12px rgba(79, 70, 229, 0.3),
-            0 0 0 2px rgba(99, 102, 241, 0.4);
-    }
-    
-    .download-btn:hover::before {
-        left: 100%;
-    }
-    
-    /* Header Icons Hover Effect */
-    .header h2 i {
-        transition: transform 0.3s ease;
-        display: inline-block;
-        margin-right: 8px;
-    }
-    
-    .header h2:hover i {
-        transform: rotate(10deg) scale(1.1);
-    }
-    
-    /* Smooth Scroll Behavior */
-    .content {
-        scroll-behavior: smooth;
-        width: 1000px;
-    
-    }
-    
-    /* Test Value Highlight Effect */
-    .test-value {
-        position: relative;
-        display: inline-block;
-    }
-    
-    .test-value::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: #ff5722;
-        transition: width 0.3s ease;
-    }
-    
-    .test-item:hover .test-value::after {
-        width: 100%;
-    }
-    
-    /* Enhanced Focus States */
-    .info-item:focus-within,
-    .test-item:focus-within,
-    .download-btn:focus {
-        outline: none;
-        box-shadow: 
-            0 0 0 2px #fff,
-            0 0 0 4px rgba(99, 102, 241, 0.4);
-    }
-    
-    /* Interaction States */
-    @media (hover: hover) and (pointer: fine) {
-        .info-item:active,
-        .test-item:active,
-        .download-btn:active {
-            transform: translateY(1px);
-        }
-    }
-    
-    /* Refined Responsive Design */
-    @media (max-width: 1200px) {
-        .info-grid {
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        }
-        
-        .content {
-            padding: 24px;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .outer-container {
-            border-radius: 20px;
-        }
-        
-        .content {
-            padding: 20px;
-        }
-        
-        .info-grid, .test-results {
-            grid-template-columns: 1fr;
-        }
-        
-        .header h2 {
-            font-size: 24px;
-        }
-        
-        .record-section {
-            padding: 20px;
-        }
-    }
-    
-    /* Print Styles */
-    @media print {
-        body {
-            background: none;
-        }
-        
-        .outer-container {
-            box-shadow: none;
-        }
-        
-        .record-section {
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-        
-    }
-    
-    
-    /* Test Genes Hover Animation */
-    .test-genes {
-        position: relative;
-        overflow: hidden;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        border: 1px solid #e0e0e0; /* Light initial border */
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Soft initial shadow */
-    }
-    
-    .test-genes:hover {
-        transform: translateY(-4px); /* Smooth elevation effect */
-        background-color: #ffffff; /* Solid white on hover */
-        border: 1px solid #ff5722; /* Orange border on hover */
-        box-shadow: 
-            0 6px 16px rgba(0, 0, 0, 0.1),
-            0 0 0 2px rgba(255, 87, 34, 0.2); /* Orange outline shadow on hover */
-    }
-    
-    .test-genes:hover .test-value {
-        color: #ff5722; /* Orange color for text on hover */
-        transform: scale(1.08); /* Slight scaling on hover */
-    }
-    
-    .test-genes .test-value {
-        font-weight: 600;
-        color: #424242; /* Neutral initial color for readability */
-        font-size: 18px;
-        transition: color 0.4s ease, transform 0.3s ease;
-    }
-    
-    .test-genes:hover::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 87, 34, 0.05); /* Light orange overlay for hover */
-        z-index: 0;
-    }
-    
-    .test-genes .test-value,
-    .test-genes:hover .test-value {
-        position: relative;
-        z-index: 1; /* Ensures text stays above the overlay */
-    }
-    /* Common status styles */
-    .status-base {
-        position: relative;
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        overflow: hidden;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        backdrop-filter: blur(8px);
-    }
-    
-    /* Status dot indicator */
-    .status-base::before {
-        content: '';
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-right: 8px;
-        transition: all 0.3s ease;
-    }
-    
-    /* Normal Status - Balanced Blue */
-    .status-normal {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        color: #0369a1;
-        border: 1px solid rgba(3, 105, 161, 0.1);
-    }
-    
-    .status-normal::before {
-        background-color: #0369a1;
-        box-shadow: 0 0 8px rgba(3, 105, 161, 0.4);
-    }
-    
-    .status-normal:hover {
-        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-        box-shadow: 
-            0 8px 16px rgba(3, 105, 161, 0.15),
-            0 0 0 2px rgba(3, 105, 161, 0.1);
-        transform: translateY(-2px);
-    }
-    
-    /* Higher Status - Success Green */
-    .status-higher {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        color: #15803d;
-        border: 1px solid rgba(21, 128, 61, 0.1);
-    }
-    
-    .status-higher::before {
-        background-color: #15803d;
-        box-shadow: 0 0 8px rgba(21, 128, 61, 0.4);
-    }
-    
-    .status-higher:hover {
-        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-        box-shadow: 
-            0 8px 16px rgba(21, 128, 61, 0.15),
-            0 0 0 2px rgba(21, 128, 61, 0.1);
-        transform: translateY(-2px);
-    }
-    
-    /* Lower Status - Warning Red */
-    .status-lower {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        color: #b91c1c;
-        border: 1px solid rgba(185, 28, 28, 0.1);
-    }
-    
-    .status-lower::before {
-        background-color: #b91c1c;
-        box-shadow: 0 0 8px rgba(185, 28, 28, 0.4);
-    }
-    
-    .status-lower:hover {
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        box-shadow: 
-            0 8px 16px rgba(185, 28, 28, 0.15),
-            0 0 0 2px rgba(185, 28, 28, 0.1);
-        transform: translateY(-2px);
-    }
-    
-    /* Shine effect for all statuses */
-    .status-base::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            to right,
-            transparent 0%,
-            rgba(255, 255, 255, 0.4) 50%,
-            transparent 100%
-        );
-        transform: skewX(-20deg);
-        transition: all 0.75s;
-    }
-    
-    .status-base:hover::after {
-        animation: shine 1.5s ease-in-out infinite;
-    }
-    
-    @keyframes shine {
-        100% {
-            left: 200%;
-        }
-    }
-    
-    /* Pulse animation for the dot indicator */
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
-    
-    .status-base:hover::before {
-        animation: pulse 1.5s infinite ease-in-out;
-    }
-    
-    /* Active state for all statuses */
-    .status-base:active {
-        transform: translateY(1px);
-        box-shadow: none;
-    }
-    
-    
-    .status-base.loading::before {
-        animation: rotate 1s linear infinite;
-    }
-    
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
+
+/* Refined Record Section Styles */
+.record-section {
+background: white;
+border-radius: 16px;
+padding: 24px;
+margin-bottom: 28px;
+box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.record-section h3 {
+color: #ff5722;
+font-size: 20px;
+margin-bottom: 20px;
+padding-bottom: 12px;
+border-bottom: 2px solid rgba(255, 87, 34, 0.15);
+font-weight: 600;
+letter-spacing: -0.01em;
+}
+
+    /* Enhanced Grid Layouts */
+.info-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 20px;
+margin-bottom: 8px;
+}
+
+.info-item {
+background: #f8fafc;
+padding: 20px;
+border-radius: 12px;
+border: 1px solid rgba(226, 232, 240, 0.6);
+transition: transform 0.2s ease;
+}
+
+.info-item strong {
+display: block;
+color: #64748b;
+font-size: 14px;
+margin-bottom: 6px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.03em;
+}
+
+.info-item span {
+color: #1e293b;
+font-size: 16px;
+line-height: 1.4;
+}
+   /* Modernized Test Results */
+.test-results {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 20px;
+}
+
+.test-item {
+background: #fff;
+padding: 20px;
+border-radius: 12px;
+border: 1px solid rgba(226, 232, 240, 0.6);
+display: flex;
+flex-direction: column;
+gap: 10px;
+transition: transform 0.2s ease;
+}
+
+.test-item .test-name {
+color: #64748b;
+font-size: 14px;
+font-weight: 600;
+letter-spacing: 0.02em;
+}
+
+.test-item .test-value {
+color: #0f172a;
+font-size: 20px;
+font-weight: 700;
+letter-spacing: -0.01em;
+}
+
+.test-item .test-date {
+color: #94a3b8;
+font-size: 13px;
+font-weight: 500;
+}
+
+/* Enhanced Status Tags */
+.status-tag {
+display: inline-flex;
+align-items: center;
+padding: 6px 14px;
+border-radius: 20px;
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 0.02em;
+transition: transform 0.2s ease;
+}
+
+.status-normal {
+background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+color: #166534;
+}
+
+.status-warning {
+background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+color: #9a3412;
+}
+
+.status-critical {
+background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+color: #991b1b;
+}
+
+    /* Add these hover effect styles after your existing CSS */
+
+/* Record Section Hover Effect */
+.record-section {
+transform: translateY(0);
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+margin-left: 2%;
+}
+
+.record-section:hover {
+transform: translateY(-4px);
+box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Info Item Hover Effect */
+.info-item {
+position: relative;
+overflow: hidden;
+transition: all 0.3s ease;
+}
+
+.info-item::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 100%);
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.info-item:hover {
+transform: translateY(-2px);
+border-color: rgba(99, 102, 241, 0.4);
+box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.info-item:hover::before {
+opacity: 1;
+}
+
+/* Test Item Hover Animation */
+.test-item {
+position: relative;
+overflow: hidden;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.test-item:hover {
+transform: translateY(-2px);
+box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 0 0 2px rgba(255, 87, 34, 0.2);
+}
+
+.test-item:hover .test-value {
+color: #ff5722;
+transform: scale(1.05);
+}
+
+.test-item .test-value {
+transition: all 0.3s ease;
+}
+
+/* Status Tag Hover Effects */
+.status-tag {
+position: relative;
+overflow: hidden;
+transition: all 0.3s ease;
+}
+
+.status-tag:hover {
+transform: translateY(-1px);
+filter: brightness(1.05);
+}
+
+.status-normal:hover {
+box-shadow: 0 0 12px rgba(22, 101, 52, 0.2);
+}
+
+.status-warning:hover {
+box-shadow: 0 0 12px rgba(154, 52, 18, 0.2);
+}
+
+.status-critical:hover {
+box-shadow: 0 0 12px rgba(153, 27, 27, 0.2);
+}
+
+/* Download Button Style and Hover Effect */
+.header button {
+padding: 10px 20px;
+font-size: 15px;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(135deg, #ff7043, #ff5722); /* Subtle gradient */
+border: none;
+border-radius: 8px; /* Modern touch */
+cursor: pointer;
+display:flex; /* Aligns icon and text vertically */
+gap: 8px;
+transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+margin-left: 80%;
+margin-bottom: 6%;
+position: absolute;
+}
+
+.download-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+);
+transition: left 0.5s ease;
+}
+
+.download-btn:hover {
+transform: translateY(-2px);
+box-shadow: 
+    0 4px 12px rgba(79, 70, 229, 0.3),
+    0 0 0 2px rgba(99, 102, 241, 0.4);
+}
+
+.download-btn:hover::before {
+left: 100%;
+}
+
+/* Header Icons Hover Effect */
+.header h2 i {
+transition: transform 0.3s ease;
+display: inline-block;
+margin-right: 8px;
+}
+
+.header h2:hover i {
+transform: rotate(10deg) scale(1.1);
+}
+
+/* Smooth Scroll Behavior */
+.content {
+scroll-behavior: smooth;
+}
+
+/* Test Value Highlight Effect */
+.test-value {
+position: relative;
+display: inline-block;
+}
+
+.test-value::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 2px;
+background: #ff5722;
+transition: width 0.3s ease;
+}
+
+.test-item:hover .test-value::after {
+width: 100%;
+}
+
+/* Enhanced Focus States */
+.info-item:focus-within,
+.test-item:focus-within,
+.download-btn:focus {
+outline: none;
+box-shadow: 
+    0 0 0 2px #fff,
+    0 0 0 4px rgba(99, 102, 241, 0.4);
+}
+
+/* Interaction States */
+@media (hover: hover) and (pointer: fine) {
+.info-item:active,
+.test-item:active,
+.download-btn:active {
+    transform: translateY(1px);
+}
+}
+
+/* Refined Responsive Design */
+@media (max-width: 1200px) {
+.info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.content {
+    padding: 24px;
+}
+}
+
+@media (max-width: 768px) {
+.outer-container {
+    border-radius: 20px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.info-grid, .test-results {
+    grid-template-columns: 1fr;
+}
+
+.header h2 {
+    font-size: 24px;
+}
+
+.record-section {
+    padding: 20px;
+}
+}
+
+/* Print Styles */
+@media print {
+body {
+    background: none;
+}
+
+.outer-container {
+    box-shadow: none;
+}
+
+.record-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+}
+
+
+/* Test Genes Hover Animation */
+.test-genes {
+position: relative;
+overflow: hidden;
+padding: 20px;
+background-color: #ffffff;
+border-radius: 10px;
+border: 1px solid #e0e0e0; /* Light initial border */
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Soft initial shadow */
+}
+
+.test-genes:hover {
+transform: translateY(-4px); /* Smooth elevation effect */
+background-color: #ffffff; /* Solid white on hover */
+border: 1px solid #ff5722; /* Orange border on hover */
+box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 87, 34, 0.2); /* Orange outline shadow on hover */
+}
+
+.test-genes:hover .test-value {
+color: #ff5722; /* Orange color for text on hover */
+transform: scale(1.08); /* Slight scaling on hover */
+}
+
+.test-genes .test-value {
+font-weight: 600;
+color: #424242; /* Neutral initial color for readability */
+font-size: 18px;
+transition: color 0.4s ease, transform 0.3s ease;
+}
+
+.test-genes:hover::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(255, 87, 34, 0.05); /* Light orange overlay for hover */
+z-index: 0;
+}
+
+.test-genes .test-value,
+.test-genes:hover .test-value {
+position: relative;
+z-index: 1; /* Ensures text stays above the overlay */
+}
+/* Common status styles */
+.status-base {
+position: relative;
+padding: 0.75rem 1.5rem;
+border-radius: 12px;
+font-weight: 600;
+font-size: 0.875rem;
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+cursor: pointer;
+overflow: hidden;
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+backdrop-filter: blur(8px);
+}
+
+/* Status dot indicator */
+.status-base::before {
+content: '';
+width: 8px;
+height: 8px;
+border-radius: 50%;
+margin-right: 8px;
+transition: all 0.3s ease;
+}
+
+/* Normal Status - Balanced Blue */
+.status-normal {
+background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+color: #0369a1;
+border: 1px solid rgba(3, 105, 161, 0.1);
+}
+
+.status-normal::before {
+background-color: #0369a1;
+box-shadow: 0 0 8px rgba(3, 105, 161, 0.4);
+}
+
+.status-normal:hover {
+background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+box-shadow: 
+    0 8px 16px rgba(3, 105, 161, 0.15),
+    0 0 0 2px rgba(3, 105, 161, 0.1);
+transform: translateY(-2px);
+}
+
+/* Higher Status - Success Green */
+.status-higher {
+background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+color: #15803d;
+border: 1px solid rgba(21, 128, 61, 0.1);
+}
+
+.status-higher::before {
+background-color: #15803d;
+box-shadow: 0 0 8px rgba(21, 128, 61, 0.4);
+}
+
+.status-higher:hover {
+background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+box-shadow: 
+    0 8px 16px rgba(21, 128, 61, 0.15),
+    0 0 0 2px rgba(21, 128, 61, 0.1);
+transform: translateY(-2px);
+}
+
+/* Lower Status - Warning Red */
+.status-lower {
+background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+color: #b91c1c;
+border: 1px solid rgba(185, 28, 28, 0.1);
+}
+
+.status-lower::before {
+background-color: #b91c1c;
+box-shadow: 0 0 8px rgba(185, 28, 28, 0.4);
+}
+
+.status-lower:hover {
+background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+box-shadow: 
+    0 8px 16px rgba(185, 28, 28, 0.15),
+    0 0 0 2px rgba(185, 28, 28, 0.1);
+transform: translateY(-2px);
+}
+
+/* Shine effect for all statuses */
+.status-base::after {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+);
+transform: skewX(-20deg);
+transition: all 0.75s;
+}
+
+.status-base:hover::after {
+animation: shine 1.5s ease-in-out infinite;
+}
+
+@keyframes shine {
+100% {
+    left: 200%;
+}
+}
+
+/* Pulse animation for the dot indicator */
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.1); }
+100% { transform: scale(1); }
+}
+
+.status-base:hover::before {
+animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Active state for all statuses */
+.status-base:active {
+transform: translateY(1px);
+box-shadow: none;
+}
+
+
+.status-base.loading::before {
+animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
     
 }

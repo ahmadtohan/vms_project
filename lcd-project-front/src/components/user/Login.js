@@ -6,6 +6,7 @@ import { Tag } from "primereact/tag";
 import endPoint from "./../../services/endPoint";
 import config from "./../../services/config";
 import { Input } from "./../../custom/Input";
+import Utils from "./../../services/Utils";
 
 import { useFormik } from 'formik';
 import { classNames } from 'primereact/utils';
@@ -20,7 +21,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-
+        Utils.customBackGround(true);
 
 
     }, []);
@@ -57,6 +58,7 @@ const Login = () => {
                         navigate("/lcd/app/doctorProfile");
 
                     } else {
+                        
                         navigate("/lcd/app/users");
                     }
 

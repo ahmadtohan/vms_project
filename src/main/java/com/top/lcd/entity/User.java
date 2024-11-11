@@ -3,10 +3,13 @@ package com.top.lcd.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.top.lcd.annotations.AfterInsert;
 import com.top.lcd.annotations.BeforeDelete;
+import com.top.lcd.annotations.EntityJsonSerializer;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.helper.EnumEntity;
+import com.top.lcd.helper.GenericSerializer;
 import com.top.lcd.repository.UserRoleRepository;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
@@ -60,6 +63,21 @@ public class User extends BaseEntity implements UserDetails {
         private final String label;
 
         Type(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+    };
+
+    public enum BloodType implements EnumEntity {
+        A_POS("A+"), B_POS("B+"), AB_POS("AB+"), O_POS("O+"), A_NEG("A-"), B_NEG("B-"), AB_NEG("AB-"), O_NEG("O-");
+
+        private final String label;
+
+        BloodType(String label) {
             this.label = label;
         }
 
@@ -123,6 +141,24 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoles;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonSerialize(using = GenericSerializer.class)
+    @EntityJsonSerializer(keys = {"id", "value"})
+    private PickListItem nationality;
+
+    @Column
+    private Double weight;
+
+
+    @Column
+    private Double hight;
+
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private BloodType bloodType = BloodType.AB_POS;
 
 
     @BeforeDelete
@@ -272,6 +308,38 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public PickListItem getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(PickListItem nationality) {
+        this.nationality = nationality;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Double getHight() {
+        return hight;
+    }
+
+    public void setHight(Double hight) {
+        this.hight = hight;
+    }
+
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
     }
 
     @Override

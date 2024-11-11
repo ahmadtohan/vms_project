@@ -140,8 +140,8 @@ const DoctorPatientTreatments = () => {
                                                     
                                                 }}
                                             >
-                                                <i class="fas fa-pencil-alt"></i>
-                                                Mark as Done
+                                                <i class="fas fa-check"></i>
+                                                Confirm
                                             </button>}
                                         </div>
                                     </div>

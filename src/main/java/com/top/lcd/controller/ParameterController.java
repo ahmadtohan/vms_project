@@ -5,12 +5,14 @@
  */
 package com.top.lcd.controller;
 
+import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.entity.Parameter;
 import com.top.lcd.repository.BaseRepository;
 import com.top.lcd.repository.ParameterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -29,4 +31,11 @@ public class ParameterController extends BaseRepositoryController<Parameter> {
     }
 
 
+    @NoPermissionApi
+    @RequestMapping(value = "/getbycode", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getByCode(@RequestParam(required = true) String code) {
+
+        return new ResponseEntity<>(parameterRepository.findByCode(code), HttpStatus.OK);
+    }
 }

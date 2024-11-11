@@ -1,5 +1,7 @@
 package com.top.lcd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,6 +38,7 @@ public class PickListItem extends BaseEntity{
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private PickList pickList;
 
     public String getCode() {

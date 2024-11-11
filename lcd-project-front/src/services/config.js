@@ -75,7 +75,8 @@ const config = {
         view: 'parameter/get',
         create: 'parameter/create',
         update: 'parameter/update',
-        delete: 'parameter/delete'
+        delete: 'parameter/delete',
+        getbycode:'parameter/getbycode'
     },
     picklistAPIs: {
         listPage: 'picklist/page',

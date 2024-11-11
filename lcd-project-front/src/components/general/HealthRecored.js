@@ -54,10 +54,14 @@ const HealthRecored = () => {
                         <Aside />
                         <div className="use-health-recored-css">
                             <div class="content">
-                                <div class="header">
-                                    <h2><i class="fas fa-file-medical"></i> Health Records</h2>
-                                    <button class="download-btn"><i class="fas fa-download"></i> Download Records</button>
-                                </div>
+                            <div class="content-header">
+                    <h1>Health Records</h1> 
+                    <div class="content-subheader"> view your health records</div>
+                <div class="header">
+                    <button><i class="fas fa-edit"></i> Edit Profile</button> 
+                
+                </div>
+                </div>
 
 
                                 <div class="record-section">

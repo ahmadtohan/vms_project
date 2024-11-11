@@ -27,6 +27,7 @@ const AddPatient = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    Utils.customBackGround(true);
 
 
   }, []);

@@ -10,6 +10,7 @@ import { Card } from 'primereact/card';
 import endPoint from "./services/endPoint";
 import config from "./services/config";
 
+import Utils from "./services/Utils";
 
 import Home from "./components/user/Home";
 import Login from "./components/user/Login";
@@ -71,7 +72,6 @@ const App = () => {
 
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem("user")));
-
     EventBus.on("handelUserLogged", (data) => {
       localStorage.setItem("user", JSON.stringify(data));
       setCurrentUser(data);

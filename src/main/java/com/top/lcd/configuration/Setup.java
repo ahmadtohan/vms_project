@@ -71,6 +71,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
     public static final String BASE_HOST_PARAMETER_CODE = "base_host";
     public static final String BASE_LCD_HOST_PARAMETER_CODE = "base_lcd_host";
 
+    public static final String NUMBER_OF_AVL_DATES = "number_of_avl_dates";
+
     /////////////////////////////////Picklists/////////////////////////////////////////////////////
     public static final String NATIONALITIES_PICKLIST_CODE = "nationalities";
     public static final String AVL_TIMES_PICKLIST_CODE = "avl_times";
@@ -92,7 +94,10 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
         Parameter[] parameters = new Parameter[]{
                 new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
-                new Parameter(BASE_LCD_HOST_PARAMETER_CODE, "Base LCD Host", "http://localhost:8088/lcd/")};
+                new Parameter(BASE_LCD_HOST_PARAMETER_CODE, "Base LCD Host", "http://localhost:8088/lcd/"),
+                new Parameter(NUMBER_OF_AVL_DATES, "Number of Available Dates", "6")
+
+        };
 
         Arrays.stream(parameters).forEach(p -> {
             Parameter oldParameter = parameterRepository.findByCode(p.getCode());

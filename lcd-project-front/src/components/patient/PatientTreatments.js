@@ -140,7 +140,7 @@ const PatientTreatments = () => {
                                                     
                                                 }}
                                             >
-                                                <i class="fas fa-pencil-alt"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                                 Cancel
                                             </button>}
                                         </div>
