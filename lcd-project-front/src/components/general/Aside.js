@@ -73,11 +73,15 @@ const Aside = () => {
 
                         }
 
+
                         {currentUser.type?.value === 'DOCTOR' &&
                             <Link to="/lcd/app/doctorAddPatientTreatment" class={route.endsWith("/doctorAddPatientTreatment") ? "active" : ""}><i class="fas fa-calendar-plus"></i> Book Appointment</Link>
                             ||
                             <Link to="/lcd/app/addPatientTreatment" class={route.endsWith("/addPatientTreatment") ? "active" : ""}><i class="fas fa-calendar-plus"></i> Book Appointment</Link>
 
+                        }
+                        {currentUser.type?.value === 'DOCTOR' &&
+                            <Link to="/lcd/app/testPatient" class={route.endsWith("/testPatient") ? "active" : ""}> <i class="fas fa-check"></i>Test Patient</Link>
                         }
 
 

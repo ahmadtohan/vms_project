@@ -8,6 +8,7 @@ package com.top.lcd.controller;
 import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.entity.Treatment;
+import com.top.lcd.helper.EmailService;
 import com.top.lcd.helper.SelectQuery;
 import com.top.lcd.repository.BaseRepository;
 import com.top.lcd.repository.TreatmentRepository;
@@ -16,6 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * @author Ahmad
@@ -26,6 +30,9 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
 
     @Autowired
     TreatmentRepository treatmentRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public BaseRepository<Treatment> getRepository() {
@@ -75,7 +82,115 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     public ResponseEntity<?> addPatientTreatment(@RequestBody Treatment treatment) {
         treatment.setStatus(Treatment.Status.PENDING);
         treatment.setPatient(Setup.getCurrentUserInfo().getUser());
-        return super.createEntity(treatment);
+        treatment = treatmentRepository.save(treatment);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String body="<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "  <title>Appointment Details</title>\n" +
+                "  <style>\n" +
+                "    body, table, td, a {\n" +
+                "      margin: 0;\n" +
+                "      padding: 0;\n" +
+                "      text-size-adjust: 100%;\n" +
+                "      font-family: Arial, sans-serif;\n" +
+                "    }\n" +
+                "    table {\n" +
+                "      border-spacing: 0;\n" +
+                "    }\n" +
+                "    img {\n" +
+                "      border: 0;\n" +
+                "      display: block;\n" +
+                "      height: auto;\n" +
+                "    }\n" +
+                "    .email-wrapper {\n" +
+                "      width: 100%;\n" +
+                "      background-color: #f9f9f9;\n" +
+                "      padding: 20px;\n" +
+                "    }\n" +
+                "    .email-content {\n" +
+                "      max-width: 600px;\n" +
+                "      margin: 0 auto;\n" +
+                "      background-color: #ffffff;\n" +
+                "      padding: 25px;\n" +
+                "      border-radius: 8px;\n" +
+                "      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+                "    }\n" +
+                "    .header {\n" +
+                "      text-align: center;\n" +
+                "      color: #333;\n" +
+                "    }\n" +
+                "    h1 {\n" +
+                "      font-size: 24px;\n" +
+                "      color: #1a73e8;\n" +
+                "    }\n" +
+                "    .appointment-details {\n" +
+                "      margin: 20px 0;\n" +
+                "    }\n" +
+                "    .appointment-details p {\n" +
+                "      font-size: 16px;\n" +
+                "      color: #555;\n" +
+                "      margin: 5px 0;\n" +
+                "    }\n" +
+                "    .appointment-details .label {\n" +
+                "      font-weight: bold;\n" +
+                "      color: #333;\n" +
+                "    }\n" +
+                "    .appointment-button {\n" +
+                "      display: inline-block;\n" +
+                "      background-color: #1a73e8;\n" +
+                "      color: white;\n" +
+                "      padding: 12px 24px;\n" +
+                "      font-size: 16px;\n" +
+                "      text-decoration: none;\n" +
+                "      border-radius: 5px;\n" +
+                "      margin-top: 20px;\n" +
+                "    }\n" +
+                "    .footer {\n" +
+                "      text-align: center;\n" +
+                "      color: #888;\n" +
+                "      font-size: 12px;\n" +
+                "      margin-top: 25px;\n" +
+                "    }\n" +
+                "    .footer a {\n" +
+                "      color: #1a73e8;\n" +
+                "      text-decoration: none;\n" +
+                "    }\n" +
+                "  </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <div class=\"email-wrapper\">\n" +
+                "    <table role=\"presentation\" class=\"email-content\">\n" +
+                "      <tr>\n" +
+                "        <td>\n" +
+                "          <!-- Header -->\n" +
+                "          <div class=\"header\">\n" +
+                "            <h1>Appointment Info</h1>\n" +
+                "            <p>Thank you for booking with us!</p>\n" +
+                "          </div>\n" +
+                "\n" +
+                "          <!-- Appointment Details -->\n" +
+                "          <div class=\"appointment-details\">\n" +
+                "            <p><span class=\"label\">Name:</span> "+treatment.getPatient().getFullName()+"</p>\n" +
+                "            <p><span class=\"label\">Appointment Date:"+df.format(treatment.getAppointmentDate())+"</p>\n" +
+                "            <p><span class=\"label\">Doctor:</span> "+treatment.getDoctor().getFullName()+"</p>\n" +
+                "            <p><span class=\"label\">Treatment Type:</span> "+treatment.getType().getLabel()+"</p>\n" +
+                "          </div>\n" +
+                "         <p>Click the button below to view more details:</p>\n" +
+                "          <a href=\"http://localhost:3000/lcd/app/viewPatientTreatment?id="+treatment.getId()+"\" class=\"appointment-button\">View</a>"+
+                "        </td>\n" +
+                "      </tr>\n" +
+                "    </table>\n" +
+                "  </div>\n" +
+                "</body>\n" +
+                "</html>\n";
+        emailService.sendMail(Setup.getCurrentUserInfo().getUser().getEmail(), "Appointment Request", body
+        );
+        return new ResponseEntity<>(treatment, HttpStatus.OK);
     }
 
     @NoPermissionApi

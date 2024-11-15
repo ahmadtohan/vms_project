@@ -14,7 +14,7 @@ import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
-import './../../css/All.css'
+import './../../css/AllDoctor.css'
 import './../../css/addPatientTreatment.css'
 const DoctorAddPatientTreatment = () => {
 
@@ -96,7 +96,7 @@ const DoctorAddPatientTreatment = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-            <div className="use-all-css use-add-patient-treatment-css">
+            <div className="use-all-doctor-css use-add-patient-treatment-css">
                 <div class="outer-container">
                     <div class="inner-container">
                         <Aside />

@@ -36,6 +36,7 @@ import DoctorAddPatientTreatment from "./components/doctor/DoctorAddPatientTreat
 import DoctorProfile from "./components/doctor/DoctorProfile";
 import DoctorPatientTreatments from "./components/doctor/DoctorPatientTreatments";
 import DoctorViewPatientTreatment from "./components/doctor/DoctorViewPatientTreatment";
+import TestPatient from "./components/doctor/TestPatient";
 
 
 import AddTreatment from "./components/treatment/AddTreatment";
@@ -272,7 +273,8 @@ const App = () => {
           <Route exact path={"/lcd/app/doctorViewPatientTreatment"} element={<DoctorViewPatientTreatment />} />
           <Route exact path={"/lcd/app/doctorAddPatientTreatment"} element={<DoctorAddPatientTreatment />} />
           <Route exact path={"/lcd/app/doctorPatientTreatments"} element={<DoctorPatientTreatments />} />
-
+          <Route exact path={"/lcd/app/testPatient"} element={<TestPatient />} />
+          
 
           <Route exact path={"/lcd/app/addTreatment"} element={<AddTreatment />} />
           <Route exact path={"/lcd/app/viewTreatment"} element={<ViewTreatment />} />

@@ -18,6 +18,8 @@ import Aside from './Aside'
 
 import './../../css/healthRecored.css'
 import './../../css/All.css'
+import './../../css/AllDoctor.css'
+
 import Utils from "../../services/Utils";
 
 const HealthRecored = () => {
@@ -27,11 +29,13 @@ const HealthRecored = () => {
 
 
     const [loading, setLoading] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
         if (!loading) {
 
 
+            setCurrentUser(JSON.parse(localStorage.getItem("user")));
 
             setLoading(true);
         }
@@ -48,7 +52,7 @@ const HealthRecored = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-            <div className="use-all-css">
+            <div className={currentUser.type?.value === 'DOCTOR' ?"use-all-doctor-css":"use-all-css"}>
                 <div class="outer-container">
                     <div class="inner-container">
                         <Aside />
