@@ -56,13 +56,15 @@ const ViewPatientTreatment = () => {
                         <Aside />
 
                         <div class="content">
-                            <div class="content-header">
+
+                        <div class="content-header">
+                                <h1>View Appointment</h1>
+                                <div class="content-subheader"> Mange your Appointment</div>
                                 <div class="header">
-                                    <h1>View Appointment</h1>
-                                    <div class="content-subheader"> Mange your Appointment</div>
 
                                 </div>
                             </div>
+
 
 
                             <div class="patient-info">

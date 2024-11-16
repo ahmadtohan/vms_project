@@ -8,6 +8,7 @@ const config = {
     userAPIs: {
 
         addpatient:'user/addpatient',
+        updatepatient:'user/updatepatient',
         listPage: 'user/page',
         list: 'user/list',
         getusers: 'user/getusers',

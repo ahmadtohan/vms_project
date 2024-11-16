@@ -6,6 +6,7 @@
 package com.top.lcd.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.top.lcd.annotations.NoPermissionApi;
 import com.top.lcd.configuration.Setup;
 import com.top.lcd.entity.Role;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -154,13 +156,24 @@ public class UserController extends BaseRepositoryController<User> {
         return super.createEntity(user);
     }
 
+
+    @NoPermissionApi
+    @RequestMapping(value = "/updatepatient", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> updatePatient(@RequestBody ObjectNode objectNode) throws IOException {
+        User updated = parse(objectNode);
+        User origin = getRepository().findOne(updated.getId());
+        update(origin, updated, objectNode);
+        return updateEntity(origin);
+    }
+
     @NoPermissionApi
     @RequestMapping(value = "/getusers", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getUsersByType(@RequestParam(required = true) User.Type type) {
         List<User> users = userRepository.findByTypeAndStatus(type, User.Status.ACTIVE);
 
-        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName"});
+        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName", "weight", "hight" ,"bloodType"});
         return new ResponseEntity<>(projection.projectIterable(users), HttpStatus.OK);
     }
 }

@@ -1,6 +1,4 @@
 .use-all-doctor-css {
-
-
     * {
         margin: 0;
         padding: 0;
@@ -110,8 +108,7 @@
     transform: translateX(-50%);
     width: 50px;
     height: 3px;
-    background: linear-gradient(135deg,#076585
-    , #fff);
+    background: linear-gradient(135deg,#076585, #fff);
     border-radius: 3px;
     transition: width 0.3s ease;
     }
@@ -241,10 +238,11 @@
     color:#076585;
     font-weight: 700;
     background: linear-gradient(
-    90deg,
-    rgba(255, 87, 34, 0.1) 0%,
-    rgba(255, 87, 34, 0) 100%
+    135deg,
+    rgba(7, 101, 133, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
     );
+    
     box-shadow: 
     inset 4px 4px 8px rgba(174, 174, 192, 0.1),
     inset -4px -4px 8px rgba(255, 255, 255, 0.8);
@@ -302,14 +300,14 @@
     .sidebar-inner nav a.active i {
     animation: pulse 3s infinite;
     }
-    
     /* Hover state enhancements */
     .sidebar-inner nav a:hover {
-    background: linear-gradient(
-    90deg,
-    rgba(255, 87, 34, 0.05) 0%,
-    rgba(255, 87, 34, 0) 100%
-    );
+        background: linear-gradient(
+            135deg,
+            rgba(7, 101, 133, 0.1) 0%,
+            rgba(255, 255, 255, 0) 100%
+            );
+            
     transform: translateX(4px);
     }
     

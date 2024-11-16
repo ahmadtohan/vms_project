@@ -14,7 +14,7 @@ import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
 import './../../css/AllDoctor.css'
-import './../../css/patientProfile.css'
+import './../../css/doctorProfile.css'
 const DoctorProfile = () => {
 
     const [currentUser, setCurrentUser] = useState({});
@@ -37,7 +37,7 @@ const DoctorProfile = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-            <div className="use-all-doctor-css use-profile-css">
+            <div className="use-all-doctor-css use-doctor-profile-css">
                 <div class="outer-container">
                     <div class="inner-container">
                         <Aside />
@@ -64,6 +64,15 @@ const DoctorProfile = () => {
                                         <strong>Email</strong>
                                         {currentUser.email}
                                     </div>
+                                    <div>
+                                        <strong>Department</strong>
+                                        LCD Department
+                                    </div>
+                                    <div>
+                                        <strong>Position</strong>
+                                        DOCTOR
+                                    </div>
+
                                     <div>
                                         <strong>Birth Date</strong>
                                         {currentUser.birthDate?.split(' ')[0]}
@@ -99,36 +108,66 @@ const DoctorProfile = () => {
 
 
 
-                            <div class="profile-section">
-                                <h3> History</h3>
-                                <table class="history-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date of Visit</th>
-                                            <th>Diagnosis</th>
-                                            <th>Severity</th>
-                                            <th>Total Visits</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>15 Mar, 2024</td>
-                                            <td>Regular Checkup</td>
-                                            <td>Low</td>
-                                            <td>1</td>
-                                            <td><span class="status-badge status-active">Active</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Feb, 2024</td>
-                                            <td>Liver Function Test</td>
-                                            <td>Medium</td>
-                                            <td>2</td>
-                                            <td><span class="status-badge status-completed">Completed</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                              
+                <div class="profile-section">
+                    <h3><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h3>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date of Appointment</th>
+                                <th>Reason</th>
+                                <th>Severity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>20 Nov, 2024</td>
+                                <td>Routine Checkup</td>
+                                <td>Low</td>
+                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>20 Nov, 2024</td>
+                                <td>Routine Checkup</td>
+                                <td>Low</td>
+                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                            </tr> 
+                            <tr>
+                                <td>20 Nov, 2024</td>
+                                <td>Routine Checkup</td>
+                                <td>Low</td>
+                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="profile-section">
+                    <h3><i class="fas fa-check-circle"></i> Completed Appointments</h3>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date of Visit</th>
+                                <th>Diagnosis</th>
+                                <th>Severity</th>
+                                <th>Total Visits</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01 Feb, 2024</td>
+                                <td>Liver Function Test</td>
+                                <td>Medium</td>
+                                <td>2</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                </div>
                         </div>
                     </div>
 
