@@ -155,6 +155,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column
     private Double hight;
 
+    @Column
+    private String lastTestResult;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -328,6 +330,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public Double getHight() {
         return hight;
+    }
+
+    public String getLastTestResult() {
+        return lastTestResult;
+    }
+
+    public void setLastTestResult(String lastTestResult) {
+        this.lastTestResult = lastTestResult;
     }
 
     public void setHight(Double hight) {

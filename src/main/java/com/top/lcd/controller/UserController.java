@@ -33,11 +33,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.io.InputStreamReader;
+import java.util.*;
 
 /**
  * @author Ahmad
@@ -96,8 +95,8 @@ public class UserController extends BaseRepositoryController<User> {
 
         GenericProjection projection = new GenericProjection(new String[]{
                 "id", "username", "fullName", "email", "type", "token",
-                "birthDate" ,"gender" , "status" ,"eid","creationDate",
-                "{name:'nationality', keys : {'id','value'}}","weight","hight","bloodType"});
+                "birthDate", "gender", "status", "eid", "creationDate",
+                "{name:'nationality', keys : {'id','value'}}", "weight", "hight", "bloodType"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
@@ -167,13 +166,60 @@ public class UserController extends BaseRepositoryController<User> {
         return updateEntity(origin);
     }
 
+
+    @NoPermissionApi
+    @RequestMapping(value = "/testpatient", method = RequestMethod.GET)
+    @ResponseBody
+
+    public ResponseEntity<?> testPatient(@RequestParam(required = true) Long patientId,
+                                         @RequestParam(required = true) String colec,
+                                         @RequestParam(required = true) String zbtb,
+                                         @RequestParam(required = true) String dnajb,
+                                         @RequestParam(required = true) String ctb,
+                                         @RequestParam(required = true) String msh) throws IOException {
+        String path = getParameter(Setup.PYTHON_SCRIPT_PATH).getValue();
+
+        Process p = Runtime.getRuntime().exec("py "+path+" "+colec+" "+zbtb+" "+dnajb+" "+ctb+" "+msh);
+
+        BufferedReader stdInput = new BufferedReader(new
+                InputStreamReader(p.getInputStream()));
+
+        BufferedReader stdError = new BufferedReader(new
+                InputStreamReader(p.getErrorStream()));
+
+        System.out.println("Here is the standard error of the command (if any):\n");
+        String er = "";
+        while ((er = stdError.readLine()) != null) {
+            System.out.println(er);
+        }
+        // read the output from the command
+        String res = "";
+        String s = "";
+        while ((s = stdInput.readLine()) != null) {
+            res += s;
+        }
+        String testRes = "";
+        if (!res.isEmpty()) {
+            testRes = res.split(":")[1];
+            User user = userRepository.findOne(patientId);
+            user.setLastTestResult(testRes);
+            userRepository.save(user);
+
+        }
+        String finalTestRes = testRes;
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("result", finalTestRes);
+        }});
+    }
+
+
     @NoPermissionApi
     @RequestMapping(value = "/getusers", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getUsersByType(@RequestParam(required = true) User.Type type) {
         List<User> users = userRepository.findByTypeAndStatus(type, User.Status.ACTIVE);
 
-        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName", "weight", "hight" ,"bloodType"});
+        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName", "weight", "hight", "bloodType"});
         return new ResponseEntity<>(projection.projectIterable(users), HttpStatus.OK);
     }
 }

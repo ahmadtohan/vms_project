@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.top.lcd.configuration.Setup;
 import com.top.lcd.entity.BaseEntity;
+import com.top.lcd.entity.Parameter;
 import com.top.lcd.helper.SelectQuery;
 import com.top.lcd.repository.BaseRepositoryParent;
+import com.top.lcd.repository.ParameterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
@@ -259,6 +262,10 @@ public abstract class BaseRepositoryController<T extends BaseEntity> {
                     .getGenericSuperclass())
                     .getActualTypeArguments()[0];
         }
+    }
+
+    protected Parameter getParameter(String code) {
+        return Setup.getApplicationContext().getBean(ParameterRepository.class).findByCode(code);
     }
 
     protected boolean checkPermission(String apiName) {

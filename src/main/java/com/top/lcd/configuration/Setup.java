@@ -73,6 +73,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
 
     public static final String NUMBER_OF_AVL_DATES = "number_of_avl_dates";
 
+    public static final String PYTHON_SCRIPT_PATH = "python_script_path";
+
     /////////////////////////////////Picklists/////////////////////////////////////////////////////
     public static final String NATIONALITIES_PICKLIST_CODE = "nationalities";
     public static final String AVL_TIMES_PICKLIST_CODE = "avl_times";
@@ -95,7 +97,8 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 new Parameter(UPLOAD_PATH_PARAMETER_CODE, "Upload Path", "/dir/"),
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
                 new Parameter(BASE_LCD_HOST_PARAMETER_CODE, "Base LCD Host", "http://localhost:8088/lcd/"),
-                new Parameter(NUMBER_OF_AVL_DATES, "Number of Available Dates", "6")
+                new Parameter(NUMBER_OF_AVL_DATES, "Number of Available Dates", "6"),
+                new Parameter(PYTHON_SCRIPT_PATH, "Python Script Path", "C:\\Users\\user\\Downloads\\vms_project\\src\\main\\resources\\py\\TestAllModels.py")
 
         };
 
