@@ -36,9 +36,11 @@ const TestPatient = () => {
 
     const [searchValue, setSearchValue] = useState("");
 
+  
     useEffect(() => {
 
         if (!loading) {
+            localStorage.setItem("patientId", "0");
             endPoint(
                 config.userAPIs.getusers + "?type=PATIENT",
                 "GET",
@@ -86,27 +88,37 @@ const TestPatient = () => {
             // Simulate a brief delay for processing
             setTimeout(function() {
                 // Get the values from the input fields
-                var DNAJB14 = document.getElementById("DNAJB14").value;
-                var ADCY5 = document.getElementById("ADCY5").value;
-                var AGPAT2 = document.getElementById("AGPAT2").value;
-                var AGTR1 = document.getElementById("AGTR1").value;
-                var AIFM1 = document.getElementById("AIFM1").value;
+                var colec = document.getElementById("colec").value;
+                var zbtb = document.getElementById("zbtb").value;
+                var dnajb = document.getElementById("dnajb").value;
+                var ctb = document.getElementById("ctb").value;
+                var msh = document.getElementById("msh").value;
         
                 // Check if all fields have values
-                if (DNAJB14 && ADCY5 && AGPAT2 && AGTR1 && AIFM1) {
-                    // Simulate the output result (for example SL, LGDN, HGDN, etc.)
-                    var resultOutcome = "SL"; // In your case, calculate based on the inputs
+                if (colec && zbtb && dnajb && ctb && msh) {
         
-                    // Display the result inside the result container
-                    var resultBox = document.getElementById("result");
-                    resultBox.innerHTML = `
-                        <h3>Result:</h3>
-                        <p>${resultOutcome}</p>
-                    `;
-        
-                    // Hide the loading spinner and show the result container with animation
-                    document.getElementById("loading").style.display = "none";
-                    resultBox.style.display = "block"; // Show result container
+
+                    endPoint(config.userAPIs.testpatient+"?patientId="+
+                        localStorage.getItem("patientId")+"&colec="+colec+"&zbtb="+zbtb+"&dnajb="+dnajb
+                        +"&ctb="+ctb+"&msh="+msh,
+                         "GET", null)
+                        .then((res) => {
+                        console.log(res);
+                        var resultBox = document.getElementById("result");
+                        resultBox.innerHTML = `
+                            <h3>Result:</h3>
+                            <p>`+res.result+`</p>
+                        `;
+            
+                        // Hide the loading spinner and show the result container with animation
+                        document.getElementById("loading").style.display = "none";
+                        resultBox.style.display = "block"; // Show result container
+
+                       
+
+                    });
+
+                   
                 } else {
                     alert("Please fill in all the fields.");
                     document.getElementById("loading").style.display = "none";  // Hide loading spinner
@@ -191,7 +203,11 @@ const TestPatient = () => {
 
                                 {filteredPatients?.map((obj, index) => (
 
-                                    <div key={index} class={"doctor-option " + (selectedPatient.id === obj.id ? "selected" : "")} onClick={(e) => { setSelectedPatient(obj) }}>
+                                    <div key={index} class={"doctor-option " + (selectedPatient.id === obj.id ? "selected" : "")} 
+                                    onClick={(e) => {
+                                        localStorage.setItem("patientId",obj.id);
+                                       
+                                    setSelectedPatient(obj) }}>
                                         <div class="doctor-avatar">MP</div>
                                         <div class="doctor-info">
                                             <div class="doctor-name">MR. {obj.fullName}</div>
@@ -213,26 +229,26 @@ const TestPatient = () => {
                                 <form id="geneForm">
                                     <div class="form-row">
                                         <div class="input-wrapper">
+                                            <span for="COLEC10">COLEC10</span>
+                                            <input class="input-field" type="text" id="colec" placeholder="Enter COLEC10 Value" required />
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <span for="ZBTB43">ZBTB43</span>
+                                            <input class="input-field" type="text" id="zbtb" placeholder="Enter ZBTB43 Value" required />
+                                        </div>
+                                        <div class="input-wrapper">
                                             <span for="DNAJB14">DNAJB14</span>
-                                            <input class="input-field" type="number" id="DNAJB14" placeholder="Enter DNAJB14 Value" required />
-                                        </div>
-                                        <div class="input-wrapper">
-                                            <span for="ADCY5">ADCY5</span>
-                                            <input class="input-field" type="number" id="ADCY5" placeholder="Enter ADCY5 Value" required />
-                                        </div>
-                                        <div class="input-wrapper">
-                                            <span for="AGPAT2">AGPAT2</span>
-                                            <input class="input-field" type="number" id="AGPAT2" placeholder="Enter AGPAT2 Value" required />
+                                            <input class="input-field" type="text" id="dnajb" placeholder="Enter DNAJB14 Value" required />
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="input-wrapper">
-                                            <span for="AGTR1">AGTR1</span>
-                                            <input class="input-field" type="number" id="AGTR1" placeholder="Enter AGTR1 Value" required />
+                                            <span for="CTBS">CTBS</span>
+                                            <input class="input-field" type="text" id="ctb" placeholder="Enter CTBS Value" required />
                                         </div>
                                         <div class="input-wrapper">
-                                            <span for="AIFM1">AIFM1</span>
-                                            <input class="input-field" type="number" id="AIFM1" placeholder="Enter AIFM1 Value" required />
+                                            <span for="MSH3">MSH3</span>
+                                            <input class="input-field" type="text" id="msh" placeholder="Enter MSH3 Value" required />
                                         </div>
                                     </div>
 

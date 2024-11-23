@@ -9,6 +9,8 @@ const config = {
 
         addpatient:'user/addpatient',
         updatepatient:'user/updatepatient',
+        testpatient:'user/testpatient',
+
         listPage: 'user/page',
         list: 'user/list',
         getusers: 'user/getusers',

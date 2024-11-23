@@ -179,7 +179,7 @@ public class UserController extends BaseRepositoryController<User> {
                                          @RequestParam(required = true) String msh) throws IOException {
         String path = getParameter(Setup.PYTHON_SCRIPT_PATH).getValue();
 
-        Process p = Runtime.getRuntime().exec("py "+path+" "+colec+" "+zbtb+" "+dnajb+" "+ctb+" "+msh);
+        Process p = Runtime.getRuntime().exec("C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python313\\python "+path+" "+colec+" "+zbtb+" "+dnajb+" "+ctb+" "+msh);
 
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));

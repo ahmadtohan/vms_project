@@ -98,7 +98,7 @@ public class Setup implements ApplicationRunner, ApplicationListener<ContextRefr
                 new Parameter(BASE_HOST_PARAMETER_CODE, "Base Host", "http://localhost:8088/"),
                 new Parameter(BASE_LCD_HOST_PARAMETER_CODE, "Base LCD Host", "http://localhost:8088/lcd/"),
                 new Parameter(NUMBER_OF_AVL_DATES, "Number of Available Dates", "6"),
-                new Parameter(PYTHON_SCRIPT_PATH, "Python Script Path", "C:\\Users\\user\\Downloads\\vms_project\\src\\main\\resources\\py\\TestAllModels.py")
+                new Parameter(PYTHON_SCRIPT_PATH, "Python Script Path", "C:\\Users\\ahmad\\OneDrive\\Desktop\\LIVER_CANCER\\src\\main\\resources\\py\\TestAllModels.py")
 
         };
 

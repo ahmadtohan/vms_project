@@ -12,7 +12,7 @@ import sys
 warnings.filterwarnings("ignore")
 
 # Load the dataset
-randomized_dataset = pd.read_csv("C:\\Users\\user\\Downloads\\vms_project\\src\\main\\resources\\py\\h.csv")
+randomized_dataset = pd.read_csv("C:\\Users\\ahmad\\OneDrive\\Desktop\\LIVER_CANCER\\src\\main\\resources\\py\\h.csv")
 data = randomized_dataset.sample(frac=1, random_state=7).reset_index(drop=True)
 
 # Target variable: Map "Symbol" column to numbers
