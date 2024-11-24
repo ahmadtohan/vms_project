@@ -47,7 +47,7 @@ const DoctorProfile = () => {
                                 <h1>View Profile</h1>
                                 <div class="content-subheader"> Mange your profile</div>
                                 <div class="header">
-                                    <button><i class="fas fa-edit"></i> Edit Profile</button>
+                                    
 
                                 </div>
                             </div>

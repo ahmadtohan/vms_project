@@ -90,7 +90,7 @@ const Aside = () => {
 
                         <Link to="/lcd/app/dashboard" class={route.endsWith("/dashboard") ? "active" : ""}><i class="fas fa-chart-line"></i> Dashboard</Link>
                         {currentUser.type?.value !== 'DOCTOR' && <Link to="/lcd/app/payment" class={route.endsWith("/payment") ? "active" : ""}><i class="fas fa-credit-card"></i> Payment</Link>}
-                        <Link to="/lcd/app/healthRecored" class={route.endsWith("/healthRecored") ? "active" : ""}><i class="fas fa-file-medical"></i> Health Records</Link>
+                        {currentUser.type?.value !== 'DOCTOR' &&<Link to="/lcd/app/healthRecored" class={route.endsWith("/healthRecored") ? "active" : ""}><i class="fas fa-file-medical"></i> Health Records</Link>}
                         <Link to="#" ><i class="fas fa-headset" ></i> Support</Link>
                         <a href="#" onClick={(e) => { logOut(); }}><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </nav>

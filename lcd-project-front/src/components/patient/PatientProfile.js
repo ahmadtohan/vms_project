@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Aside from './../general/Aside'
 import './../../css/All.css'
 import './../../css/patientProfile.css'
+
 const PatientProfile = () => {
 
     const [currentUser, setCurrentUser] = useState({});
@@ -47,7 +48,7 @@ const PatientProfile = () => {
                                 <h1>View Profile</h1>
                                 <div class="content-subheader"> Mange your profile</div>
                                 <div class="header">
-                                    <button><i class="fas fa-edit"></i> Edit Profile</button>
+                                    
 
                                 </div>
                             </div>
