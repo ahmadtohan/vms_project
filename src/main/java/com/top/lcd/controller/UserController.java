@@ -96,7 +96,7 @@ public class UserController extends BaseRepositoryController<User> {
         GenericProjection projection = new GenericProjection(new String[]{
                 "id", "username", "fullName", "email", "type", "token",
                 "birthDate", "gender", "status", "eid", "creationDate",
-                "{name:'nationality', keys : {'id','value'}}", "weight", "hight", "bloodType"});
+                "{name:'nationality', keys : {'id','value'}}", "weight", "hight", "bloodType", "lastTestResult"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 

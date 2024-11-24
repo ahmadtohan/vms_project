@@ -102,6 +102,10 @@ const PatientProfile = () => {
                                         {currentUser.bloodType?.label}
                                     </div>
                                     <div>
+                                        <strong>Last Test Result</strong>
+                                        {currentUser.lastTestResult}
+                                    </div>
+                                    <div>
                                         <strong>Registered Date</strong>
                                         {currentUser.creationDate}
                                     </div>
