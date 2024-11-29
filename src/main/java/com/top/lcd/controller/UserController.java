@@ -96,7 +96,9 @@ public class UserController extends BaseRepositoryController<User> {
         GenericProjection projection = new GenericProjection(new String[]{
                 "id", "username", "fullName", "email", "type", "token",
                 "birthDate", "gender", "status", "eid", "creationDate",
-                "{name:'nationality', keys : {'id','value'}}", "weight", "hight", "bloodType", "lastTestResult"});
+                "{name:'nationality', keys : {'id','value'}}", "weight", "hight", "bloodType",
+                "lastTestResult", "bloodPressure", "heartRate", "glucoseLevel", "cholesterol",
+                "diagnosisDate", "currentStatus", "stage"});
         return new ResponseEntity<>(projection.project(loggedUser), HttpStatus.OK);
     }
 
@@ -179,7 +181,9 @@ public class UserController extends BaseRepositoryController<User> {
                                          @RequestParam(required = true) String msh) throws IOException {
         String path = getParameter(Setup.PYTHON_SCRIPT_PATH).getValue();
 
-        Process p = Runtime.getRuntime().exec("C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python313\\python "+path+" "+colec+" "+zbtb+" "+dnajb+" "+ctb+" "+msh);
+        String cmd="C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python313\\python " + path + " " + colec + " " + zbtb + " " + dnajb + " " + ctb + " " + msh;
+        System.out.println("cmd: "+cmd);
+        Process p = Runtime.getRuntime().exec(cmd);
 
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));

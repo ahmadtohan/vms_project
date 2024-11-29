@@ -73,19 +73,19 @@ const HealthRecored = () => {
                                     <div class="info-grid">
                                         <div class="info-item">
                                             <strong>Liver Condition</strong>
-                                            <span>Early Stage Hepatocellular Carcinoma</span>
+                                            <span>{currentUser.lastTestResult}</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Diagnosis Date</strong>
-                                            <span>10 January 2024</span>
+                                            <span>{currentUser.diagnosisDate}</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Current Status</strong>
-                                            <span class="status-tag status-warning">Under Treatment</span>
+                                            <span class="status-tag status-warning">{currentUser.currentStatus}</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Stage</strong>
-                                            <span>Stage II</span>
+                                            <span> {"Stage "+currentUser.stage}</span>
                                         </div>
                                     </div>
                                 </div>

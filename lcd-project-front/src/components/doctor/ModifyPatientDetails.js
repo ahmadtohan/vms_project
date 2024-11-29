@@ -141,19 +141,19 @@ const ModifyPatientDetails = () => {
                                     <h3>Patient Current Vitals</h3>
                                     <div class="input-group">
                                         <label>Blood Pressure:</label>
-                                        <input type="text" name="bloodPressure" placeholder="Enter Blood Pressure" />
+                                        <input type="text" id="bloodPressure" name="bloodPressure" placeholder="Enter Blood Pressure" />
                                     </div>
                                     <div class="input-group">
                                         <label>Heart Rate:</label>
-                                        <input type="text" name="heartRate" placeholder="Enter Heart Rate" />
+                                        <input type="text" id="heartRate" name="heartRate" placeholder="Enter Heart Rate" />
                                     </div>
                                     <div class="input-group">
                                         <label>Glucose Level:</label>
-                                        <input type="text" name="glucose" placeholder="Enter Glucose Level" />
+                                        <input type="text" id="glucose" name="glucose" placeholder="Enter Glucose Level" />
                                     </div>
                                     <div class="input-group">
                                         <label>Cholesterol:</label>
-                                        <input type="text" name="cholesterol" placeholder="Enter Cholesterol Level" />
+                                        <input type="text" id="cholesterol" name="cholesterol" placeholder="Enter Cholesterol Level" />
                                     </div>
                                 </div>
 
@@ -161,23 +161,12 @@ const ModifyPatientDetails = () => {
                                 <div class="patient-info-input">
                                     <h2>Health Status</h2>
                                     <div class="input-group">
-                                        <label>Liver Condition:</label>
-                                        <select name="liverCondition" >
-                                            <option value="">Select Liver Condition</option>
-                                            <option value="sl">SL</option>
-                                            <option value="hgdn">HGDN</option>
-                                            <option value="phcc">PHCC</option>
-                                            <option value="lgdn">LGDN</option>
-                                            <option value="ehcc">EHCC</option>
-                                        </select>
-                                    </div>
-                                    <div class="input-group">
                                         <label>Diagnosis Date:</label>
-                                        <input type="date" name="diagnosisDate" placeholder="Enter Diagnosis Date" />
+                                        <input type="date" id="diagnosisDate" name="diagnosisDate" placeholder="Enter Diagnosis Date" />
                                     </div>
                                     <div class="input-group">
                                         <label>Current Status:</label>
-                                        <select name="currentStatus" >
+                                        <select name="currentStatus" id="currentStatus" >
                                             <option value="">Select Current Status</option>
                                             <option value="stable">Stable</option>
                                             <option value="critical">Critical</option>
@@ -188,7 +177,7 @@ const ModifyPatientDetails = () => {
                                     </div>
                                     <div class="input-group">
                                         <label>Stage:</label>
-                                        <select name="stage" >
+                                        <select name="stage"  id="stage">
                                             <option value="">Select Stage</option>
                                             <option value="I">Stage I</option>
                                             <option value="II">Stage II</option>
@@ -208,6 +197,15 @@ const ModifyPatientDetails = () => {
                                             bloodType: document.getElementById("blood-type-id").value ,
                                             weight: document.getElementById("weight-id").value ,
                                             hight: document.getElementById("hight-id").value ,
+
+                                            bloodPressure: document.getElementById("bloodPressure").value ,
+                                            heartRate: document.getElementById("heartRate").value ,
+                                            glucoseLevel: document.getElementById("glucose").value ,
+                                            cholesterol: document.getElementById("cholesterol").value ,
+
+                                            diagnosisDate: document.getElementById("diagnosisDate").value ,
+                                            currentStatus: document.getElementById("currentStatus").value ,
+                                            stage: document.getElementById("stage").value ,
 
 
                                         }

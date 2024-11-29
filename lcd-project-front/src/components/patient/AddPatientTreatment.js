@@ -123,7 +123,7 @@ const AddPatientTreatment = () => {
 
                                             {doctors?.map((obj, index) => (
 
-                                                <div key={index} class={"doctor-option " + (selectedDoctor.id === obj.id ? "selected" : "")} onClick={(e) => { setSelectedDoctor(obj) }}>
+                                                <div key={index} class={"doctor-option " + (selectedDoctor.id === obj.id ? "selected" : "")} onClick={(e) => { setSelectedDoctor({id:obj.id}) }}>
                                                     <div class="doctor-avatar">JD</div>
                                                     <div class="doctor-info">
                                                         <div class="doctor-name">Dr. {obj.fullName}</div>

@@ -102,10 +102,7 @@ const PatientProfile = () => {
                                         <strong>Blood Type</strong>
                                         {currentUser.bloodType?.label}
                                     </div>
-                                    <div>
-                                        <strong>Last Test Result</strong>
-                                        {currentUser.lastTestResult}
-                                    </div>
+                                   
                                     <div>
                                         <strong>Registered Date</strong>
                                         {currentUser.creationDate}
@@ -118,19 +115,19 @@ const PatientProfile = () => {
                                 <div class="vitals-container">
                                     <div class="vital">
                                         Blood Pressure
-                                        <strong>120/89 mm/hg</strong>
+                                        <strong>{currentUser.bloodPressure}</strong>
                                     </div>
                                     <div class="vital">
                                         Heart Rate
-                                        <strong>120 BPM</strong>
+                                        <strong>{currentUser.heartRate}</strong>
                                     </div>
                                     <div class="vital">
                                         Glucose
-                                        <strong>97 mg/dl</strong>
+                                        <strong>{currentUser.glucoseLevel}</strong>
                                     </div>
                                     <div class="vital">
                                         Cholesterol
-                                        <strong>85 mg/dl</strong>
+                                        <strong>{currentUser.cholesterol}</strong>
                                     </div>
                                 </div>
                             </div>

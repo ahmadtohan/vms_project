@@ -156,6 +156,28 @@ public class User extends BaseEntity implements UserDetails {
     private Double hight;
 
     @Column
+    private String bloodPressure;
+
+    @Column
+    private String heartRate;
+
+    @Column
+    private String glucoseLevel;
+
+    @Column
+    private String cholesterol;
+
+
+    @Column
+    private String diagnosisDate;
+
+    @Column
+    private String currentStatus;
+
+    @Column
+    private String stage;
+
+    @Column
     private String lastTestResult;
 
     @Column
@@ -350,6 +372,63 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
+    }
+
+    public String getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(String bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    public String getHeartRate() {
+        return heartRate;
+    }
+
+    public void setHeartRate(String heartRate) {
+        this.heartRate = heartRate;
+    }
+
+    public String getGlucoseLevel() {
+        return glucoseLevel;
+    }
+
+    public void setGlucoseLevel(String glucoseLevel) {
+        this.glucoseLevel = glucoseLevel;
+    }
+
+    public String getCholesterol() {
+        return cholesterol;
+    }
+
+    public void setCholesterol(String cholesterol) {
+        this.cholesterol = cholesterol;
+    }
+
+
+    public String getDiagnosisDate() {
+        return diagnosisDate;
+    }
+
+    public void setDiagnosisDate(String diagnosisDate) {
+        this.diagnosisDate = diagnosisDate;
+    }
+
+    public String getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
     }
 
     @Override
