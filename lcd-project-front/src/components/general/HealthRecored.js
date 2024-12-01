@@ -127,6 +127,9 @@ const HealthRecored = () => {
 
 
                                         </div>
+                                        </div>
+
+                                        <div class="test-results">
                                         <div class="test-item">
                                             <span class="test-name">Low risk of progressing to HCC	</span>
                                             <span class="test-value"></span>
@@ -135,14 +138,17 @@ const HealthRecored = () => {
 
 
                                         </div>
-                                        <br/>
+                                        
                                         <div class="test-item">
                                             <span class="test-name"> advanced-stage HCC</span>
                                             <span class="test-value"></span>
                                             <span class="test-date">blood tests are essential to track the progression of the disease</span>
                                             <span class="status-tag status-higher">PHCC</span>
                                      </div>
+                                     </div>
 
+
+                                     <div class="test-results">
                                      <div class="test-item">
                                             <span class="test-name">High-grade dysplastic nodules carry a higher risk of turning into cancer</span>
                                             <span class="test-value"></span>
@@ -154,8 +160,9 @@ const HealthRecored = () => {
 
                                         </div>
 
-
-                                    </div>
+                                        </div>
+                                        
+                                  
                                 </div>
 
 

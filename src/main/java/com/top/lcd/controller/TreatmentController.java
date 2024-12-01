@@ -91,6 +91,21 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
         treatment.setPatient(Setup.getCurrentUserInfo().getUser());
         treatment = treatmentRepository.save(treatment);
 
+        sendEmail(treatment);
+        return new ResponseEntity<>(treatment, HttpStatus.OK);
+    }
+
+    @NoPermissionApi
+    @RequestMapping(value = "/adddoctorpatienttreatment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> addDoctorPatientTreatment(@RequestBody Treatment treatment) {
+        treatment.setStatus(Treatment.Status.PENDING);
+        treatment.setDoctor(Setup.getCurrentUserInfo().getUser());
+        sendEmail(treatment);
+        return super.createEntity(treatment);
+    }
+
+    private void sendEmail(Treatment treatment){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         String body = "<!DOCTYPE html>\n" +
@@ -182,7 +197,7 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
                 "\n" +
                 "          <!-- Appointment Details -->\n" +
                 "          <div class=\"appointment-details\">\n" +
-                "            <p><span class=\"label\">Name:</span> " + treatment.getPatient().getFullName() + "</p>\n" +
+                "            <p><span class=\"label\">Name:</span> " + Setup.getApplicationContext().getBean(UserRepository.class).findOne(treatment.getPatient().getId()).getFullName() + "</p>\n" +
                 "            <p><span class=\"label\">Appointment Date:" + df.format(treatment.getAppointmentDate()) + "</p>\n" +
                 "            <p><span class=\"label\">Doctor:</span> " + Setup.getApplicationContext().getBean(UserRepository.class).findOne(treatment.getDoctor().getId()).getFullName() + "</p>\n" +
                 "            <p><span class=\"label\">Treatment Type:</span> " + treatment.getType().getLabel() + "</p>\n" +
@@ -195,20 +210,9 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
                 "  </div>\n" +
                 "</body>\n" +
                 "</html>\n";
-        emailService.sendMail(Setup.getCurrentUserInfo().getUser().getEmail(), "Appointment Request", body
+        emailService.sendMail(Setup.getApplicationContext().getBean(UserRepository.class).findOne(treatment.getPatient().getId()).getEmail(), "Appointment Request", body
         );
-        return new ResponseEntity<>(treatment, HttpStatus.OK);
     }
-
-    @NoPermissionApi
-    @RequestMapping(value = "/adddoctorpatienttreatment", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> addDoctorPatientTreatment(@RequestBody Treatment treatment) {
-        treatment.setStatus(Treatment.Status.PENDING);
-        treatment.setDoctor(Setup.getCurrentUserInfo().getUser());
-        return super.createEntity(treatment);
-    }
-
     @NoPermissionApi
     @RequestMapping(value = "/changetreatmentstatus/{id}", method = RequestMethod.POST)
     @ResponseBody

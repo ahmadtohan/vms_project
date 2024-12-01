@@ -156,7 +156,7 @@ const DoctorProfile = () => {
                                         <tr>
                                             <th>Date of Appointment</th>
                                             <th>Reason</th>
-                                            <th>Severity</th>
+                                          
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -165,7 +165,7 @@ const DoctorProfile = () => {
                                             <tr key={index}>
                                                 <td>{obj.appointmentDate?.split(' ')[0]}</td>
                                                 <td>{obj.type?.label}</td>
-                                                <td>Low</td>
+                                              
                                                 <td><span class="status-badge status-upcoming">Upcoming</span></td>
                                             </tr>
                                         ))}
@@ -181,7 +181,7 @@ const DoctorProfile = () => {
                                         <tr>
                                             <th>Date of Visit</th>
                                             <th>Diagnosis</th>
-                                            <th>Severity</th>
+                                           
                                             <th>Total Visits</th>
                                             <th>Status</th>
                                         </tr>
@@ -192,7 +192,7 @@ const DoctorProfile = () => {
                                             <tr key={index}>
                                                 <td>{obj.appointmentDate?.split(' ')[0]}</td>
                                                 <td>{obj.type?.label}</td>
-                                                <td>Low</td>
+                                                
                                                 <td>{index+1}</td>
                                                 <td><span class="status-badge status-upcoming">Completed</span></td>
                                             </tr>

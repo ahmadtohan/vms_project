@@ -153,13 +153,13 @@ const PatientProfile = () => {
 
 
                             <div class="profile-section">
-                                <h3>Patient History</h3>
+                                <h3>Treatment History</h3>
                                 <table class="history-table">
                                     <thead>
                                         <tr>
                                             <th>Date of Visit</th>
                                             <th>Diagnosis</th>
-                                            <th>Severity</th>
+                                          
                                             <th>Total Visits</th>
                                             <th>Status</th>
                                         </tr>
@@ -170,7 +170,7 @@ const PatientProfile = () => {
                                             <tr key={index}>
                                                 <td>{obj.appointmentDate?.split(' ')[0]}</td>
                                                 <td>{obj.type?.label}</td>
-                                                <td>Low</td>
+                                               
                                                 <td>{index+1}</td>
                                                 <td><span class="status-badge status-active">{obj.status?.label}</span></td>
                                             </tr>
