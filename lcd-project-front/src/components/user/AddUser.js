@@ -22,6 +22,10 @@ const AddUser = () => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [roles, setRoles] = useState([]);
   const [filteredRoles, setFilteredRoles] = useState(null);
+  const [nationalities, setNationalities] = useState([]);
+
+  const [filteredNats, setFilteredNats] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +39,18 @@ const AddUser = () => {
       setRoles(res);
     }
     );
+
+
+    endPoint(
+      config.picklistAPIs.getbycode + "?code=nationalities",
+      "GET",
+      null
+  ).then((res) => {
+      console.log(res.pickListItems);
+      setNationalities(res.pickListItems);
+  }
+  );
+
   }, []);
 
   const search = (event) => {
@@ -95,6 +111,11 @@ const AddUser = () => {
       if (!data.gender) {
         errors.gender = "gender is required.";
       }
+
+      if (!data.nationality) {
+        errors.nationality = "nationality is required.";
+      }
+
       console.log("isAdmin", isAdmin);
       if (!isAdmin && (!data.roles || !data.roles.length)) {
         errors.roles = "roles are required.";
@@ -115,6 +136,7 @@ const AddUser = () => {
 
       }
       delete obj['roles'];
+      console.log("--------",obj);
 
       endPoint(config.userAPIs.create, "POST", obj).then((res) => {
         console.log(res);
@@ -133,7 +155,23 @@ const AddUser = () => {
 
 
 
+  const searchNat = (event) => {
+    // Timeout to emulate a network connection
+    setTimeout(() => {
+      let _filtered;
 
+      if (!event.query.trim().length) {
+        filteredNats = [...nationalities];
+      }
+      else {
+        _filtered = nationalities.filter((obj) => {
+          return obj.value.toLowerCase().includes(event.query.toLowerCase());
+        });
+      }
+
+      setFilteredNats(_filtered);
+    }, 50);
+  }
 
   const types = [
     { value: "ADMIN", label: "Admin" },
@@ -187,6 +225,11 @@ const AddUser = () => {
 
             }}
             options={types} optionLabel="label" placeholder="Select Type" formik={formik} />
+
+<Input name="nationality" type="autoComplete" field="value" value={formik.values["nationality"]}
+              title="Nationality" multiple="false" suggestions={filteredNats} completeMethod={searchNat}
+              onChange={(e) => { formik.setFieldValue("nationality", e.value); }} formik={formik} />
+
 
 
           {!isAdmin &&

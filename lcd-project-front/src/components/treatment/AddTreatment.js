@@ -123,6 +123,8 @@ const AddTreatment = () => {
       const obj = Object.assign({}, data);
       setMessage("");
       obj.appointmentDate = Utils.formatDate(obj.appointmentDate);
+      obj.doctor={id:obj.doctor.id};
+      obj.patient={id:obj.patient.id};
       endPoint(config.treatmentAPIs.create, "POST", obj).then((res) => {
         console.log(res);
         toast.current.show({

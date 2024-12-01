@@ -12,6 +12,7 @@ import com.top.lcd.helper.EmailService;
 import com.top.lcd.helper.SelectQuery;
 import com.top.lcd.repository.BaseRepository;
 import com.top.lcd.repository.TreatmentRepository;
+import com.top.lcd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,12 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     @NoPermissionApi
     @RequestMapping(value = "/patienttreatmentlistPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> getLoggedPatientUserTreatments(Pageable pageable) {
+    public ResponseEntity<?> getLoggedPatientUserTreatments(Pageable pageable, @RequestParam(required = false) Treatment.Status status) {
         SelectQuery<Object> query = new SelectQuery(Treatment.class);
         query.filterBy("patient.id", "=", Setup.getCurrentUserInfo().getUser().getId());
+        if (status != null) {
+            query.filterBy("status", "=", status);
+        }
         return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
     }
 
@@ -52,9 +56,12 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     @NoPermissionApi
     @RequestMapping(value = "/doctortreatmentlistPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> getLoggedDoctorUserTreatments(Pageable pageable) {
+    public ResponseEntity<?> getLoggedDoctorUserTreatments(Pageable pageable, @RequestParam(required = false) Treatment.Status status) {
         SelectQuery<Object> query = new SelectQuery(Treatment.class);
         query.filterBy("doctor.id", "=", Setup.getCurrentUserInfo().getUser().getId());
+        if (status != null) {
+            query.filterBy("status", "=", status);
+        }
         return new ResponseEntity<>(query.execute(pageable), HttpStatus.OK);
     }
 
@@ -86,7 +93,7 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String body="<!DOCTYPE html>\n" +
+        String body = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "  <meta charset=\"UTF-8\">\n" +
@@ -175,13 +182,13 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
                 "\n" +
                 "          <!-- Appointment Details -->\n" +
                 "          <div class=\"appointment-details\">\n" +
-                "            <p><span class=\"label\">Name:</span> "+treatment.getPatient().getFullName()+"</p>\n" +
-                "            <p><span class=\"label\">Appointment Date:"+df.format(treatment.getAppointmentDate())+"</p>\n" +
-                "            <p><span class=\"label\">Doctor:</span> "+treatment.getDoctor().getFullName()+"</p>\n" +
-                "            <p><span class=\"label\">Treatment Type:</span> "+treatment.getType().getLabel()+"</p>\n" +
+                "            <p><span class=\"label\">Name:</span> " + treatment.getPatient().getFullName() + "</p>\n" +
+                "            <p><span class=\"label\">Appointment Date:" + df.format(treatment.getAppointmentDate()) + "</p>\n" +
+                "            <p><span class=\"label\">Doctor:</span> " + Setup.getApplicationContext().getBean(UserRepository.class).findOne(treatment.getDoctor().getId()).getFullName() + "</p>\n" +
+                "            <p><span class=\"label\">Treatment Type:</span> " + treatment.getType().getLabel() + "</p>\n" +
                 "          </div>\n" +
                 "         <p>Click the button below to view more details:</p>\n" +
-                "          <a href=\"http://localhost:3000/lcd/app/viewPatientTreatment?id="+treatment.getId()+"\" class=\"appointment-button\">View</a>"+
+                "          <a href=\"http://localhost:3000/lcd/app/viewPatientTreatment?id=" + treatment.getId() + "\" class=\"appointment-button\">View</a>" +
                 "        </td>\n" +
                 "      </tr>\n" +
                 "    </table>\n" +
@@ -205,7 +212,7 @@ public class TreatmentController extends BaseRepositoryController<Treatment> {
     @NoPermissionApi
     @RequestMapping(value = "/changetreatmentstatus/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> changeTreatmentStatus(@PathVariable("id") Long id,@RequestParam(required = true) Treatment.Status status) {
+    public ResponseEntity<?> changeTreatmentStatus(@PathVariable("id") Long id, @RequestParam(required = true) Treatment.Status status) {
         Treatment treatment = treatmentRepository.findOne(id);
         treatment.setStatus(status);
         treatmentRepository.save(treatment);

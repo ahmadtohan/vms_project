@@ -223,7 +223,7 @@ public class UserController extends BaseRepositoryController<User> {
     public ResponseEntity<?> getUsersByType(@RequestParam(required = true) User.Type type) {
         List<User> users = userRepository.findByTypeAndStatus(type, User.Status.ACTIVE);
 
-        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName", "weight", "hight", "bloodType"});
+        GenericProjection projection = new GenericProjection(new String[]{"id", "fullName", "lastTestResult", "weight", "hight", "bloodType"});
         return new ResponseEntity<>(projection.projectIterable(users), HttpStatus.OK);
     }
 }

@@ -28,7 +28,8 @@ const PatientTreatments = () => {
             list(
                 0,
                 100,
-                "DESC",
+                "id,DESC",
+                
                 []
             );
             setLoading(true);
@@ -45,8 +46,7 @@ const PatientTreatments = () => {
             size +
             "&sort=" +
             sort,
-            "POST",
-            cond
+            "POST"
         ).then((res) => {
             console.log(res);
 

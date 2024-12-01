@@ -30,6 +30,7 @@ const ModifyPatientDetails = () => {
 
     const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [nationalities, setNationalities] = useState([]);
 
 
 
@@ -43,6 +44,17 @@ const ModifyPatientDetails = () => {
             ).then((res) => {
                 console.log(res);
                 setPatients(res);
+            }
+            );
+
+
+            endPoint(
+                config.picklistAPIs.getbycode + "?code=nationalities",
+                "GET",
+                null
+            ).then((res) => {
+                console.log(res.pickListItems);
+                setNationalities(res.pickListItems);
             }
             );
 
@@ -112,6 +124,18 @@ const ModifyPatientDetails = () => {
                                     <h2>Patient Information</h2>
 
                                     <div class="input-group">
+                                        <label>Nationality:</label>
+                                        <select name="nationality" id="nationality" >
+                                            <option value="">Select Nationality</option>
+                                            {nationalities?.map((obj, index) => (
+
+                                                <option key={index} value={obj.id}>{obj.value}</option>
+
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group">
                                         <label>Weight:</label>
                                         <input type="number" id="weight-id" name="weight" placeholder="Enter Weight" />
                                     </div>
@@ -177,7 +201,7 @@ const ModifyPatientDetails = () => {
                                     </div>
                                     <div class="input-group">
                                         <label>Stage:</label>
-                                        <select name="stage"  id="stage">
+                                        <select name="stage" id="stage">
                                             <option value="">Select Stage</option>
                                             <option value="I">Stage I</option>
                                             <option value="II">Stage II</option>
@@ -194,22 +218,30 @@ const ModifyPatientDetails = () => {
                                     setTimeout(() => {
                                         const obj = {
                                             id: selectedPatient.id,
-                                            bloodType: document.getElementById("blood-type-id").value ,
-                                            weight: document.getElementById("weight-id").value ,
-                                            hight: document.getElementById("hight-id").value ,
+                                            nationality: document.getElementById("nationality").value,
 
-                                            bloodPressure: document.getElementById("bloodPressure").value ,
-                                            heartRate: document.getElementById("heartRate").value ,
-                                            glucoseLevel: document.getElementById("glucose").value ,
-                                            cholesterol: document.getElementById("cholesterol").value ,
+                                            bloodType: document.getElementById("blood-type-id").value,
+                                            weight: document.getElementById("weight-id").value,
+                                            hight: document.getElementById("hight-id").value,
 
-                                            diagnosisDate: document.getElementById("diagnosisDate").value ,
-                                            currentStatus: document.getElementById("currentStatus").value ,
-                                            stage: document.getElementById("stage").value ,
+                                            bloodPressure: document.getElementById("bloodPressure").value,
+                                            heartRate: document.getElementById("heartRate").value,
+                                            glucoseLevel: document.getElementById("glucose").value,
+                                            cholesterol: document.getElementById("cholesterol").value,
+
+                                            diagnosisDate: document.getElementById("diagnosisDate").value,
+                                            currentStatus: document.getElementById("currentStatus").value,
+                                            stage: document.getElementById("stage").value,
 
 
                                         }
-                                        obj.bloodType= obj.bloodType==""?"A_POS":obj.bloodType;
+                                        obj.bloodType = obj.bloodType == "" ? "A_POS" : obj.bloodType;
+                                        if (obj.nationality == "") {
+                                            delete obj.nationality;
+                                        } else {
+                                            obj.nationality =  { id: obj.nationality };
+
+                                        }
                                         console.log("data ", obj);
 
 

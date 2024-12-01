@@ -103,7 +103,7 @@ line-height: 1.4;
 }
    /* Modernized Test Results */
 .test-results {
-display: grid;
+display: table-cell;
 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 gap: 20px;
 }

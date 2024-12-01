@@ -19,12 +19,52 @@ const DoctorProfile = () => {
 
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
+    const [pendingTreatments, setPendingTreatments] = useState([]);
+
+    const [doneTreatments, setDoneTreatments] = useState([]);
+
 
     useEffect(() => {
         if (!loading) {
             setCurrentUser(JSON.parse(localStorage.getItem("user")));
 
             console.log(currentUser);
+
+
+            endPoint(
+                config.treatmentAPIs.doctortreatmentlistPage +
+                "?page=0" +
+                "&size=" +
+                3 + "&sort=id,DESC&status=PENDING",
+                "POST",
+                ""
+            ).then((res) => {
+                console.log(res);
+
+                setPendingTreatments(res.content);
+                console.log(
+                    "=======res====",
+                    res
+                );
+            });
+
+
+            endPoint(
+                config.treatmentAPIs.doctortreatmentlistPage +
+                "?page=0" +
+                "&size=" +
+                3 + "&sort=id,DESC&status=DONE",
+                "POST",
+                ""
+            ).then((res) => {
+                console.log(res);
+
+                setDoneTreatments(res.content);
+                console.log(
+                    "=======res====",
+                    res
+                );
+            });
 
             setLoading(true);
         }
@@ -47,7 +87,7 @@ const DoctorProfile = () => {
                                 <h1>View Profile</h1>
                                 <div class="content-subheader"> Mange your profile</div>
                                 <div class="header">
-                                    
+
 
                                 </div>
                             </div>
@@ -108,66 +148,61 @@ const DoctorProfile = () => {
 
 
 
-                              
-                <div class="profile-section">
-                    <h3><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h3>
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date of Appointment</th>
-                                <th>Reason</th>
-                                <th>Severity</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>20 Nov, 2024</td>
-                                <td>Routine Checkup</td>
-                                <td>Low</td>
-                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
-                            </tr>
-                            <tr>
-                                <td>20 Nov, 2024</td>
-                                <td>Routine Checkup</td>
-                                <td>Low</td>
-                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
-                            </tr> 
-                            <tr>
-                                <td>20 Nov, 2024</td>
-                                <td>Routine Checkup</td>
-                                <td>Low</td>
-                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
-                            </tr>
-                           
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="profile-section">
-                    <h3><i class="fas fa-check-circle"></i> Completed Appointments</h3>
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date of Visit</th>
-                                <th>Diagnosis</th>
-                                <th>Severity</th>
-                                <th>Total Visits</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>01 Feb, 2024</td>
-                                <td>Liver Function Test</td>
-                                <td>Medium</td>
-                                <td>2</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
-                            </tr>
-                          
-                        </tbody>
-                    </table>
-                </div>
+
+                            <div class="profile-section">
+                                <h3><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h3>
+                                <table class="history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date of Appointment</th>
+                                            <th>Reason</th>
+                                            <th>Severity</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {pendingTreatments?.map((obj, index) => (
+                                            <tr key={index}>
+                                                <td>{obj.appointmentDate?.split(' ')[0]}</td>
+                                                <td>{obj.type?.label}</td>
+                                                <td>Low</td>
+                                                <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                                            </tr>
+                                        ))}
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="profile-section">
+                                <h3><i class="fas fa-check-circle"></i> Completed Appointments</h3>
+                                <table class="history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date of Visit</th>
+                                            <th>Diagnosis</th>
+                                            <th>Severity</th>
+                                            <th>Total Visits</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {doneTreatments?.map((obj, index) => (
+                                            <tr key={index}>
+                                                <td>{obj.appointmentDate?.split(' ')[0]}</td>
+                                                <td>{obj.type?.label}</td>
+                                                <td>Low</td>
+                                                <td>{index+1}</td>
+                                                <td><span class="status-badge status-upcoming">Completed</span></td>
+                                            </tr>
+                                        ))}
+
+                                       
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 

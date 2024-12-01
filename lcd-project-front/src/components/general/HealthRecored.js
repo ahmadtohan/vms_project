@@ -30,12 +30,31 @@ const HealthRecored = () => {
 
     const [loading, setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+    const [treatment, setTreatment] = useState({});
+
 
     useEffect(() => {
         if (!loading) {
 
 
             setCurrentUser(JSON.parse(localStorage.getItem("user")));
+
+            endPoint(
+                config.treatmentAPIs.patienttreatmentlistPage +
+                "?page=0" +
+                "&size=" +
+                1 + "&sort=id,DESC",
+                "POST",
+            ).then((res) => {
+                console.log(res);
+
+                setTreatment(res.content[0]);
+                console.log(
+                    "=======res====",
+                    res.content[0]
+                );
+            });
+
 
             setLoading(true);
         }
@@ -62,7 +81,7 @@ const HealthRecored = () => {
                     <h1>Health Records</h1> 
                     <div class="content-subheader"> view your health records</div>
                 <div class="header">
-                    <button><i class="fas fa-edit"></i> Edit Profile</button> 
+                   
                 
                 </div>
                 </div>
@@ -91,41 +110,50 @@ const HealthRecored = () => {
                                 </div>
 
                                 <div class="record-section">
-                                    <h3>Recent Test Results</h3>
+                                    <h3>Recommendations</h3>
                                     <div class="test-results">
                                         <div class="test-item">
-                                            <span class="test-name">AFP Level</span>
-                                            <span class="test-value">400 ng/mL</span>
-                                            <span class="test-date">Last updated: 01 Mar 2024</span>
-                                            <span class="status-tag status-critical">Above Normal</span>
+                                            <span class="test-name"> no indication the presence of hepatocellular carcinoma (HCC).</span>
+                                            <span class="test-value"></span>
+                                            <span class="test-date">It's important to maintain a healthy lifestyle, including regular check-ups, a balanced diet, and avoiding alcohol and toxins.</span>
+                                            <span class="status-tag status-higher">SL</span>
 
                                         </div>
                                         <div class="test-item">
-                                            <span class="test-name">ALT</span>
-                                            <span class="test-value">45 U/L</span>
-                                            <span class="test-date">Last updated: 01 Mar 2024</span>
-                                            <span class="status-tag status-warning">Elevated</span>
-
-
-                                        </div>
-                                        <div class="test-item">
-                                            <span class="test-name">AST</span>
-                                            <span class="test-value">42 U/L</span>
-                                            <span class="test-date">Last updated: 01 Mar 2024</span>
-                                            <span class="status-tag status-warning">Elevated</span>
+                                            <span class="test-name">patients diagnosed with early-stage HCC</span>
+                                            <span class="test-value"></span>
+                                            <span class="test-date">blood tests is critical to ensure the cancer has not returned and to detect any early signs of recurrence</span>
+                                            <span class="status-tag status-higher">EHCC</span>
 
 
                                         </div>
                                         <div class="test-item">
-                                            <span class="test-name">Bilirubin</span>
-                                            <span class="test-value">1.0 mg/dL</span>
-                                            <span class="test-date">Last updated: 01 Mar 2024</span>
-                                            <span class="status-tag status-higher">Normal</span>
-
-
+                                            <span class="test-name">Low risk of progressing to HCC	</span>
+                                            <span class="test-value"></span>
+                                            <span class="test-date"> Maintaining a healthy lifestyle and staying up to date with scheduled scans is key to detecting any changes early.</span>
+                                            <span class="status-tag status-higher">LGDN</span>
 
 
                                         </div>
+                                        <br/>
+                                        <div class="test-item">
+                                            <span class="test-name"> advanced-stage HCC</span>
+                                            <span class="test-value"></span>
+                                            <span class="test-date">blood tests are essential to track the progression of the disease</span>
+                                            <span class="status-tag status-higher">PHCC</span>
+                                     </div>
+
+                                     <div class="test-item">
+                                            <span class="test-name">High-grade dysplastic nodules carry a higher risk of turning into cancer</span>
+                                            <span class="test-value"></span>
+                                            <span class="test-date">
+                                            While HGDN are precancerous, maintaining a healthy liver environment can reduce the risk of progression. Avoid alcohol, maintain a healthy diet rich in fruits, vegetables, and lean proteins, and exercise regularly to support overall liver health.
+                                            </span>
+                                            <span class="status-tag status-higher">HGDN</span>
+
+
+                                        </div>
+
 
                                     </div>
                                 </div>
@@ -136,19 +164,19 @@ const HealthRecored = () => {
                                     <div class="info-grid">
                                         <div class="info-item">
                                             <strong>Current Treatment</strong>
-                                            <span>Chemotherapy - Sorafenib</span>
+                                            <span>{treatment?.type?.label}</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Treatment Start Date</strong>
-                                            <span>15 January 2024</span>
+                                            <span>{treatment?.appointmentDate?.split(' ')[0]}</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Next Appointment</strong>
-                                            <span>25 March 2024</span>
+                                            <span>10 January 2025</span>
                                         </div>
                                         <div class="info-item">
                                             <strong>Treating Physician</strong>
-                                            <span>Dr. John Smith</span>
+                                            <span>Dr. {treatment?.doctor?.fullName}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -31,49 +31,26 @@ const Dashboard = () => {
 
     const navigate = useNavigate();
 
-    const dataSets = {
-        all: {
-            diagnoses: [50, 40, 30, 20, 10],
-            trendsSL: [70, 65, 75, 80, 55, 60],
-            trendsHGDN: [35, 45, 50, 30, 60, 25]
-        },
-        year: {
-            diagnoses: [45, 35, 25, 15, 8],
-            trendsSL: [68, 62, 78, 76, 54, 58],
-            trendsHGDN: [30, 40, 48, 22, 55, 20]
-        },
-        month: {
-            diagnoses: [20, 18, 12, 10, 5],
-            trendsSL: [60, 58, 62, 70, 52, 50],
-            trendsHGDN: [15, 25, 28, 18, 35, 15]
-        },
-        week: {
-            diagnoses: [8, 6, 5, 4, 3],
-            trendsSL: [55, 52, 56, 50, 45, 48],
-            trendsHGDN: [10, 15, 12, 8, 20, 10]
-        }
-    };
 
     const [chartData, setChartData] = useState({
-        labels: ['SL', 'LGDN', 'HGDN', 'eHCC', 'pHCC'],
+        labels: ['sl', 'lgdn', 'hgdn', 'ehcc', 'phcc'],
         datasets: [{
-            data: dataSets.all.diagnoses,
+            data: [],
             backgroundColor: ['#3498db', '#2ecc71', '#f1c40f', '#e67e22', '#c0392b']
         }]
     });
 
-    const [lineChartData, setLineChartData] = useState({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-            { label: 'SL', data: [65, 59, 80, 81, 56, 55], borderColor: '#3498db', fill: false },
-            { label: 'LGDN', data: [45, 38, 55, 60, 67, 70], borderColor: '#27ae60', fill: false },
-            { label: 'HGDN', data: [28, 48, 40, 19, 86, 27], borderColor: '#f1c40f', fill: false },
-            { label: 'eHCC', data: [30, 25, 15, 20, 30, 45], borderColor: '#e67e22', fill: false },
-            { label: 'pHCC', data: [18, 25, 30, 35, 40, 50], borderColor: '#c0392b', fill: false }
-        ]
-    });
+    const [lineChartData, setLineChartData] = useState({   labels: ['sl', 'lgdn', 'hgdn', 'ehcc', 'phcc'],
+        datasets: [{
+            data: [],
+            backgroundColor: ['#3498db', '#2ecc71', '#f1c40f', '#e67e22', '#c0392b']
+        }]});
+
     const [loading, setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+
+    const [patients, setPatients] = useState([]);
+
     useEffect(() => {
         if (!loading) {
 
@@ -82,6 +59,51 @@ const Dashboard = () => {
             }, 2000);
 
             setCurrentUser(JSON.parse(localStorage.getItem("user")));
+
+
+            endPoint(
+                config.userAPIs.getusers + "?type=PATIENT",
+                "GET",
+                null
+            ).then((res) => {
+                console.log(res);
+                setPatients(res);
+                var counts = { sl: 0, lgdn: 0, hgdn: 0, ehcc: 0, phcc: 0 }
+                for (const key in res) {
+                    const element = res[key];
+                    
+                    if (element.lastTestResult?.includes("sl")) {
+                        
+                        counts.sl = counts.sl + 1;
+                    } else if (element.lastTestResult?.includes("lgdn")) {
+                        counts.lgdn = counts.lgdn + 1;
+                    }
+                    else if (element.lastTestResult?.includes("hgdn")) {
+                        counts.hgdn = counts.hgdn + 1;
+                    }
+                    else if (element.lastTestResult?.includes("ehcc")) {
+                        counts.ehcc = counts.ehcc + 1;
+                    }
+                    else if (element.lastTestResult?.includes("phcc")) {
+                        counts.phcc = counts.phcc + 1;
+                    }
+                    
+
+                }
+                console.log("-------ccccc----",counts);
+                
+            var chartinfo= {
+                    labels: ['sl', 'lgdn', 'hgdn', 'ehcc', 'phcc'],
+                    datasets: [{
+                        data: [counts.sl, counts.lgdn, counts.hgdn, counts.ehcc, counts.phcc],
+                        backgroundColor: ['#3498db', '#2ecc71', '#f1c40f', '#e67e22', '#c0392b']
+                    }]
+                };
+                setChartData(chartinfo);
+                setLineChartData(chartinfo);
+            }
+            );
+
             setLoading(true);
         }
 
@@ -97,7 +119,7 @@ const Dashboard = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-            <div className={currentUser.type?.value === 'DOCTOR' ?"use-all-doctor-css":"use-all-css"}>
+            <div className={currentUser.type?.value === 'DOCTOR' ? "use-all-doctor-css" : "use-all-css"}>
                 <div class="outer-container">
                     <div class="inner-container">
                         <Aside />
@@ -155,7 +177,7 @@ const Dashboard = () => {
                                                 }}
                                             />
                                         </div>
-                                        <br/>
+                                        <br />
                                         <div class="chart-container">
                                             <h2 class="chart-title">Diagnostic Trends Over Time</h2>
                                             <Line

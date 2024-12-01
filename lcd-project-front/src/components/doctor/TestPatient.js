@@ -162,7 +162,7 @@ const TestPatient = () => {
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
             <div className="use-all-doctor-css use-test-patient-css">
-                <div class="outer-container">
+                <div class="">
                     <div class="inner-container">
                         <Aside />
 

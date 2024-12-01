@@ -20,12 +20,31 @@ const PatientProfile = () => {
 
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
+    const [treatments, setTreatments] = useState([]);
+
 
     useEffect(() => {
         if (!loading) {
             setCurrentUser(JSON.parse(localStorage.getItem("user")));
 
             console.log(currentUser);
+
+
+            endPoint(
+                config.treatmentAPIs.patienttreatmentlistPage +
+                "?page=0" +
+                "&size=" +
+                3 + "&sort=id,DESC",
+                "POST",
+            ).then((res) => {
+                console.log(res);
+
+                setTreatments(res.content);
+                console.log(
+                    "=======res====",
+                    res
+                );
+            });
 
             setLoading(true);
         }
@@ -48,7 +67,7 @@ const PatientProfile = () => {
                                 <h1>View Profile</h1>
                                 <div class="content-subheader"> Mange your profile</div>
                                 <div class="header">
-                                    
+
 
                                 </div>
                             </div>
@@ -102,7 +121,7 @@ const PatientProfile = () => {
                                         <strong>Blood Type</strong>
                                         {currentUser.bloodType?.label}
                                     </div>
-                                   
+
                                     <div>
                                         <strong>Registered Date</strong>
                                         {currentUser.creationDate}
@@ -146,20 +165,17 @@ const PatientProfile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>15 Mar, 2024</td>
-                                            <td>Regular Checkup</td>
-                                            <td>Low</td>
-                                            <td>1</td>
-                                            <td><span class="status-badge status-active">Active</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>01 Feb, 2024</td>
-                                            <td>Liver Function Test</td>
-                                            <td>Medium</td>
-                                            <td>2</td>
-                                            <td><span class="status-badge status-completed">Completed</span></td>
-                                        </tr>
+
+                                        {treatments?.map((obj, index) => (
+                                            <tr key={index}>
+                                                <td>{obj.appointmentDate?.split(' ')[0]}</td>
+                                                <td>{obj.type?.label}</td>
+                                                <td>Low</td>
+                                                <td>{index+1}</td>
+                                                <td><span class="status-badge status-active">{obj.status?.label}</span></td>
+                                            </tr>
+                                        ))}
+                                        
                                     </tbody>
                                 </table>
                             </div>
